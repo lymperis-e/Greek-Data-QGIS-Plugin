@@ -2,7 +2,7 @@
 [general]
 name=Greek Data
 qgisMinimumVersion=3.0
-homepage=https://www.linkedin.com/in/efstathios-lymperis-975702188/
+homepage=https://github.com/lymperis-e/Greek-Data-QGIS-Plugin
 category=Web
 icon=icon.png
 server=False
