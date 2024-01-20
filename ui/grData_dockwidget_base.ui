@@ -33,7 +33,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>2</number>
       </property>
       <property name="documentMode">
        <bool>false</bool>
@@ -361,7 +361,7 @@
              <string/>
             </property>
             <property name="pixmap">
-             <pixmap resource="resources.qrc">:/plugins/grData/icon.png</pixmap>
+             <pixmap>:/plugins/grData/assets/img/icon.png</pixmap>
             </property>
             <property name="scaledContents">
              <bool>true</bool>
@@ -387,7 +387,7 @@
              <string/>
             </property>
             <property name="pixmap">
-             <pixmap resource="resources.qrc">:/plugins/grData/assets/img/green.png</pixmap>
+             <pixmap>:/plugins/grData/assets/img/green.png</pixmap>
             </property>
             <property name="scaledContents">
              <bool>true</bool>
@@ -416,7 +416,7 @@
              <string/>
             </property>
             <property name="pixmap">
-             <pixmap resource="resources.qrc">:/plugins/grData/assets/img/geodata-biglogo.png</pixmap>
+             <pixmap>:/plugins/grData/assets/img/geodata-biglogo.png</pixmap>
             </property>
             <property name="scaledContents">
              <bool>true</bool>
@@ -737,7 +737,7 @@
              <string/>
             </property>
             <property name="pixmap">
-             <pixmap resource="resources.qrc">:/plugins/grData/icon.png</pixmap>
+             <pixmap>:/plugins/grData/assets/img/icon.png</pixmap>
             </property>
             <property name="scaledContents">
              <bool>true</bool>
@@ -769,7 +769,7 @@
              <string/>
             </property>
             <property name="pixmap">
-             <pixmap resource="resources.qrc">:/plugins/grData/assets/img/geodata-biglogo.png</pixmap>
+             <pixmap>:/plugins/grData/assets/img/geodata-biglogo.png</pixmap>
             </property>
             <property name="scaledContents">
              <bool>true</bool>
@@ -831,7 +831,7 @@
              <string/>
             </property>
             <property name="pixmap">
-             <pixmap resource="resources.qrc">:/plugins/grData/assets/img/green.png</pixmap>
+             <pixmap>:/plugins/grData/assets/img/green.png</pixmap>
             </property>
             <property name="scaledContents">
              <bool>true</bool>
@@ -845,11 +845,103 @@
         </item>
        </layout>
       </widget>
+      <widget class="QWidget" name="services_tab">
+       <attribute name="title">
+        <string>Page</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_2">
+        <item row="1" column="1">
+         <widget class="QTreeWidget" name="layer_details_widget">
+          <property name="enabled">
+           <bool>true</bool>
+          </property>
+          <property name="font">
+           <font>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="alternatingRowColors">
+           <bool>true</bool>
+          </property>
+          <property name="animated">
+           <bool>false</bool>
+          </property>
+          <property name="columnCount">
+           <number>1</number>
+          </property>
+          <attribute name="headerVisible">
+           <bool>false</bool>
+          </attribute>
+          <attribute name="headerCascadingSectionResizes">
+           <bool>false</bool>
+          </attribute>
+          <attribute name="headerHighlightSections">
+           <bool>false</bool>
+          </attribute>
+          <column>
+           <property name="text">
+            <string notr="true">1</string>
+           </property>
+          </column>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QTreeWidget" name="conn_list_widget">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="alternatingRowColors">
+           <bool>false</bool>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>24</width>
+            <height>24</height>
+           </size>
+          </property>
+          <column>
+           <property name="text">
+            <string notr="true">1</string>
+           </property>
+          </column>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="label_4">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>30</width>
+            <height>30</height>
+           </size>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="pixmap">
+           <pixmap>:/plugins/grData/assets/img/icon.png</pixmap>
+          </property>
+          <property name="scaledContents">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
      </widget>
     </item>
    </layout>
   </widget>
  </widget>
- <resources/>
+
  <connections/>
 </ui>

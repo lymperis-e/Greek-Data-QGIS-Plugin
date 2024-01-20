@@ -1,0 +1,19 @@
+{
+  "services": [
+    {
+      "name": "Ktima",
+      "type": "esri",
+      "url": "http://gis.ktimanet.gr/inspire/rest/services"
+    },
+    {
+      "name": "GGB",
+      "type": "esri",
+      "url": "http://gis.ggb.gr/arcgis/rest/services/"
+    },
+    {
+      "name": "EAGME",
+      "type": "esri",
+      "url": "https://gaia.igme.gr/server/rest/services/"
+    }
+  ]
+}

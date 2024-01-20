@@ -1,15 +1,12 @@
-
 from qgis.core import (
     QgsApplication, QgsTask, QgsMessageLog, Qgis
     )
 from qgis.PyQt.QtCore import pyqtSignal
 from qgis.PyQt.QtGui import QPixmap
-
-
 import requests
-#DEPENDENCIES THAT NEED TO BE INSTALLED BY THE USER######
-import xmltodict
-###########
+from .xml import xmltodict
+
+
 
 
 
@@ -289,11 +286,3 @@ class custom_geoserver_load_service(QgsTask):
                 name=self.description()),
             MESSAGE_CATEGORY, Qgis.Info)
         super().cancel()
-
-
-
-
-
-
-
-

@@ -22,66 +22,49 @@
  ***************************************************************************/
 """
 import json
+import os
 
-
-from qgis.PyQt.QtCore import QSettings, QTranslator, QCoreApplication, Qt, QByteArray
+from qgis.core import Qgis, QgsApplication, QgsMessageLog, QgsProject, QgsVectorLayer
+from qgis.PyQt.QtCore import QByteArray, QCoreApplication, QSettings, Qt, QTranslator
 from qgis.PyQt.QtGui import QIcon, QPixmap
 from qgis.PyQt.QtWidgets import QAction, QTableWidgetItem
 
-# Initialize Qt resources from file resources.py
-from .resources import *
+from .core.AbstractService import ServiceNotExists
+from .core.ServiceManager import ServiceManager
+
 # Import the code for the DockWidget
 from .grData_dockwidget import grDataDockWidget
-import os
-from qgis.core import QgsVectorLayer, QgsProject, Qgis, QgsApplication, QgsMessageLog
 
-
-
-
-#Local Imports
-from .sub.helper_functions import fill_tree_widget 
-
-
+# Initialize Qt resources from file resources.py
+from .resources import *
 from .sub.ArcServer_requests import ArcServer_load_service as ASLS
-
 from .sub.custom_geoserver_requests import custom_geoserver_get_details as CGGD
-from .sub.custom_geoserver_requests import custom_geoserver_load_service as CGLS
 from .sub.custom_geoserver_requests import custom_geoserver_get_thumbnail as CGGT
+from .sub.custom_geoserver_requests import custom_geoserver_load_service as CGLS
 
+# Local Imports
+from .sub.helper_functions import fill_subtree_widget, fill_tree_widget
 
 basePath = os.path.dirname(os.path.abspath(__file__))
-settings_path = os.path.join(basePath, 'assets/sets')
-
+settings_path = os.path.join(basePath, "assets/sets")
 
 
 class grData:
-    
-    
-    
-    custom_geoserver_Layers={}
+    custom_geoserver_Layers = dict()
     custom_geoserver_selected_item = None
-    custom_geoserver_currentServer=str
-    geoserver_ServersDomains={}
-    
-
+    custom_geoserver_currentServer = str()
+    geoserver_ServersDomains = dict()
 
     # Globals for ArcServer Services search
-    hidden_2=0
-    hidden_3=0
-   
-                               
-    ArcServer_ServersDomains={}
-    ArcServer_currentServer=str
-    ArcServer_Layers = {}
+    hidden_2 = 0
+    hidden_3 = 0
+
+    ArcServer_ServersDomains = dict()
+    ArcServer_currentServer = str()
+    ArcServer_Layers = dict()
     ArcServer_selected_item = None
 
-
-                                
-    grdata=QAction()
-
-    
-
-
+    grdata = QAction()
 
     def __init__(self, iface):
         """Constructor.
@@ -120,20 +103,27 @@ class grData:
         self.pluginIsActive = False
         self.dockwidget = None
 
-        with open(os.path.join(settings_path, 'services.json'), 'r') as fp:
-                current_services = json.loads(fp.read())
-                for service, domain in current_services['Geoserver_Services'].items():
-                    self.geoserver_ServersDomains[service] = domain
-                for service, domain in current_services['ArcServer_Services'].items():
-                    self.ArcServer_ServersDomains[service] = domain
-        fp.close()
-        
+        # TODO Replace the following with a remote read from https://gist.githubusercontent.com/lymperis-e/f7481db37219918237446aafa8d5bb5f/raw/807c04d7751e8697d9674810ebb64f77e54763d3/greek_data_services
+        import json
 
+        import requests
 
+        r = requests.get(
+            "https://gist.github.com/lymperis-e/f7481db37219918237446aafa8d5bb5f/raw",
+            headers={"user-agent": "grdata-qgis-plugin/0.0.1"},
+            timeout=15,
+        )
+        # r.content is used, because the response is actually Binary data representing an xml dict
+        obj = json.loads(r.content)
 
-       
-      
-    
+        for service, domain in obj["Geoserver_Services"].items():
+            self.geoserver_ServersDomains[service] = domain
+        for service, domain in obj["ArcServer_Services"].items():
+            self.ArcServer_ServersDomains[service] = domain
+
+        # DEV
+        self.serviceManager = ServiceManager()
+
     def tr(self, message):
         """Get the translation for a string using Qt translation API.
 
@@ -148,7 +138,18 @@ class grData:
         # noinspection PyTypeChecker,PyArgumentList,PyCallByClass
         return QCoreApplication.translate("grData", message)
 
-    def add_action(self,icon_path,text,callback,enabled_flag=True,add_to_menu=True,add_to_toolbar=True,status_tip=None,whats_this=None,parent=None,):
+    def add_action(
+        self,
+        icon_path,
+        text,
+        callback,
+        enabled_flag=True,
+        add_to_menu=True,
+        add_to_toolbar=True,
+        status_tip=None,
+        whats_this=None,
+        parent=None,
+    ):
         """Add a toolbar icon to the toolbar.
 
         :param icon_path: Path to the icon for this action. Can be a resource
@@ -211,23 +212,19 @@ class grData:
 
     def initGui(self):
         """Create the menu entries and toolbar icons inside the QGIS GUI."""
-
-        icon = QIcon(':/plugins/grData/icon.png')
+        icon_path = os.path.join(os.path.dirname(__file__), "assets", "img", "icon.png")
+        icon = QIcon(icon_path)
         self.grdata = QAction(icon, "Greek Open Data Access", self.iface.mainWindow())
         self.grdata.triggered.connect(self.run)
         self.grdata.setCheckable(False)
         self.iface.addToolBarIcon(self.grdata)
 
-        icon_path = ":/plugins/grData/icon.png"
         self.add_action(
             icon_path,
             text=self.tr("Greek Data Access"),
             callback=self.run,
             parent=self.iface.mainWindow(),
         )
-
-  
-
 
     def onClosePlugin(self):
         """Cleanup necessary items here when plugin dockwidget is closed"""
@@ -251,7 +248,7 @@ class grData:
         # print "** UNLOAD grData"
         self.first_start = True
         for action in self.actions:
-            self.iface.removePluginWebMenu(self.tr(u"&Greek Data"), action)
+            self.iface.removePluginWebMenu(self.tr("&Greek Data"), action)
             self.iface.removeToolBarIcon(action)
             self.iface.removeToolBarIcon(self.grdata)
         # remove the toolbar
@@ -266,7 +263,6 @@ class grData:
             self.pluginIsActive = True
 
             if self.dockwidget is None:
-         
                 self.dockwidget = grDataDockWidget()
 
             self.dockwidget.closingPlugin.connect(self.onClosePlugin)
@@ -274,411 +270,458 @@ class grData:
             self.iface.addDockWidget(Qt.LeftDockWidgetArea, self.dockwidget)
             self.dockwidget.show()
 
-           
-
-            
-
             # 2. ArcServer
-            self.dockwidget.ArcServer_list_tree.itemClicked.connect(self.ArcServer_list_changed)
-            self.dockwidget.ArcServer_search_line.textChanged.connect(self.filter_ArcServer)
-            self.dockwidget.ArcServer_add_button_2.clicked.connect(self.add_ArcServer_layer)
-            self.dockwidget.ArcServer_details_checkbox.stateChanged.connect(lambda: self.dockwidget.ArcServer_attribute_table.setEnabled(self.dockwidget.ArcServer_details_checkbox.isChecked()))
-            
+            self.dockwidget.ArcServer_list_tree.itemClicked.connect(
+                self.ArcServer_list_changed
+            )
+            self.dockwidget.ArcServer_search_line.textChanged.connect(
+                self.filter_ArcServer
+            )
+            self.dockwidget.ArcServer_add_button_2.clicked.connect(
+                self.add_ArcServer_layer
+            )
+            self.dockwidget.ArcServer_details_checkbox.stateChanged.connect(
+                lambda: self.dockwidget.ArcServer_attribute_table.setEnabled(
+                    self.dockwidget.ArcServer_details_checkbox.isChecked()
+                )
+            )
+
             self.ArcServer_Layers.clear()
             self.dockwidget.ArcServer_header_label.setText("Select a Data Source:")
             self.dockwidget.widget.setEnabled(False)
-
 
             self.dockwidget.ArcServer_status_label.setHidden(True)
             self.dockwidget.ArcServer_status_icon_con.setHidden(True)
 
             # 3. Custom
-            
 
             # 3.a Custom geoserver tab
-            self.dockwidget.custom_geoserver_list.itemClicked.connect(self.custom_geoserver_list_changed)
-            self.dockwidget.custom_geoserver_add_button.clicked.connect(self.add_custom_geoserver_layer)
-            self.dockwidget.custom_geoserver_search_line.textChanged.connect(self.filter_custom_geoserver)
-            self.dockwidget.custom_geoserver_list.itemSelectionChanged.connect(lambda: self.dockwidget.custom_geoserver_add_button.setEnabled(True))
-            self.dockwidget.custom_geoserver_details_checkbox.stateChanged.connect(lambda: self.dockwidget.custom_geoserver_details_tree.setEnabled(self.dockwidget.custom_geoserver_details_checkbox.isChecked()))
+            self.dockwidget.custom_geoserver_list.itemClicked.connect(
+                self.custom_geoserver_list_changed
+            )
+            self.dockwidget.custom_geoserver_add_button.clicked.connect(
+                self.add_custom_geoserver_layer
+            )
+            self.dockwidget.custom_geoserver_search_line.textChanged.connect(
+                self.filter_custom_geoserver
+            )
+            self.dockwidget.custom_geoserver_list.itemSelectionChanged.connect(
+                lambda: self.dockwidget.custom_geoserver_add_button.setEnabled(True)
+            )
+            self.dockwidget.custom_geoserver_details_checkbox.stateChanged.connect(
+                lambda: self.dockwidget.custom_geoserver_details_tree.setEnabled(
+                    self.dockwidget.custom_geoserver_details_checkbox.isChecked()
+                )
+            )
             self.dockwidget.custom_geoserver_loading_label.setVisible(False)
             self.dockwidget.custom_geoserver_status_icon_con.setEnabled(False)
-            self.dockwidget.custom_geoserver_preview_checkbox.stateChanged.connect(lambda: self.dockwidget.custom_geoserver_image_preview.setHidden(not self.dockwidget.custom_geoserver_preview_checkbox.isChecked()))
-
+            self.dockwidget.custom_geoserver_preview_checkbox.stateChanged.connect(
+                lambda: self.dockwidget.custom_geoserver_image_preview.setHidden(
+                    not self.dockwidget.custom_geoserver_preview_checkbox.isChecked()
+                )
+            )
 
             # 4. Custom geoserver loading etc
             self.custom_geoserver_Layers.clear()
             self.dockwidget.custom_geoserver_services_list.clear()
-            self.dockwidget.custom_geoserver_header_label.setText("Select a Data Source:")
+            self.dockwidget.custom_geoserver_header_label.setText(
+                "Select a Data Source:"
+            )
             self.dockwidget.widget_9.setEnabled(False)
 
             self.dockwidget.custom_geoserver_status_label.setHidden(True)
             self.dockwidget.custom_geoserver_status_icon_con.setHidden(True)
 
-
-
-
-            
             for service in self.geoserver_ServersDomains.keys():
                 self.dockwidget.custom_geoserver_services_list.addItem(service)
 
             for service in self.ArcServer_ServersDomains.keys():
-                self.dockwidget.ArcServer_services_list.addItem(service)    
+                self.dockwidget.ArcServer_services_list.addItem(service)
 
+            self.dockwidget.custom_geoserver_services_list.currentTextChanged.connect(
+                self.custom_geoserver_service_changed
+            )
+            self.dockwidget.ArcServer_services_list.currentTextChanged.connect(
+                self.ArcServer_service_changed
+            )
 
-            self.dockwidget.custom_geoserver_services_list.currentTextChanged.connect(self.custom_geoserver_service_changed)
-            self.dockwidget.ArcServer_services_list.currentTextChanged.connect(self.ArcServer_service_changed)
+            # DEV: New tab
+            self.fill_connections_list()
 
-            
+    # --------------------------------------------------------------------------
 
+    def fill_connections_list(self):
+        services = self.serviceManager.getServicesList()
+        self.dockwidget.conn_list_widget.clear()
+        fill_tree_widget(
+            widget=self.dockwidget.conn_list_widget,
+            value=[s.name for s in services],
+            expanded=False,
+            clicked=self.expand_service,
+        )
 
+        # When a widget item is clicked, show details
+        # self.dockwidget.conn_list_widget.itemClicked.connect(self.expand_service)
 
+    def expand_service(self):
+        name = self.dockwidget.conn_list_widget.selectedItems()[0].text(0)
+        try:
+            service = self.serviceManager.getService(name)
+            fill_subtree_widget(
+                self.dockwidget.conn_list_widget.selectedItems()[0], service.getLayers()
+            )
+        except ServiceNotExists as e:
+            print(e)
+            print([s.name for s in self.serviceManager.getServicesList()])
+            # fill_subtree_widget(self.dockwidget.conn_list_widget.selectedItems()[0], [e] )
 
+    def getLayerDetails(self, listItem):
+        l_name = listItem.text()
 
-
-
-
-
-
-
-
-
+    # --------------------------------------------------------------------------
 
     def add_custom_geoserver_layer(self):
-        layer_name=None
-        layer_title=None
-        server=None
+        layer_name = None
+        layer_title = None
+        server = None
 
         try:
             server = self.dockwidget.custom_geoserver_services_list.currentText()
             layer_title = self.custom_geoserver_selected_item
-            layer_name = self.custom_geoserver_Layers[self.custom_geoserver_selected_item]['name']
-
+            layer_name = self.custom_geoserver_Layers[
+                self.custom_geoserver_selected_item
+            ]["name"]
 
             domain = self.geoserver_ServersDomains[server]
 
             """Add the selected layer to the map"""
-            uri = 'http://{}/geoserver/ows?service=WFS&request=GetFeature&version=2.0.0&outputFormat=json&srsName=EPSG:4326&typeNames={}'.format(domain, layer_name)
+            uri = "http://{}/geoserver/ows?service=WFS&request=GetFeature&version=2.0.0&outputFormat=json&srsName=EPSG:4326&typeNames={}".format(
+                domain, layer_name
+            )
             new_layer = QgsVectorLayer(uri, layer_title, "OGR")
             if not new_layer.isValid():
                 print("Layer failed to load!")
             else:
                 QgsProject.instance().addMapLayer(new_layer)
         except:
-            self.iface.messageBar().pushMessage("Ooops", "Something went wrong...", level=Qgis.Critical, duration=3)
+            self.iface.messageBar().pushMessage(
+                "Ooops", "Something went wrong...", level=Qgis.Critical, duration=3
+            )
 
     def custom_geoserver_load_services(self):
         """"""
         self.dockwidget.custom_geoserver_status_label.setHidden(False)
         self.dockwidget.custom_geoserver_status_icon_con.setHidden(False)
-        
 
         # Clear the current list of layers
         self.custom_geoserver_Layers.clear()
         self.dockwidget.custom_geoserver_list.clear()
-        
-        domain = self.geoserver_ServersDomains[self.custom_geoserver_currentServer]
-        
 
-        get_serv = CGLS(domain ,'load_available_services')
-        #If the method is succesful, connect the signal that passes the available layers dict to the main thread
+        domain = self.geoserver_ServersDomains[self.custom_geoserver_currentServer]
+
+        get_serv = CGLS(domain, "load_available_services")
+        # If the method is succesful, connect the signal that passes the available layers dict to the main thread
         get_serv.service_dict_signal.connect(self.custom_geoserver_update_services)
         self.tm.addTask(get_serv)
-                       
+
     def custom_geoserver_update_services(self, services_dict):
         """"""
-        
-        
 
         # Check if it is empty, meaning the request failed
-        if not services_dict == {'none':'none'}:
+        if not services_dict == {"none": "none"}:
             for layer_title, layer_details in services_dict.items():
-                
                 self.custom_geoserver_Layers[layer_title] = layer_details
                 self.dockwidget.custom_geoserver_list.addItem(layer_title)
-            
-            self.dockwidget.custom_geoserver_status_label.setText("<font color='Green'>Connected</font>")
+
+            self.dockwidget.custom_geoserver_status_label.setText(
+                "<font color='Green'>Connected</font>"
+            )
             self.dockwidget.custom_geoserver_status_label.setEnabled(True)
-            self.dockwidget.custom_geoserver_status_icon_con.setEnabled(True)  
-            
+            self.dockwidget.custom_geoserver_status_icon_con.setEnabled(True)
+
             self.dockwidget.widget_9.setEnabled(True)
 
         else:
-
-            self.dockwidget.custom_geoserver_status_label.setText("<font color='Red'>Disconnected</font>")
+            self.dockwidget.custom_geoserver_status_label.setText(
+                "<font color='Red'>Disconnected</font>"
+            )
             self.dockwidget.custom_geoserver_status_label.setEnabled(False)
             self.dockwidget.custom_geoserver_status_icon_con.setEnabled(False)
 
     def custom_geoserver_list_changed(self, item):
-
-
         """Update the currently selected object of the custom_geoserver list"""
         self.custom_geoserver_selected_item = item.text()
-        self.dockwidget.custom_geoserver_layer_description_label.setText(self.custom_geoserver_Layers[self.custom_geoserver_selected_item]['description'])
+        self.dockwidget.custom_geoserver_layer_description_label.setText(
+            self.custom_geoserver_Layers[self.custom_geoserver_selected_item][
+                "description"
+            ]
+        )
         if self.dockwidget.custom_geoserver_details_checkbox.isChecked() is True:
             self.custom_geoserver_get_thumbnail(item.text())
             self.custom_geoserver_get_details(item.text())
-            
-            
+
     def filter_custom_geoserver(self, text):
-        #filter_text = str(self.dockwidget.custom_geoserver_search_line.text()).lower()
+        # filter_text = str(self.dockwidget.custom_geoserver_search_line.text()).lower()
         filter_text = text.lower()
         for row in range(self.dockwidget.custom_geoserver_list.count()):
-            if filter_text in str(self.dockwidget.custom_geoserver_list.item(row).text()).lower():
+            if (
+                filter_text
+                in str(self.dockwidget.custom_geoserver_list.item(row).text()).lower()
+            ):
                 self.dockwidget.custom_geoserver_list.setRowHidden(row, False)
             else:
                 self.dockwidget.custom_geoserver_list.setRowHidden(row, True)
 
     def custom_geoserver_get_details(self, item):
-        print('Starting..')
+        print("Starting..")
         self.dockwidget.custom_geoserver_loading_label.setVisible(True)
         self.custom_geoserver_get_thumbnail(item)
         try:
-            
             domain = self.geoserver_ServersDomains[self.custom_geoserver_currentServer]
-            get_det = CGGD(self.custom_geoserver_Layers, item, domain ,'Layer details request')
+            get_det = CGGD(
+                self.custom_geoserver_Layers, item, domain, "Layer details request"
+            )
             get_det.details_dict_signal.connect(self.custom_geoserver_update_details)
             self.tm.addTask(get_det)
             self.dockwidget.custom_geoserver_loading_label.setVisible(False)
 
         except:
-            print('Unexpected Error')
+            print("Unexpected Error")
             self.dockwidget.custom_geoserver_loading_label.setVisible(False)
 
     def custom_geoserver_get_thumbnail(self, item):
-        QgsMessageLog.logMessage('Executing request: Fetching thumbnail . . . ','custom_geoserver_requests', Qgis.Info)
+        QgsMessageLog.logMessage(
+            "Executing request: Fetching thumbnail . . . ",
+            "custom_geoserver_requests",
+            Qgis.Info,
+        )
         domain = self.geoserver_ServersDomains[self.custom_geoserver_currentServer]
         try:
-            thumb = CGGT(self.custom_geoserver_Layers, item, domain, 'get layer thumbnail')
+            thumb = CGGT(
+                self.custom_geoserver_Layers, item, domain, "get layer thumbnail"
+            )
             thumb.thumbnail_path_signal.connect(self.custom_geoserver_update_thumbnail)
             self.tm.addTask(thumb)
         except:
             None
 
     def custom_geoserver_update_thumbnail(self, thumbnail):
-        QgsMessageLog.logMessage('Executing request: FETCHED! thumbnail . . . ','custom_geoserver_requests', Qgis.Info)
+        QgsMessageLog.logMessage(
+            "Executing request: FETCHED! thumbnail . . . ",
+            "custom_geoserver_requests",
+            Qgis.Info,
+        )
         try:
             self.dockwidget.custom_geoserver_image_preview.setPixmap(thumbnail)
         except:
             None
 
     def custom_geoserver_update_details(self, details_dict):
-        if not details_dict == {'none':'none'}:
-            fill_tree_widget(self.dockwidget.custom_geoserver_details_tree, details_dict)
+        if not details_dict == {"none": "none"}:
+            fill_tree_widget(
+                self.dockwidget.custom_geoserver_details_tree, details_dict
+            )
         else:
-            fill_tree_widget(self.dockwidget.custom_geoserver_details_tree, {'Error':'Could not fetch resources from custom_geoserver.gov'}, True)
-
+            fill_tree_widget(
+                self.dockwidget.custom_geoserver_details_tree,
+                {"Error": "Could not fetch resources from custom_geoserver.gov"},
+                True,
+            )
 
     def custom_geoserver_service_changed(self, currentText):
         self.custom_geoserver_currentServer = currentText
-        
 
         self.dockwidget.custom_geoserver_list.clear()
         self.dockwidget.custom_geoserver_header_label.setText(currentText)
         self.dockwidget.tabWidget.setTabText(0, currentText)
         self.custom_geoserver_load_services()
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
     def ArcServer_load_services(self):
         """"""
-        
+
         self.dockwidget.ArcServer_status_label.setHidden(False)
         self.dockwidget.ArcServer_status_icon_con.setHidden(False)
 
-
-
         self.dockwidget.ArcServer_list_tree.clear()
-        
+
         domain = self.ArcServer_ServersDomains[self.ArcServer_currentServer]
-        
-        get_serv = ASLS(domain, 'load_ArcServer_available_services')
 
+        get_serv = ASLS(domain, "load_ArcServer_available_services")
 
-        #If the method is succesful, connect the signal that passes the available layers dict to the main thread
+        # If the method is succesful, connect the signal that passes the available layers dict to the main thread
         get_serv.service_dict_signal.connect(self.ArcServer_update_services)
         self.tm.addTask(get_serv)
-                       
+
     def ArcServer_get_details(self, item):
         try:
             # All details tab
-            fill_tree_widget(self.dockwidget.ArcServer_details_tree, self.ArcServer_Layers[1][item])
+            fill_tree_widget(
+                self.dockwidget.ArcServer_details_tree, self.ArcServer_Layers[1][item]
+            )
 
-            #Attribute table tab
-            fields = self.ArcServer_Layers[1][item]['fields']
+            # Attribute table tab
+            fields = self.ArcServer_Layers[1][item]["fields"]
             table = self.dockwidget.ArcServer_attribute_table
             table.clear()
             table.setRowCount(0)
             table.setColumnCount(2)
-            table.setHorizontalHeaderLabels(['Attribute','Type(Length)'])
+            table.setHorizontalHeaderLabels(["Attribute", "Type(Length)"])
             table.horizontalHeader().setVisible(True)
-            
 
             for field in fields:
                 try:
-                    table.insertRow(table.rowCount()) 
+                    table.insertRow(table.rowCount())
                     item = QTableWidgetItem(field["alias"])
-                    table.setItem(table.rowCount()-1, 0, item)
+                    table.setItem(table.rowCount() - 1, 0, item)
 
-                    item = QTableWidgetItem(field["type"].replace("esriFieldType","")+"({})".format(field['length']))
-                    table.setItem(table.rowCount()-1, 1, item)
+                    item = QTableWidgetItem(
+                        field["type"].replace("esriFieldType", "")
+                        + "({})".format(field["length"])
+                    )
+                    table.setItem(table.rowCount() - 1, 1, item)
                 except:
                     continue
-            
-
 
         except:
-            fill_tree_widget(self.dockwidget.ArcServer_details_tree, {'Error':'Unknown'}, True)
+            fill_tree_widget(
+                self.dockwidget.ArcServer_details_tree, {"Error": "Unknown"}, True
+            )
 
     def ArcServer_update_services(self, services_dict):
         """"""
-        
+
         # Retrieve the results dict
         # Unlike geodata, ArcServer layers' dict contains all the layer info for every layer.
         # It thus needs to be parsed, and only include the layers' names in the list tree,
-        # while all the other details do in the details list 
-        
+        # while all the other details do in the details list
+
         self.ArcServer_Layers = {}
         self.ArcServer_Layers = services_dict
-        
 
         # Check if it is empty, meaning the request failed
-        if not services_dict == {'none':'none'}:
+        if not services_dict == {"none": "none"}:
             self.dockwidget.ArcServer_list_tree.clear()
 
             self.dockwidget.widget.setEnabled(True)
 
+            fill_tree_widget(
+                self.dockwidget.ArcServer_list_tree, self.ArcServer_Layers[0], True
+            )
 
-            fill_tree_widget(self.dockwidget.ArcServer_list_tree, self.ArcServer_Layers[0], True)
-
-            
-  
-            
             self.dockwidget.ArcServer_list_tree.setEnabled(True)
 
-            self.dockwidget.ArcServer_status_label.setText("<font color='Green'>Connected</font>")
+            self.dockwidget.ArcServer_status_label.setText(
+                "<font color='Green'>Connected</font>"
+            )
             self.dockwidget.ArcServer_status_label.setEnabled(True)
-            self.dockwidget.ArcServer_status_icon_con.setEnabled(True)  
+            self.dockwidget.ArcServer_status_icon_con.setEnabled(True)
 
         else:
-
-            self.dockwidget.ArcServer_status_label.setText("<font color='Red'>Disconnected</font>")
+            self.dockwidget.ArcServer_status_label.setText(
+                "<font color='Red'>Disconnected</font>"
+            )
             self.dockwidget.ArcServer_status_label.setEnabled(False)
             self.dockwidget.ArcServer_status_icon_con.setEnabled(False)
 
     def ArcServer_list_changed(self):
         """Update the currently selected object of the ArcServer list"""
-      
+
         getSelected = self.dockwidget.ArcServer_list_tree.selectedItems()
         if getSelected:
             baseNode = getSelected[0]
             getChildNode = baseNode.text(0)
             self.ArcServer_selected_item = getChildNode
-        
+
         # Write the layer's name on the label above the attributes list
         self.dockwidget.ArcServer_layer_name_1.setText(getChildNode)
         self.dockwidget.ArcServer_layer_name_2.setText(getChildNode)
 
         # Add Button enabling/disabling
-        if baseNode.childCount()==0:
+        if baseNode.childCount() == 0:
             self.dockwidget.ArcServer_add_button_2.setEnabled(True)
         else:
             self.dockwidget.ArcServer_add_button_2.setEnabled(False)
-        
-        # Fill the details tab 
+
+        # Fill the details tab
         if self.dockwidget.ArcServer_details_checkbox.isChecked() is True:
             self.dockwidget.ArcServer_details_tree.clear()
-            if baseNode.childCount()==0:             
+            if baseNode.childCount() == 0:
                 print(getChildNode)
-                self.dockwidget.ArcServer_list_tree.headerItem().setText(0, getChildNode)    #TODO TODO TODO
+                self.dockwidget.ArcServer_list_tree.headerItem().setText(
+                    0, getChildNode
+                )  # TODO TODO TODO
                 self.ArcServer_get_details(getChildNode)
 
     def filter_ArcServer(self, text):
         print(self.hidden_3)
         print(self.hidden_2)
-        #filter_text = str(self.dockwidget.geodata_search_line.text()).lower()
+        # filter_text = str(self.dockwidget.geodata_search_line.text()).lower()
         filter_text = text.lower()
         root = self.dockwidget.ArcServer_list_tree.invisibleRootItem()
         c = root.childCount()
 
-        
-     
-        hidden_1=0
+        hidden_1 = 0
         # Level 1 Nodes
         for i in range(c):
             item_1 = root.child(i)
             cc_count = item_1.childCount()
-            
-            if cc_count==0:                     # Handle nodes that are empty from the beggining
+
+            if cc_count == 0:  # Handle nodes that are empty from the beggining
                 if len(filter_text) > 0:
                     item_1.setHidden(True)
                 else:
-                    item_1.setHidden(False)                
-            
+                    item_1.setHidden(False)
+
             # Level 2 Nodes
-            hidden_2=0
+            hidden_2 = 0
             for j in range(cc_count):
                 item_2 = item_1.child(j)
                 ccc_count = item_2.childCount()
-                if ccc_count==0:
-                    if filter_text=="":
+                if ccc_count == 0:
+                    if filter_text == "":
                         item_2.setHidden(False)
                     else:
                         item_2.setHidden(True)
                 # Level 3 Nodes
-                hidden_3=0
+                hidden_3 = 0
                 for k in range(ccc_count):
                     item_3 = item_2.child(k)
-                    cur_text = item_3.text(0).lower() # text at first (0) column
+                    cur_text = item_3.text(0).lower()  # text at first (0) column
                     # Check item level3
                     if not filter_text in cur_text:
                         item_3.setHidden(True)
-                        hidden_3+=1
+                        hidden_3 += 1
                         print(hidden_3)
                         print(ccc_count)
-                        if hidden_3==ccc_count:
+                        if hidden_3 == ccc_count:
                             item_2.setHidden(True)
-                            hidden_2+=1
-                            if hidden_2==cc_count:
+                            hidden_2 += 1
+                            if hidden_2 == cc_count:
                                 item_1.setHidden(True)
                     else:
-                        if item_3.isHidden()==True:
+                        if item_3.isHidden() == True:
                             item_3.setHidden(False)
-                            if item_2.isHidden()==True:
+                            if item_2.isHidden() == True:
                                 item_2.setHidden(False)
-                                if item_1.isHidden()==True:
+                                if item_1.isHidden() == True:
                                     item_1.setHidden(False)
-                        
+
     def add_ArcServer_layer(self):
         layer = self.ArcServer_Layers[2][self.ArcServer_selected_item]
-        #layer = self.ArcServer_selected_item
-        
-        
-        uri = "crs='EPSG:2100' filter='' " + "url='http://{}/arcgis/rest/services/{}/MapServer/{}' ".format(self.ArcServer_ServersDomains[self.ArcServer_currentServer],layer.split('/')[0]+'/'+layer.split('/')[1], layer.split('/')[2]) + " table='' sql='' "
-        new_layer = QgsVectorLayer(uri, str(self.ArcServer_selected_item), "arcgisfeatureserver")
+        # layer = self.ArcServer_selected_item
+
+        uri = (
+            "crs='EPSG:2100' filter='' "
+            + "url='http://{}/rest/services/{}/MapServer/{}' ".format(
+                self.ArcServer_ServersDomains[self.ArcServer_currentServer],
+                layer.split("/")[0] + "/" + layer.split("/")[1],
+                layer.split("/")[2],
+            )
+            + " table='' sql='' "
+        )
+        new_layer = QgsVectorLayer(
+            uri, str(self.ArcServer_selected_item), "arcgisfeatureserver"
+        )
         if not new_layer.isValid():
             print("Layer failed to load!")
         else:
@@ -687,7 +730,6 @@ class grData:
     def ArcServer_service_changed(self, currentText):
         self.ArcServer_Layers.clear()
         self.ArcServer_currentServer = currentText
-        
 
         self.dockwidget.ArcServer_list_tree.clear()
         self.dockwidget.ArcServer_header_label.setText(currentText)

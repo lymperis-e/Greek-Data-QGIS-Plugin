@@ -1,0 +1,1897 @@
+{
+  "ΓΓΒ": {
+    "FME": {
+      "name": "FME",
+      "type": "MapServer",
+      "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/FME/MapServer",
+      "layers": {
+        "0": {
+          "id": 0,
+          "name": "1ο Επίπεδο Πολεοδομικού Σχεδιασμού",
+          "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/FME/0"
+        },
+        "1": {
+          "id": 1,
+          "name": "GPS_SXOOAP_ZOE",
+          "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/FME/1"
+        },
+        "2": {
+          "id": 2,
+          "name": "GPS_PNT_XRHSH",
+          "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/FME/2"
+        },
+        "3": {
+          "id": 3,
+          "name": "GPS_POLY_XRHSH",
+          "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/FME/3"
+        },
+        "4": {
+          "id": 4,
+          "name": "GPS_EPITREP_XRHSEIS",
+          "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/FME/4"
+        },
+        "5": {
+          "id": 5,
+          "name": "GPS_YPOD_POINT",
+          "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/FME/5"
+        },
+        "6": {
+          "id": 6,
+          "name": "GPS_YPOD_LINE",
+          "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/FME/6"
+        },
+        "7": {
+          "id": 7,
+          "name": "GPS_YPOD_POLY",
+          "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/FME/7"
+        },
+        "8": {
+          "id": 8,
+          "name": "GPS_ORIA_POL",
+          "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/FME/8"
+        },
+        "9": {
+          "id": 9,
+          "name": "GPS_ZONES_KINHTR",
+          "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/FME/9"
+        },
+        "10": {
+          "id": 10,
+          "name": "GPS_ZONE_PROT",
+          "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/FME/10"
+        },
+        "11": {
+          "id": 11,
+          "name": "2ο Επίπεδο Πολεοδομικού Σχεδιασμού",
+          "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/FME/11"
+        },
+        "12": {
+          "id": 12,
+          "name": "ΡΥΜΟΤΟΜΙΚΟ ΣΧΕΔΙΟ",
+          "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/FME/12"
+        },
+        "13": {
+          "id": 13,
+          "name": "POL_ENOT",
+          "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/FME/13"
+        },
+        "14": {
+          "id": 14,
+          "name": "OT_PL",
+          "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/FME/14"
+        },
+        "15": {
+          "id": 15,
+          "name": "PL_LN",
+          "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/FME/15"
+        },
+        "16": {
+          "id": 16,
+          "name": "KOINOX_KOINOF",
+          "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/FME/16"
+        },
+        "17": {
+          "id": 17,
+          "name": "PEZODROMOS",
+          "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/FME/17"
+        },
+        "18": {
+          "id": 18,
+          "name": "STOA",
+          "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/FME/18"
+        },
+        "19": {
+          "id": 19,
+          "name": "ΜΕΛΕΤΕΣ",
+          "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/FME/19"
+        },
+        "20": {
+          "id": 20,
+          "name": "POLEOD_POL",
+          "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/FME/20"
+        },
+        "21": {
+          "id": 21,
+          "name": "LOIPES_ZONES_RYM",
+          "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/FME/21"
+        },
+        "22": {
+          "id": 22,
+          "name": "EIDIKES_THESEIS",
+          "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/FME/22"
+        },
+        "23": {
+          "id": 23,
+          "name": "EKTOS_SXD",
+          "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/FME/23"
+        },
+        "24": {
+          "id": 24,
+          "name": "KORYFES_OT",
+          "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/FME/24"
+        },
+        "25": {
+          "id": 25,
+          "name": "DIATHRHTEA",
+          "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/FME/25"
+        },
+        "26": {
+          "id": 26,
+          "name": "AIGIAL_PARALIA_LINE",
+          "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/FME/26"
+        },
+        "27": {
+          "id": 27,
+          "name": "AIGIAL_PARALIA_ΖΟΝΕ",
+          "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/FME/27"
+        },
+        "28": {
+          "id": 28,
+          "name": "REMATA_LINE",
+          "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/FME/28"
+        },
+        "29": {
+          "id": 29,
+          "name": "REMATA_AREA",
+          "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/FME/29"
+        },
+        "30": {
+          "id": 30,
+          "name": "TRANSP_LINE",
+          "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/FME/30"
+        },
+        "31": {
+          "id": 31,
+          "name": "TRANSP_POLYGON",
+          "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/FME/31"
+        },
+        "32": {
+          "id": 32,
+          "name": "DASIKES_EKTASEIS",
+          "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/FME/32"
+        },
+        "33": {
+          "id": 33,
+          "name": "ΟΙΚΙΣΜΟΙ",
+          "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/FME/33"
+        },
+        "34": {
+          "id": 34,
+          "name": "OIKISMOS_PNT",
+          "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/FME/34"
+        },
+        "35": {
+          "id": 35,
+          "name": "OIKISMOS_PL",
+          "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/FME/35"
+        },
+        "36": {
+          "id": 36,
+          "name": "ΧΡΗΣΕΙΣ",
+          "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/FME/36"
+        },
+        "37": {
+          "id": 37,
+          "name": "GEN_XRHS",
+          "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/FME/37"
+        },
+        "38": {
+          "id": 38,
+          "name": "EID_XRHS",
+          "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/FME/38"
+        },
+        "39": {
+          "id": 39,
+          "name": "ZONES_KINHTR",
+          "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/FME/39"
+        },
+        "40": {
+          "id": 40,
+          "name": "ZONE_APALOTRIOSHS",
+          "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/FME/40"
+        },
+        "41": {
+          "id": 41,
+          "name": "ZONE ARCHAEOLOGY",
+          "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/FME/41"
+        },
+        "42": {
+          "id": 42,
+          "name": "ΟΡΟΙ ΔΟΜΗΣΗΣ",
+          "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/FME/42"
+        },
+        "43": {
+          "id": 43,
+          "name": "TOMEAS_SD",
+          "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/FME/43"
+        },
+        "44": {
+          "id": 44,
+          "name": "OROIDOM_ARTIOTHTA_POL",
+          "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/FME/44"
+        },
+        "45": {
+          "id": 45,
+          "name": "OROIDOM_ARTIOTHTA_PNT",
+          "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/FME/45"
+        },
+        "46": {
+          "id": 46,
+          "name": "OROIDOM_KALYPSI_POL",
+          "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/FME/46"
+        },
+        "47": {
+          "id": 47,
+          "name": "OROIDOM_KALYPSI_PNT",
+          "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/FME/47"
+        },
+        "48": {
+          "id": 48,
+          "name": "OROIDOM_OIK_SYSTHMA_POL",
+          "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/FME/48"
+        },
+        "49": {
+          "id": 49,
+          "name": "OROIDOM_OIK_SYSTHMA_PNT",
+          "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/FME/49"
+        },
+        "50": {
+          "id": 50,
+          "name": "OROIDOM_OROFOI_POL",
+          "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/FME/50"
+        },
+        "51": {
+          "id": 51,
+          "name": "OROIDOM_OROFOI_PNT",
+          "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/FME/51"
+        },
+        "52": {
+          "id": 52,
+          "name": "OROIDOM_PROKHPIO_POL",
+          "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/FME/52"
+        },
+        "53": {
+          "id": 53,
+          "name": "OROIDOM_PROKHPIO_PNT",
+          "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/FME/53"
+        },
+        "54": {
+          "id": 54,
+          "name": "OROIDOM_STEGH_POL",
+          "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/FME/54"
+        },
+        "55": {
+          "id": 55,
+          "name": "OROIDOM_STEGH_PNT",
+          "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/FME/55"
+        }
+      }
+    },
+    "SampleWorldCities": {
+      "name": "SampleWorldCities",
+      "type": "MapServer",
+      "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/SampleWorldCities/MapServer",
+      "layers": {
+        "0": {
+          "id": 0,
+          "name": "Cities",
+          "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/SampleWorldCities/0"
+        },
+        "1": {
+          "id": 1,
+          "name": "Continent",
+          "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/SampleWorldCities/1"
+        },
+        "2": {
+          "id": 2,
+          "name": "World",
+          "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/SampleWorldCities/2"
+        }
+      }
+    },
+    "Thematic_Map2": {
+      "name": "Thematic_Map2",
+      "type": "MapServer",
+      "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Thematic_Map2/MapServer",
+      "layers": {}
+    },
+    "Basemap": {
+      "EmptyBasemap": {
+        "name": "EmptyBasemap",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Basemap/EmptyBasemap/MapServer",
+        "layers": {
+          "0": {
+            "id": 0,
+            "name": "Κενό",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Basemap/EmptyBasemap/0"
+          }
+        }
+      }
+    },
+    "Diargams": {
+      "Diagrams": {
+        "name": "Diagrams",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Diargams/Diagrams/MapServer",
+        "layers": {
+          "0": {
+            "id": 0,
+            "name": "Διαγράμματα",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Diargams/Diagrams/0"
+          }
+        }
+      }
+    },
+    "Dioikitiki_Diairesi": {
+      "DioikitikiDiairesi": {
+        "name": "DioikitikiDiairesi",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Dioikitiki_Diairesi/DioikitikiDiairesi/MapServer",
+        "layers": {
+          "0": {
+            "id": 0,
+            "name": "Αποκεντρωμένες Διοικήσεις",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Dioikitiki_Diairesi/DioikitikiDiairesi/0"
+          },
+          "1": {
+            "id": 1,
+            "name": "Περιφέρειες",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Dioikitiki_Diairesi/DioikitikiDiairesi/1"
+          },
+          "2": {
+            "id": 2,
+            "name": "Περιφερειακές Ενότητες",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Dioikitiki_Diairesi/DioikitikiDiairesi/2"
+          },
+          "3": {
+            "id": 3,
+            "name": "Καλλικρατικοί Δήμοι",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Dioikitiki_Diairesi/DioikitikiDiairesi/3"
+          },
+          "4": {
+            "id": 4,
+            "name": "Καλλικρατικές Δημοτικές Ενότητες",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Dioikitiki_Diairesi/DioikitikiDiairesi/4"
+          },
+          "5": {
+            "id": 5,
+            "name": "Οικισμοί",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Dioikitiki_Diairesi/DioikitikiDiairesi/5"
+          }
+        }
+      }
+    },
+    "GPS_SXOOAP_Xorika_Sxedia": {
+      "EidikesXriseisGPS": {
+        "name": "EidikesXriseisGPS",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/GPS_SXOOAP_Xorika_Sxedia/EidikesXriseisGPS/MapServer",
+        "layers": {
+          "0": {
+            "id": 0,
+            "name": "Σημειακές Χρήσεις ΓΠΣ",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/GPS_SXOOAP_Xorika_Sxedia/EidikesXriseisGPS/0"
+          }
+        }
+      },
+      "EkgatastaseisYpodomon": {
+        "name": "EkgatastaseisYpodomon",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/GPS_SXOOAP_Xorika_Sxedia/EkgatastaseisYpodomon/MapServer",
+        "layers": {
+          "0": {
+            "id": 0,
+            "name": "Εγκαταστάσεις Υποδομών",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/GPS_SXOOAP_Xorika_Sxedia/EkgatastaseisYpodomon/0"
+          }
+        }
+      },
+      "OriaPoleodomikonPerioxon": {
+        "name": "OriaPoleodomikonPerioxon",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/GPS_SXOOAP_Xorika_Sxedia/OriaPoleodomikonPerioxon/MapServer",
+        "layers": {
+          "0": {
+            "id": 0,
+            "name": "Όρια Πολεοδομικών Περιοχών",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/GPS_SXOOAP_Xorika_Sxedia/OriaPoleodomikonPerioxon/0"
+          }
+        }
+      },
+      "PoligonaXriseonGPS_Individual": {
+        "name": "PoligonaXriseonGPS_Individual",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/GPS_SXOOAP_Xorika_Sxedia/PoligonaXriseonGPS_Individual/MapServer",
+        "layers": {
+          "0": {
+            "id": 0,
+            "name": "ΑΘΛΗΤΙΣΜΟΣ",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/GPS_SXOOAP_Xorika_Sxedia/PoligonaXriseonGPS_Individual/0"
+          },
+          "1": {
+            "id": 1,
+            "name": "ΒΙΟΠΑ ΠΡΟΣ ΕΞΥΓΙΑΝΣΗ",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/GPS_SXOOAP_Xorika_Sxedia/PoligonaXriseonGPS_Individual/1"
+          },
+          "2": {
+            "id": 2,
+            "name": "ΓΕΩΡΓΙΚΗ ΓΗ",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/GPS_SXOOAP_Xorika_Sxedia/PoligonaXriseonGPS_Individual/2"
+          },
+          "3": {
+            "id": 3,
+            "name": "ΕΓΚΑΤΑΣΤΑΣΕΙΣ ΜΑΖΙΚΩΝ ΜΕΤΑΦΟΡΩΝ",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/GPS_SXOOAP_Xorika_Sxedia/PoligonaXriseonGPS_Individual/3"
+          },
+          "4": {
+            "id": 4,
+            "name": "ΕΚΠΑΙΔΕΥΣΗ",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/GPS_SXOOAP_Xorika_Sxedia/PoligonaXriseonGPS_Individual/4"
+          },
+          "5": {
+            "id": 5,
+            "name": "ΕΞΟΡΥΞΗ",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/GPS_SXOOAP_Xorika_Sxedia/PoligonaXriseonGPS_Individual/5"
+          },
+          "6": {
+            "id": 6,
+            "name": "ΖΩΝΕΣ ΛΙΑΝΙΚΟΥ ΕΜΠΟΡΙΟΥ",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/GPS_SXOOAP_Xorika_Sxedia/PoligonaXriseonGPS_Individual/6"
+          },
+          "7": {
+            "id": 7,
+            "name": "ΙΔΙΑΙΤΕΡΕΣ ΧΡΗΣΕΙΣ",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/GPS_SXOOAP_Xorika_Sxedia/PoligonaXriseonGPS_Individual/7"
+          },
+          "8": {
+            "id": 8,
+            "name": "ΜΕΙΚΤΗ Ή ΑΛΛΗ ΧΡΗΣΗ",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/GPS_SXOOAP_Xorika_Sxedia/PoligonaXriseonGPS_Individual/8"
+          },
+          "9": {
+            "id": 9,
+            "name": "ΠΕΡΙΑΣΤΙΚΟ ΠΡΑΣΙΝΟ",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/GPS_SXOOAP_Xorika_Sxedia/PoligonaXriseonGPS_Individual/9"
+          },
+          "10": {
+            "id": 10,
+            "name": "ΠΕΡΙΘΑΛΨΗ",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/GPS_SXOOAP_Xorika_Sxedia/PoligonaXriseonGPS_Individual/10"
+          },
+          "11": {
+            "id": 11,
+            "name": "ΠΕΡΙΟΧΕΣ ΕΛΕΥΘΕΡΩΝ ΧΩΡΩΝ – ΑΣΤΙΚΟΥ ΠΡΑΣΙΝΟΥ",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/GPS_SXOOAP_Xorika_Sxedia/PoligonaXriseonGPS_Individual/11"
+          },
+          "12": {
+            "id": 12,
+            "name": "ΠΕΡΙΟΧΕΣ ΚΟΙΝΩΝΙΚΩΝ ΕΞΥΠΗΡΕΤΗΣΕΩΝ",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/GPS_SXOOAP_Xorika_Sxedia/PoligonaXriseonGPS_Individual/12"
+          },
+          "13": {
+            "id": 13,
+            "name": "ΠΕΡΙΟΧΕΣ ΟΧΛΟΥΣΑΣ ΒΙΟΜΗΧΑΝΙΑΣ – ΒΙΟΤΕΧΝΙΑΣ",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/GPS_SXOOAP_Xorika_Sxedia/PoligonaXriseonGPS_Individual/13"
+          },
+          "14": {
+            "id": 14,
+            "name": "ΠΕΡΙΟΧΕΣ ΤΟΥΡΙΣΜΟΥ-ΑΝΑΨΥΧΗΣ",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/GPS_SXOOAP_Xorika_Sxedia/PoligonaXriseonGPS_Individual/14"
+          },
+          "15": {
+            "id": 15,
+            "name": "ΠΕΡΙΟΧΕΣ ΧΟΝΔΡΕΜΠΟΡΙΟΥ",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/GPS_SXOOAP_Xorika_Sxedia/PoligonaXriseonGPS_Individual/15"
+          },
+          "16": {
+            "id": 16,
+            "name": "ΠΕΡΙΟΧΗ ΑΜΙΓΟΥΣ ΚΑΤΟΙΚΙΑΣ",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/GPS_SXOOAP_Xorika_Sxedia/PoligonaXriseonGPS_Individual/16"
+          },
+          "17": {
+            "id": 17,
+            "name": "ΠΕΡΙΟΧΗ ΑΜΙΓΟΥΣ ΠΑΡΑΘΕΡΙΣΤΙΚΗΣ ΚΑΤΟΙΚΙΑΣ",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/GPS_SXOOAP_Xorika_Sxedia/PoligonaXriseonGPS_Individual/17"
+          },
+          "18": {
+            "id": 18,
+            "name": "ΠΕΡΙΟΧΗ ΒΙΟΤΕΧΝΙΑΣ - ΒΙΟΜΗΧΑΝΙΚΟΥ ΚΑΙ ΒΙΟΤΕΧΝΙΚΟΥ ΠΑΡΚΟΥ ΜΗ ΙΔΙΑΙΤΕΡΩΣ ΟΧΛΟΥΣΑ",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/GPS_SXOOAP_Xorika_Sxedia/PoligonaXriseonGPS_Individual/18"
+          },
+          "19": {
+            "id": 19,
+            "name": "ΠΕΡΙΟΧΗ ΓΕΝΙΚΗΣ ΚΑΤΟΙΚΙΑΣ",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/GPS_SXOOAP_Xorika_Sxedia/PoligonaXriseonGPS_Individual/19"
+          },
+          "20": {
+            "id": 20,
+            "name": "ΠΕΡΙΟΧΗ ΓΕΝΙΚΗΣ ΠΑΡΑΘΕΡΙΣΤΙΚΗΣ ΚΑΤΟΙΚΙΑΣ",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/GPS_SXOOAP_Xorika_Sxedia/PoligonaXriseonGPS_Individual/20"
+          },
+          "21": {
+            "id": 21,
+            "name": "ΠΕΡΙΟΧΗ ΜΗ ΟΧΛΟΥΣΑΣ ΒΙΟΜΗΧΑΝΙΑΣ",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/GPS_SXOOAP_Xorika_Sxedia/PoligonaXriseonGPS_Individual/21"
+          },
+          "22": {
+            "id": 22,
+            "name": "ΠΕΡΙΟΧΗ ΠΟΛΕΟΔΟΜΙΚΟΥ ΚΕΝΤΡΟΥ – ΚΕΝΤΡΙΚΩΝ ΛΕΙΤΟΥΡΓΙΩΝ ΠΟΛΗΣ ",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/GPS_SXOOAP_Xorika_Sxedia/PoligonaXriseonGPS_Individual/22"
+          },
+          "23": {
+            "id": 23,
+            "name": "ΠΕΡΙΟΧΗ ΤΟΠΙΚΟΥ ΚΕΝΤΡΟΥ ΣΥΝΟΙΚΙΑΣ - ΓΕΙΤΟΝΙΑΣ",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/GPS_SXOOAP_Xorika_Sxedia/PoligonaXriseonGPS_Individual/23"
+          },
+          "24": {
+            "id": 24,
+            "name": "ΠΟΛΙΤΙΣΤΙΚΕΣ ΛΕΙΤΟΥΡΓΙΕΣ",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/GPS_SXOOAP_Xorika_Sxedia/PoligonaXriseonGPS_Individual/24"
+          },
+          "25": {
+            "id": 25,
+            "name": "ΠΡΟΝΟΙΑ",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/GPS_SXOOAP_Xorika_Sxedia/PoligonaXriseonGPS_Individual/25"
+          }
+        }
+      },
+      "PoligonaXriseonGPS": {
+        "name": "PoligonaXriseonGPS",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/GPS_SXOOAP_Xorika_Sxedia/PoligonaXriseonGPS/MapServer",
+        "layers": {
+          "0": {
+            "id": 0,
+            "name": "Πολύγωνα Χρήσεων ΓΠΣ",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/GPS_SXOOAP_Xorika_Sxedia/PoligonaXriseonGPS/0"
+          }
+        }
+      },
+      "SxooapGpsZoeTxs": {
+        "name": "SxooapGpsZoeTxs",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/GPS_SXOOAP_Xorika_Sxedia/SxooapGpsZoeTxs/MapServer",
+        "layers": {
+          "0": {
+            "id": 0,
+            "name": "ΣΧΟΟΑΠ - ΓΠΣ - ΖΟΕ - ΤΧΣ",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/GPS_SXOOAP_Xorika_Sxedia/SxooapGpsZoeTxs/0"
+          }
+        }
+      },
+      "XoroiYpodomonGrammiko": {
+        "name": "XoroiYpodomonGrammiko",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/GPS_SXOOAP_Xorika_Sxedia/XoroiYpodomonGrammiko/MapServer",
+        "layers": {
+          "0": {
+            "id": 0,
+            "name": "Χώροι Υποδομών (Γραμμικό)",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/GPS_SXOOAP_Xorika_Sxedia/XoroiYpodomonGrammiko/0"
+          }
+        }
+      },
+      "XoroiYpodomon": {
+        "name": "XoroiYpodomon",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/GPS_SXOOAP_Xorika_Sxedia/XoroiYpodomon/MapServer",
+        "layers": {
+          "0": {
+            "id": 0,
+            "name": "Χώροι Υποδομών",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/GPS_SXOOAP_Xorika_Sxedia/XoroiYpodomon/0"
+          }
+        }
+      },
+      "ZonesKinitronKaiPoleodomikonNixanismonGPS": {
+        "name": "ZonesKinitronKaiPoleodomikonNixanismonGPS",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/GPS_SXOOAP_Xorika_Sxedia/ZonesKinitronKaiPoleodomikonNixanismonGPS/MapServer",
+        "layers": {
+          "0": {
+            "id": 0,
+            "name": "Ζώνες Κινήτρων και Πολεοδομικών Μηχανισμών ΓΠΣ",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/GPS_SXOOAP_Xorika_Sxedia/ZonesKinitronKaiPoleodomikonNixanismonGPS/0"
+          }
+        }
+      },
+      "ZonesPeriorismonKaiProstasias": {
+        "name": "ZonesPeriorismonKaiProstasias",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/GPS_SXOOAP_Xorika_Sxedia/ZonesPeriorismonKaiProstasias/MapServer",
+        "layers": {
+          "0": {
+            "id": 0,
+            "name": "Ζώνες Περιορισμών Και Προστασίας",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/GPS_SXOOAP_Xorika_Sxedia/ZonesPeriorismonKaiProstasias/0"
+          }
+        }
+      }
+    },
+    "INSPIRE_DATA": {
+      "INSPIRE_DATA_ALL": {
+        "name": "INSPIRE_DATA_ALL",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/INSPIRE_DATA/INSPIRE_DATA_ALL/MapServer",
+        "layers": {
+          "0": {
+            "id": 0,
+            "name": "INSPIRE_DATA_YPODOMES_POINT",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/INSPIRE_DATA/INSPIRE_DATA_ALL/0"
+          },
+          "1": {
+            "id": 1,
+            "name": "INSPIRE_DATA_DIATHRHTEA",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/INSPIRE_DATA/INSPIRE_DATA_ALL/1"
+          },
+          "2": {
+            "id": 2,
+            "name": "INSPIRE_DATA_APOF_OIK_PNT",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/INSPIRE_DATA/INSPIRE_DATA_ALL/2"
+          },
+          "3": {
+            "id": 3,
+            "name": "INSPIRE_DATA_YPODOMES_LINE",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/INSPIRE_DATA/INSPIRE_DATA_ALL/3"
+          },
+          "4": {
+            "id": 4,
+            "name": "INSPIRE_DATA_TRANSP_LINE",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/INSPIRE_DATA/INSPIRE_DATA_ALL/4"
+          },
+          "5": {
+            "id": 5,
+            "name": "INSPIRE_DATA_POL_LN",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/INSPIRE_DATA/INSPIRE_DATA_ALL/5"
+          },
+          "6": {
+            "id": 6,
+            "name": "INSPIRE_DATA_GPS_GEN_XRHSEIS",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/INSPIRE_DATA/INSPIRE_DATA_ALL/6"
+          },
+          "7": {
+            "id": 7,
+            "name": "INSPIRE_DATA_GEN_XRHSEIS",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/INSPIRE_DATA/INSPIRE_DATA_ALL/7"
+          },
+          "8": {
+            "id": 8,
+            "name": "INSPIRE_DATA_ZONES_PROST",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/INSPIRE_DATA/INSPIRE_DATA_ALL/8"
+          },
+          "9": {
+            "id": 9,
+            "name": "INSPIRE_DATA_ZONES_KINHTR",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/INSPIRE_DATA/INSPIRE_DATA_ALL/9"
+          },
+          "10": {
+            "id": 10,
+            "name": "INSPIRE_DATA_YPODOMES_POL",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/INSPIRE_DATA/INSPIRE_DATA_ALL/10"
+          },
+          "11": {
+            "id": 11,
+            "name": "INSPIRE_DATA_XRHSEIS_OIKISMOU",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/INSPIRE_DATA/INSPIRE_DATA_ALL/11"
+          },
+          "12": {
+            "id": 12,
+            "name": "INSPIRE_DATA_TRANSP_POLYGON",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/INSPIRE_DATA/INSPIRE_DATA_ALL/12"
+          },
+          "13": {
+            "id": 13,
+            "name": "INSPIRE_DATA_STOA",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/INSPIRE_DATA/INSPIRE_DATA_ALL/13"
+          },
+          "14": {
+            "id": 14,
+            "name": "INSPIRE_DATA_PRASIA",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/INSPIRE_DATA/INSPIRE_DATA_ALL/14"
+          },
+          "15": {
+            "id": 15,
+            "name": "INSPIRE_DATA_POLYDOM_SYSTHMA",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/INSPIRE_DATA/INSPIRE_DATA_ALL/15"
+          },
+          "16": {
+            "id": 16,
+            "name": "INSPIRE_DATA_POLYDOM_STEGH",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/INSPIRE_DATA/INSPIRE_DATA_ALL/16"
+          },
+          "17": {
+            "id": 17,
+            "name": "INSPIRE_DATA_POLYDOM_PROKHPIO",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/INSPIRE_DATA/INSPIRE_DATA_ALL/17"
+          },
+          "18": {
+            "id": 18,
+            "name": "INSPIRE_DATA_POLYDOM_OROFOI",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/INSPIRE_DATA/INSPIRE_DATA_ALL/18"
+          },
+          "19": {
+            "id": 19,
+            "name": "INSPIRE_DATA_POLYDOM_KALYPSI",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/INSPIRE_DATA/INSPIRE_DATA_ALL/19"
+          },
+          "20": {
+            "id": 20,
+            "name": "INSPIRE_DATA_POLYDOM_ARTIOTHTA",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/INSPIRE_DATA/INSPIRE_DATA_ALL/20"
+          },
+          "21": {
+            "id": 21,
+            "name": "INSPIRE_DATA_POL_ENOT",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/INSPIRE_DATA/INSPIRE_DATA_ALL/21"
+          },
+          "22": {
+            "id": 22,
+            "name": "INSPIRE_DATA_PEZODROMOS",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/INSPIRE_DATA/INSPIRE_DATA_ALL/22"
+          },
+          "23": {
+            "id": 23,
+            "name": "INSPIRE_DATA_OT_PL",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/INSPIRE_DATA/INSPIRE_DATA_ALL/23"
+          },
+          "24": {
+            "id": 24,
+            "name": "INSPIRE_DATA_LOIPES_ZONES_RYM",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/INSPIRE_DATA/INSPIRE_DATA_ALL/24"
+          },
+          "25": {
+            "id": 25,
+            "name": "INSPIRE_DATA_KOINOX_KOINOF",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/INSPIRE_DATA/INSPIRE_DATA_ALL/25"
+          },
+          "26": {
+            "id": 26,
+            "name": "INSPIRE_DATA_GPS_ZONES_KINHTR",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/INSPIRE_DATA/INSPIRE_DATA_ALL/26"
+          },
+          "27": {
+            "id": 27,
+            "name": "INSPIRE_DATA_GPS_SXOOAP_ZOE",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/INSPIRE_DATA/INSPIRE_DATA_ALL/27"
+          },
+          "28": {
+            "id": 28,
+            "name": "INSPIRE_DATA_GPS_ORIA_POL",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/INSPIRE_DATA/INSPIRE_DATA_ALL/28"
+          },
+          "29": {
+            "id": 29,
+            "name": "INSPIRE_DATA_APOF_OIK_POL",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/INSPIRE_DATA/INSPIRE_DATA_ALL/29"
+          },
+          "30": {
+            "id": 30,
+            "name": "INSPIRE_DATA_TOMEAS_SYNT_DOMHSHS",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/INSPIRE_DATA/INSPIRE_DATA_ALL/30"
+          }
+        }
+      },
+      "INSPIRE_DATA_DIATHRHTEA": {
+        "name": "INSPIRE_DATA_DIATHRHTEA",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/INSPIRE_DATA/INSPIRE_DATA_DIATHRHTEA/MapServer",
+        "layers": {}
+      },
+      "INSPIRE_DATA_GPS_ORIA_POL": {
+        "name": "INSPIRE_DATA_GPS_ORIA_POL",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/INSPIRE_DATA/INSPIRE_DATA_GPS_ORIA_POL/MapServer",
+        "layers": {}
+      },
+      "INSPIRE_DATA_GPS_SXOOAP_ZOE": {
+        "name": "INSPIRE_DATA_GPS_SXOOAP_ZOE",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/INSPIRE_DATA/INSPIRE_DATA_GPS_SXOOAP_ZOE/MapServer",
+        "layers": {}
+      },
+      "INSPIRE_DATA_GPS_ZONES_KINHTR": {
+        "name": "INSPIRE_DATA_GPS_ZONES_KINHTR",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/INSPIRE_DATA/INSPIRE_DATA_GPS_ZONES_KINHTR/MapServer",
+        "layers": {}
+      },
+      "INSPIRE_DATA_KOINOX_KOINOF": {
+        "name": "INSPIRE_DATA_KOINOX_KOINOF",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/INSPIRE_DATA/INSPIRE_DATA_KOINOX_KOINOF/MapServer",
+        "layers": {}
+      },
+      "INSPIRE_DATA_LOIPES_ZONES_RYM": {
+        "name": "INSPIRE_DATA_LOIPES_ZONES_RYM",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/INSPIRE_DATA/INSPIRE_DATA_LOIPES_ZONES_RYM/MapServer",
+        "layers": {}
+      },
+      "INSPIRE_DATA_OT_PL": {
+        "name": "INSPIRE_DATA_OT_PL",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/INSPIRE_DATA/INSPIRE_DATA_OT_PL/MapServer",
+        "layers": {}
+      },
+      "INSPIRE_DATA_PEZODROMOS": {
+        "name": "INSPIRE_DATA_PEZODROMOS",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/INSPIRE_DATA/INSPIRE_DATA_PEZODROMOS/MapServer",
+        "layers": {}
+      },
+      "INSPIRE_DATA_POL_ENOT": {
+        "name": "INSPIRE_DATA_POL_ENOT",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/INSPIRE_DATA/INSPIRE_DATA_POL_ENOT/MapServer",
+        "layers": {}
+      },
+      "INSPIRE_DATA_POL_LN": {
+        "name": "INSPIRE_DATA_POL_LN",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/INSPIRE_DATA/INSPIRE_DATA_POL_LN/MapServer",
+        "layers": {}
+      },
+      "INSPIRE_DATA_POLYDOM_ARTIOTHTA": {
+        "name": "INSPIRE_DATA_POLYDOM_ARTIOTHTA",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/INSPIRE_DATA/INSPIRE_DATA_POLYDOM_ARTIOTHTA/MapServer",
+        "layers": {}
+      },
+      "INSPIRE_DATA_POLYDOM_KALYPSI": {
+        "name": "INSPIRE_DATA_POLYDOM_KALYPSI",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/INSPIRE_DATA/INSPIRE_DATA_POLYDOM_KALYPSI/MapServer",
+        "layers": {}
+      },
+      "INSPIRE_DATA_POLYDOM_OROFOI": {
+        "name": "INSPIRE_DATA_POLYDOM_OROFOI",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/INSPIRE_DATA/INSPIRE_DATA_POLYDOM_OROFOI/MapServer",
+        "layers": {}
+      },
+      "INSPIRE_DATA_POLYDOM_PROKHPIO": {
+        "name": "INSPIRE_DATA_POLYDOM_PROKHPIO",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/INSPIRE_DATA/INSPIRE_DATA_POLYDOM_PROKHPIO/MapServer",
+        "layers": {}
+      },
+      "INSPIRE_DATA_POLYDOM_STEGH": {
+        "name": "INSPIRE_DATA_POLYDOM_STEGH",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/INSPIRE_DATA/INSPIRE_DATA_POLYDOM_STEGH/MapServer",
+        "layers": {}
+      },
+      "INSPIRE_DATA_POLYDOM_SYSTHMA": {
+        "name": "INSPIRE_DATA_POLYDOM_SYSTHMA",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/INSPIRE_DATA/INSPIRE_DATA_POLYDOM_SYSTHMA/MapServer",
+        "layers": {}
+      },
+      "INSPIRE_DATA_PRASIA": {
+        "name": "INSPIRE_DATA_PRASIA",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/INSPIRE_DATA/INSPIRE_DATA_PRASIA/MapServer",
+        "layers": {}
+      },
+      "INSPIRE_DATA_SERVICE": {
+        "name": "INSPIRE_DATA_SERVICE",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/INSPIRE_DATA/INSPIRE_DATA_SERVICE/MapServer",
+        "layers": {}
+      },
+      "INSPIRE_DATA_STOA": {
+        "name": "INSPIRE_DATA_STOA",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/INSPIRE_DATA/INSPIRE_DATA_STOA/MapServer",
+        "layers": {}
+      },
+      "INSPIRE_DATA_TOMEAS_SYNT_DOMHSHS": {
+        "name": "INSPIRE_DATA_TOMEAS_SYNT_DOMHSHS",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/INSPIRE_DATA/INSPIRE_DATA_TOMEAS_SYNT_DOMHSHS/MapServer",
+        "layers": {}
+      },
+      "INSPIRE_DATA_TRANSP_LINE": {
+        "name": "INSPIRE_DATA_TRANSP_LINE",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/INSPIRE_DATA/INSPIRE_DATA_TRANSP_LINE/MapServer",
+        "layers": {}
+      },
+      "INSPIRE_DATA_TRANSP_POLYGON": {
+        "name": "INSPIRE_DATA_TRANSP_POLYGON",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/INSPIRE_DATA/INSPIRE_DATA_TRANSP_POLYGON/MapServer",
+        "layers": {}
+      },
+      "INSPIRE_DATA_YPODOMES_LINE": {
+        "name": "INSPIRE_DATA_YPODOMES_LINE",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/INSPIRE_DATA/INSPIRE_DATA_YPODOMES_LINE/MapServer",
+        "layers": {}
+      },
+      "INSPIRE_DATA_YPODOMES_POINT": {
+        "name": "INSPIRE_DATA_YPODOMES_POINT",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/INSPIRE_DATA/INSPIRE_DATA_YPODOMES_POINT/MapServer",
+        "layers": {}
+      },
+      "INSPIRE_DATA_YPODOMES_POL": {
+        "name": "INSPIRE_DATA_YPODOMES_POL",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/INSPIRE_DATA/INSPIRE_DATA_YPODOMES_POL/MapServer",
+        "layers": {}
+      },
+      "INSPIRE_DATA_ZONES_KINHTR": {
+        "name": "INSPIRE_DATA_ZONES_KINHTR",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/INSPIRE_DATA/INSPIRE_DATA_ZONES_KINHTR/MapServer",
+        "layers": {}
+      },
+      "INSPIRE_DATA_ZONES_PROST": {
+        "name": "INSPIRE_DATA_ZONES_PROST",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/INSPIRE_DATA/INSPIRE_DATA_ZONES_PROST/MapServer",
+        "layers": {}
+      }
+    },
+    "loipa_sxedia": {
+      "DiagrammataEfarmogis": {
+        "name": "DiagrammataEfarmogis",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/loipa_sxedia/DiagrammataEfarmogis/MapServer",
+        "layers": {
+          "0": {
+            "id": 0,
+            "name": "Διαγράμματα Εφαρμογής",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/loipa_sxedia/DiagrammataEfarmogis/0"
+          }
+        }
+      },
+      "MemonomenesDiorthotikesPrakseisEfarmogis": {
+        "name": "MemonomenesDiorthotikesPrakseisEfarmogis",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/loipa_sxedia/MemonomenesDiorthotikesPrakseisEfarmogis/MapServer",
+        "layers": {
+          "0": {
+            "id": 0,
+            "name": "Μεμονωμένες Διορθωτικές Πράξεις Εφαρμογής",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/loipa_sxedia/MemonomenesDiorthotikesPrakseisEfarmogis/0"
+          }
+        }
+      },
+      "PrakseisAnalogismou": {
+        "name": "PrakseisAnalogismou",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/loipa_sxedia/PrakseisAnalogismou/MapServer",
+        "layers": {
+          "0": {
+            "id": 0,
+            "name": "Πράξεις Αναλογισμού",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/loipa_sxedia/PrakseisAnalogismou/0"
+          }
+        }
+      },
+      "TexnikesEktheseis": {
+        "name": "TexnikesEktheseis",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/loipa_sxedia/TexnikesEktheseis/MapServer",
+        "layers": {
+          "0": {
+            "id": 0,
+            "name": "Τεχνικές Εκθέσεις",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/loipa_sxedia/TexnikesEktheseis/0"
+          }
+        }
+      }
+    },
+    "Oroi_Domisis": {
+      "OroiDomisisEggrafes": {
+        "name": "OroiDomisisEggrafes",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Oroi_Domisis/OroiDomisisEggrafes/MapServer",
+        "layers": {
+          "0": {
+            "id": 0,
+            "name": "Πολύγωνα Όρων Δόμησης Στέγη- Πιλοτή",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Oroi_Domisis/OroiDomisisEggrafes/0"
+          },
+          "1": {
+            "id": 1,
+            "name": "Πολύγωνα Όρων Δόμησης Προκήπια",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Oroi_Domisis/OroiDomisisEggrafes/1"
+          },
+          "2": {
+            "id": 2,
+            "name": "Πολύγωνα Όρων Δόμησης Αριθμός Ορόφων - Ύψος",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Oroi_Domisis/OroiDomisisEggrafes/2"
+          },
+          "3": {
+            "id": 3,
+            "name": "Πολύγωνα Όρων Δόμησης Κάλυψη",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Oroi_Domisis/OroiDomisisEggrafes/3"
+          },
+          "4": {
+            "id": 4,
+            "name": "Πολύγωνα Όρων Δόμησης Αρτιότητα",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Oroi_Domisis/OroiDomisisEggrafes/4"
+          },
+          "5": {
+            "id": 5,
+            "name": "Πολύγωνα Όρων Δόμησης Οικοδομικό Σύστημα",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Oroi_Domisis/OroiDomisisEggrafes/5"
+          }
+        }
+      },
+      "OroiDomisis": {
+        "name": "OroiDomisis",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Oroi_Domisis/OroiDomisis/MapServer",
+        "layers": {
+          "0": {
+            "id": 0,
+            "name": "Πολύγωνα Όρων Δόμησης Στέγη - Πιλοτή",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Oroi_Domisis/OroiDomisis/0"
+          },
+          "1": {
+            "id": 1,
+            "name": "Πολύγωνα Όρων Δόμησης Προκήπια",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Oroi_Domisis/OroiDomisis/1"
+          },
+          "2": {
+            "id": 2,
+            "name": "Πολύγωνα Όρων Δόμησης Οικοδομικό Σύστημα",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Oroi_Domisis/OroiDomisis/2"
+          },
+          "3": {
+            "id": 3,
+            "name": "Πολύγωνα Όρων Δόμησης Αριθμός Ορόφων - Ύψος",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Oroi_Domisis/OroiDomisis/3"
+          },
+          "4": {
+            "id": 4,
+            "name": "Πολύγωνα Όρων Δόμησης Κάλυψη",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Oroi_Domisis/OroiDomisis/4"
+          },
+          "5": {
+            "id": 5,
+            "name": "Πολύγωνα Όρων Δόμησης Αρτιότητα",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Oroi_Domisis/OroiDomisis/5"
+          },
+          "6": {
+            "id": 6,
+            "name": "Τομέας Συντελεστή Δόμησης",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Oroi_Domisis/OroiDomisis/6"
+          }
+        }
+      },
+      "XriseisOikismon": {
+        "name": "XriseisOikismon",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Oroi_Domisis/XriseisOikismon/MapServer",
+        "layers": {
+          "0": {
+            "id": 0,
+            "name": "Χρήσεις Οικισμών",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Oroi_Domisis/XriseisOikismon/0"
+          },
+          "1": {
+            "id": 1,
+            "name": "Χρήσεις Οικισμών",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Oroi_Domisis/XriseisOikismon/1"
+          }
+        }
+      }
+    },
+    "PrintLayouts": {
+      "ExportWebMap": {
+        "name": "ExportWebMap",
+        "type": "GPServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/PrintLayouts/ExportWebMap/GPServer",
+        "layers": {}
+      },
+      "WGS84WebMercator": {
+        "name": "WGS84WebMercator",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/PrintLayouts/WGS84WebMercator/MapServer",
+        "layers": {
+          "0": {
+            "id": 0,
+            "name": "tmp",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/PrintLayouts/WGS84WebMercator/0"
+          }
+        }
+      }
+    },
+    "Rimotomika_Sxedia_Poleod_Meletes": {
+      "DasikesEktaseis": {
+        "name": "DasikesEktaseis",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Rimotomika_Sxedia_Poleod_Meletes/DasikesEktaseis/MapServer",
+        "layers": {
+          "0": {
+            "id": 0,
+            "name": "Δασικές Εκτάσεις",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Rimotomika_Sxedia_Poleod_Meletes/DasikesEktaseis/0"
+          }
+        }
+      },
+      "DiatiriteaKtismata": {
+        "name": "DiatiriteaKtismata",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Rimotomika_Sxedia_Poleod_Meletes/DiatiriteaKtismata/MapServer",
+        "layers": {
+          "0": {
+            "id": 0,
+            "name": "Διατηρητέα Κτίσματα",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Rimotomika_Sxedia_Poleod_Meletes/DiatiriteaKtismata/0"
+          }
+        }
+      },
+      "EggrafesEidikonXriseon": {
+        "name": "EggrafesEidikonXriseon",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Rimotomika_Sxedia_Poleod_Meletes/EggrafesEidikonXriseon/MapServer",
+        "layers": {
+          "0": {
+            "id": 0,
+            "name": "Εγγραφές Ειδικών Χρήσεων",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Rimotomika_Sxedia_Poleod_Meletes/EggrafesEidikonXriseon/0"
+          }
+        }
+      },
+      "EidikesTheseis": {
+        "name": "EidikesTheseis",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Rimotomika_Sxedia_Poleod_Meletes/EidikesTheseis/MapServer",
+        "layers": {
+          "0": {
+            "id": 0,
+            "name": "Ειδικές Θέσεις",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Rimotomika_Sxedia_Poleod_Meletes/EidikesTheseis/0"
+          }
+        }
+      },
+      "EidikesXriseisOikismon": {
+        "name": "EidikesXriseisOikismon",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Rimotomika_Sxedia_Poleod_Meletes/EidikesXriseisOikismon/MapServer",
+        "layers": {
+          "0": {
+            "id": 0,
+            "name": "Ειδικές Χρήσεις Οικισμών",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Rimotomika_Sxedia_Poleod_Meletes/EidikesXriseisOikismon/0"
+          }
+        }
+      },
+      "GenikesXriseisOikismon": {
+        "name": "GenikesXriseisOikismon",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Rimotomika_Sxedia_Poleod_Meletes/GenikesXriseisOikismon/MapServer",
+        "layers": {
+          "0": {
+            "id": 0,
+            "name": "Γενικές Χρήσεις Οικισμών",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Rimotomika_Sxedia_Poleod_Meletes/GenikesXriseisOikismon/0"
+          }
+        }
+      },
+      "GrammesAigialouKaiParalias": {
+        "name": "GrammesAigialouKaiParalias",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Rimotomika_Sxedia_Poleod_Meletes/GrammesAigialouKaiParalias/MapServer",
+        "layers": {
+          "0": {
+            "id": 0,
+            "name": "Γραμμές Αιγιαλού και Παραλίας",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Rimotomika_Sxedia_Poleod_Meletes/GrammesAigialouKaiParalias/0"
+          }
+        }
+      },
+      "KathorismenoOrioOikismou": {
+        "name": "KathorismenoOrioOikismou",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Rimotomika_Sxedia_Poleod_Meletes/KathorismenoOrioOikismou/MapServer",
+        "layers": {
+          "0": {
+            "id": 0,
+            "name": "Καθορισμένο Όριο Οικισμού",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Rimotomika_Sxedia_Poleod_Meletes/KathorismenoOrioOikismou/0"
+          }
+        }
+      },
+      "KorifesOT": {
+        "name": "KorifesOT",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Rimotomika_Sxedia_Poleod_Meletes/KorifesOT/MapServer",
+        "layers": {
+          "0": {
+            "id": 0,
+            "name": "Κορυφές ΟΤ",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Rimotomika_Sxedia_Poleod_Meletes/KorifesOT/0"
+          }
+        }
+      },
+      "LoipesZonesRimotomikouSxediou": {
+        "name": "LoipesZonesRimotomikouSxediou",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Rimotomika_Sxedia_Poleod_Meletes/LoipesZonesRimotomikouSxediou/MapServer",
+        "layers": {
+          "0": {
+            "id": 0,
+            "name": "Λοιπές Ζώνες Ρυμοτομικού Σχεδίου",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Rimotomika_Sxedia_Poleod_Meletes/LoipesZonesRimotomikouSxediou/0"
+          }
+        }
+      },
+      "OdikoDiktio": {
+        "name": "OdikoDiktio",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Rimotomika_Sxedia_Poleod_Meletes/OdikoDiktio/MapServer",
+        "layers": {}
+      },
+      "OikodomikaTetragona": {
+        "name": "OikodomikaTetragona",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Rimotomika_Sxedia_Poleod_Meletes/OikodomikaTetragona/MapServer",
+        "layers": {
+          "0": {
+            "id": 0,
+            "name": "Οικοδομικά Τετράγωνα",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Rimotomika_Sxedia_Poleod_Meletes/OikodomikaTetragona/0"
+          }
+        }
+      },
+      "OrioGpsSxooapZoe": {
+        "name": "OrioGpsSxooapZoe",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Rimotomika_Sxedia_Poleod_Meletes/OrioGpsSxooapZoe/MapServer",
+        "layers": {
+          "0": {
+            "id": 0,
+            "name": "Όριο ΓΠΣ ΣΧΟΟΑΠ ΖΟΕ",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Rimotomika_Sxedia_Poleod_Meletes/OrioGpsSxooapZoe/0"
+          }
+        }
+      },
+      "OrioPoleodMeletisEgkekrimenoSxedio": {
+        "name": "OrioPoleodMeletisEgkekrimenoSxedio",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Rimotomika_Sxedia_Poleod_Meletes/OrioPoleodMeletisEgkekrimenoSxedio/MapServer",
+        "layers": {
+          "0": {
+            "id": 0,
+            "name": "Όριο Πολεοδ. Μελέτης – Εγκεκριμένο Σχέδιο",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Rimotomika_Sxedia_Poleod_Meletes/OrioPoleodMeletisEgkekrimenoSxedio/0"
+          }
+        }
+      },
+      "OrioRematos": {
+        "name": "OrioRematos",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Rimotomika_Sxedia_Poleod_Meletes/OrioRematos/MapServer",
+        "layers": {
+          "0": {
+            "id": 0,
+            "name": "Όριο Ρέματος",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Rimotomika_Sxedia_Poleod_Meletes/OrioRematos/0"
+          }
+        }
+      },
+      "OriothetimenoRema": {
+        "name": "OriothetimenoRema",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Rimotomika_Sxedia_Poleod_Meletes/OriothetimenoRema/MapServer",
+        "layers": {
+          "0": {
+            "id": 0,
+            "name": "Οριοθετημένο Ρέμα",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Rimotomika_Sxedia_Poleod_Meletes/OriothetimenoRema/0"
+          }
+        }
+      },
+      "PerioxiEktosSxediou": {
+        "name": "PerioxiEktosSxediou",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Rimotomika_Sxedia_Poleod_Meletes/PerioxiEktosSxediou/MapServer",
+        "layers": {
+          "0": {
+            "id": 0,
+            "name": "Περιοχή Εκτός Σχεδίου",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Rimotomika_Sxedia_Poleod_Meletes/PerioxiEktosSxediou/0"
+          }
+        }
+      },
+      "Pezodromos": {
+        "name": "Pezodromos",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Rimotomika_Sxedia_Poleod_Meletes/Pezodromos/MapServer",
+        "layers": {
+          "0": {
+            "id": 0,
+            "name": "Πεζόδρομος",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Rimotomika_Sxedia_Poleod_Meletes/Pezodromos/0"
+          }
+        }
+      },
+      "PoleodomikesEnotitesTomeis": {
+        "name": "PoleodomikesEnotitesTomeis",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Rimotomika_Sxedia_Poleod_Meletes/PoleodomikesEnotitesTomeis/MapServer",
+        "layers": {
+          "0": {
+            "id": 0,
+            "name": "Πολεοδομικές Ενότητες - Τομείς",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Rimotomika_Sxedia_Poleod_Meletes/PoleodomikesEnotitesTomeis/0"
+          }
+        }
+      },
+      "PoleodomikesGrammes": {
+        "name": "PoleodomikesGrammes",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Rimotomika_Sxedia_Poleod_Meletes/PoleodomikesGrammes/MapServer",
+        "layers": {
+          "0": {
+            "id": 0,
+            "name": "Πολεοδομικές Γραμμές",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Rimotomika_Sxedia_Poleod_Meletes/PoleodomikesGrammes/0"
+          }
+        }
+      },
+      "PoligonaOronDomisi": {
+        "name": "PoligonaOronDomisi",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Rimotomika_Sxedia_Poleod_Meletes/PoligonaOronDomisi/MapServer",
+        "layers": {
+          "0": {
+            "id": 0,
+            "name": "Πολύγωνα Όρων Δόμησης Οικοδομικό Σύστημα",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Rimotomika_Sxedia_Poleod_Meletes/PoligonaOronDomisi/0"
+          },
+          "1": {
+            "id": 1,
+            "name": "Πολύγωνα Όρων Δόμησης Αριθμός Ορόφων - Ύψος",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Rimotomika_Sxedia_Poleod_Meletes/PoligonaOronDomisi/1"
+          },
+          "2": {
+            "id": 2,
+            "name": "Πολύγωνα Όρων Δόμησης Κάλυψη",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Rimotomika_Sxedia_Poleod_Meletes/PoligonaOronDomisi/2"
+          },
+          "3": {
+            "id": 3,
+            "name": "Πολύγωνα Όρων Δόμησης Αρτιότητα",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Rimotomika_Sxedia_Poleod_Meletes/PoligonaOronDomisi/3"
+          },
+          "4": {
+            "id": 4,
+            "name": "Πολύγωνα Όρων Δόμησης Στέγη - Πιλοτή",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Rimotomika_Sxedia_Poleod_Meletes/PoligonaOronDomisi/4"
+          },
+          "5": {
+            "id": 5,
+            "name": "Πολύγωνα Όρων Δόμησης Προκήπια",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Rimotomika_Sxedia_Poleod_Meletes/PoligonaOronDomisi/5"
+          }
+        }
+      },
+      "ProkipioPrasia": {
+        "name": "ProkipioPrasia",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Rimotomika_Sxedia_Poleod_Meletes/ProkipioPrasia/MapServer",
+        "layers": {
+          "0": {
+            "id": 0,
+            "name": "Προκήπιο - Πρασιά (επιφανειακό)",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Rimotomika_Sxedia_Poleod_Meletes/ProkipioPrasia/0"
+          }
+        }
+      },
+      "SigkoinoniakoDiktio": {
+        "name": "SigkoinoniakoDiktio",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Rimotomika_Sxedia_Poleod_Meletes/SigkoinoniakoDiktio/MapServer",
+        "layers": {
+          "0": {
+            "id": 0,
+            "name": "Συγκοινωνιακό Δίκτυο",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Rimotomika_Sxedia_Poleod_Meletes/SigkoinoniakoDiktio/0"
+          }
+        }
+      },
+      "SimeioOikismou": {
+        "name": "SimeioOikismou",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Rimotomika_Sxedia_Poleod_Meletes/SimeioOikismou/MapServer",
+        "layers": {
+          "0": {
+            "id": 0,
+            "name": "Σημείο Οικισμού",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Rimotomika_Sxedia_Poleod_Meletes/SimeioOikismou/0"
+          }
+        }
+      },
+      "Stoa": {
+        "name": "Stoa",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Rimotomika_Sxedia_Poleod_Meletes/Stoa/MapServer",
+        "layers": {
+          "0": {
+            "id": 0,
+            "name": "Στοά (επιφανειακό)",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Rimotomika_Sxedia_Poleod_Meletes/Stoa/0"
+          }
+        }
+      },
+      "TomeisSintelestonDomisi": {
+        "name": "TomeisSintelestonDomisi",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Rimotomika_Sxedia_Poleod_Meletes/TomeisSintelestonDomisi/MapServer",
+        "layers": {
+          "0": {
+            "id": 0,
+            "name": "Τομέας Συντελεστή Δόμησης",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Rimotomika_Sxedia_Poleod_Meletes/TomeisSintelestonDomisi/0"
+          }
+        }
+      },
+      "XoroiKoinoxristonKoinofelonLeitourgion": {
+        "name": "XoroiKoinoxristonKoinofelonLeitourgion",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Rimotomika_Sxedia_Poleod_Meletes/XoroiKoinoxristonKoinofelonLeitourgion/MapServer",
+        "layers": {
+          "0": {
+            "id": 0,
+            "name": "Χώροι Κοινόχρηστων – Κοινωφελών λειτουργιών",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Rimotomika_Sxedia_Poleod_Meletes/XoroiKoinoxristonKoinofelonLeitourgion/0"
+          }
+        }
+      },
+      "XriseisGis_Individual": {
+        "name": "XriseisGis_Individual",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Rimotomika_Sxedia_Poleod_Meletes/XriseisGis_Individual/MapServer",
+        "layers": {
+          "0": {
+            "id": 0,
+            "name": "ΠΕΡΙΟΧΗ ΑΜΙΓΟΥΣ ΚΑΤΟΙΚΙΑΣ",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Rimotomika_Sxedia_Poleod_Meletes/XriseisGis_Individual/0"
+          },
+          "1": {
+            "id": 1,
+            "name": "ΠΕΡΙΟΧΗ ΓΕΝΙΚΗΣ ΚΑΤΟΙΚΙΑΣ",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Rimotomika_Sxedia_Poleod_Meletes/XriseisGis_Individual/1"
+          },
+          "2": {
+            "id": 2,
+            "name": "ΠΕΡΙΟΧΗ ΠΟΛΕΟΔΟΜΙΚΟΥ ΚΕΝΤΡΟΥ - ΚΕΝΤΡΙΚΩΝ ΛΕΙΤΟΥΡΓΙΩΝ ΠΟΛΗΣ - ΤΟΠΙΚΟΥ ΚΕΝΤΡΟΥ ΣΥΝΟΙΚΙΑΣ - ΓΕΙΤΟΝΙΑΣ",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Rimotomika_Sxedia_Poleod_Meletes/XriseisGis_Individual/2"
+          },
+          "3": {
+            "id": 3,
+            "name": "ΠΕΡΙΟΧΗ ΜΗ ΟΧΛΟΥΣΑΣ ΒΙΟΜΗΧΑΝΙΑΣ - ΒΙΟΤΕΧΝΙΑΣ - ΒΙΟΜΗΧΑΝΙΚΟΥ ΚΑΙ ΒΙΟΤΕΧΝΙΚΟΥ ΠΑΡΚΟΥ",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Rimotomika_Sxedia_Poleod_Meletes/XriseisGis_Individual/3"
+          },
+          "4": {
+            "id": 4,
+            "name": "ΠΕΡΙΟΧΕΣ ΟΧΛΟΥΣΑΣ ΒΙΟΜΗΧΑΝΙΑΣ - ΒΙΟΤΕΧΝΙΑΣ",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Rimotomika_Sxedia_Poleod_Meletes/XriseisGis_Individual/4"
+          },
+          "5": {
+            "id": 5,
+            "name": "ΠΕΡΙΟΧΕΣ ΧΟΝΔΡΕΜΠΟΡΙΟΥ",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Rimotomika_Sxedia_Poleod_Meletes/XriseisGis_Individual/5"
+          },
+          "6": {
+            "id": 6,
+            "name": "ΠΕΡΙΟΧΕΣ ΤΟΥΡΙΣΜΟΥ-ΑΝΑΨΥΧΗΣ",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Rimotomika_Sxedia_Poleod_Meletes/XriseisGis_Individual/6"
+          },
+          "7": {
+            "id": 7,
+            "name": "ΠΕΡΙΟΧΕΣ ΕΛΕΥΘΕΡΩΝ ΧΩΡΩΝ - ΑΣΤΙΚΟΥ ΠΡΑΣΙΝΟΥ",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Rimotomika_Sxedia_Poleod_Meletes/XriseisGis_Individual/7"
+          },
+          "8": {
+            "id": 8,
+            "name": "ΠΕΡΙΟΧΕΣ ΚΟΙΝΩΝΙΚΩΝ ΕΞΥΠΗΡΕΤΗΣΕΩΝ",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Rimotomika_Sxedia_Poleod_Meletes/XriseisGis_Individual/8"
+          },
+          "9": {
+            "id": 9,
+            "name": "ΠΕΡΙΟΧΗ ΜΕ ΜΙΚΤΕΣ ΧΡΗΣΕΙΣ",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Rimotomika_Sxedia_Poleod_Meletes/XriseisGis_Individual/9"
+          }
+        }
+      },
+      "XriseisGis": {
+        "name": "XriseisGis",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Rimotomika_Sxedia_Poleod_Meletes/XriseisGis/MapServer",
+        "layers": {
+          "0": {
+            "id": 0,
+            "name": "Χρήσεις Γης",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Rimotomika_Sxedia_Poleod_Meletes/XriseisGis/0"
+          }
+        }
+      },
+      "ZonesKinitronKaiPoleodomikonMixanismon": {
+        "name": "ZonesKinitronKaiPoleodomikonMixanismon",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Rimotomika_Sxedia_Poleod_Meletes/ZonesKinitronKaiPoleodomikonMixanismon/MapServer",
+        "layers": {
+          "0": {
+            "id": 0,
+            "name": "Ζώνες Κινήτρων και Πολεοδομικών Μηχανισμών",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Rimotomika_Sxedia_Poleod_Meletes/ZonesKinitronKaiPoleodomikonMixanismon/0"
+          }
+        }
+      },
+      "ZoniAigialouKaiParalias": {
+        "name": "ZoniAigialouKaiParalias",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Rimotomika_Sxedia_Poleod_Meletes/ZoniAigialouKaiParalias/MapServer",
+        "layers": {
+          "0": {
+            "id": 0,
+            "name": "Ζώνη Αιγιαλού και Παραλίας",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Rimotomika_Sxedia_Poleod_Meletes/ZoniAigialouKaiParalias/0"
+          }
+        }
+      },
+      "ZoniApalotriosis": {
+        "name": "ZoniApalotriosis",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Rimotomika_Sxedia_Poleod_Meletes/ZoniApalotriosis/MapServer",
+        "layers": {
+          "0": {
+            "id": 0,
+            "name": "Ζώνη Απαλλοτρίωσης",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Rimotomika_Sxedia_Poleod_Meletes/ZoniApalotriosis/0"
+          }
+        }
+      },
+      "ZoniArxaiologiki": {
+        "name": "ZoniArxaiologiki",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Rimotomika_Sxedia_Poleod_Meletes/ZoniArxaiologiki/MapServer",
+        "layers": {}
+      }
+    },
+    "RYTHMISTIKA": {
+      "RYTHMISTIKA_DIKTYO_SYNDESEIS_LINE": {
+        "name": "RYTHMISTIKA_DIKTYO_SYNDESEIS_LINE",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/RYTHMISTIKA/RYTHMISTIKA_DIKTYO_SYNDESEIS_LINE/MapServer",
+        "layers": {
+          "0": {
+            "id": 0,
+            "name": "Δίκτυο-Συνδέσεις (Γραμμικό)",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/RYTHMISTIKA/RYTHMISTIKA_DIKTYO_SYNDESEIS_LINE/0"
+          }
+        }
+      },
+      "RYTHMISTIKA_DIKTYO_SYNDESEIS_POINT": {
+        "name": "RYTHMISTIKA_DIKTYO_SYNDESEIS_POINT",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/RYTHMISTIKA/RYTHMISTIKA_DIKTYO_SYNDESEIS_POINT/MapServer",
+        "layers": {
+          "0": {
+            "id": 0,
+            "name": "Δίκτυο - Συνδέσεις (Σημειακό)",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/RYTHMISTIKA/RYTHMISTIKA_DIKTYO_SYNDESEIS_POINT/0"
+          }
+        }
+      },
+      "RYTHMISTIKA_LIMNES": {
+        "name": "RYTHMISTIKA_LIMNES",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/RYTHMISTIKA/RYTHMISTIKA_LIMNES/MapServer",
+        "layers": {
+          "0": {
+            "id": 0,
+            "name": "Λίμνες",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/RYTHMISTIKA/RYTHMISTIKA_LIMNES/0"
+          }
+        }
+      },
+      "RYTHMISTIKA_PERIVALLON": {
+        "name": "RYTHMISTIKA_PERIVALLON",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/RYTHMISTIKA/RYTHMISTIKA_PERIVALLON/MapServer",
+        "layers": {
+          "0": {
+            "id": 0,
+            "name": "Περιβάλλον",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/RYTHMISTIKA/RYTHMISTIKA_PERIVALLON/0"
+          }
+        }
+      },
+      "RYTHMISTIKA_POLOI_ANAPTYKSIS": {
+        "name": "RYTHMISTIKA_POLOI_ANAPTYKSIS",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/RYTHMISTIKA/RYTHMISTIKA_POLOI_ANAPTYKSIS/MapServer",
+        "layers": {
+          "0": {
+            "id": 0,
+            "name": "Πόλοι Ανάπτυξης",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/RYTHMISTIKA/RYTHMISTIKA_POLOI_ANAPTYKSIS/0"
+          }
+        }
+      },
+      "RYTHMISTIKA_SIMEIAKESXRHSEIS": {
+        "name": "RYTHMISTIKA_SIMEIAKESXRHSEIS",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/RYTHMISTIKA/RYTHMISTIKA_SIMEIAKESXRHSEIS/MapServer",
+        "layers": {
+          "0": {
+            "id": 0,
+            "name": "Σημειακές Χρήσεις - Δραστηριότητες",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/RYTHMISTIKA/RYTHMISTIKA_SIMEIAKESXRHSEIS/0"
+          }
+        }
+      },
+      "RYTHMISTIKA_SXEDIA": {
+        "name": "RYTHMISTIKA_SXEDIA",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/RYTHMISTIKA/RYTHMISTIKA_SXEDIA/MapServer",
+        "layers": {
+          "0": {
+            "id": 0,
+            "name": "Ρυθμιστικά Σχέδια",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/RYTHMISTIKA/RYTHMISTIKA_SXEDIA/0"
+          }
+        }
+      },
+      "RYTHMISTIKA_YPODOXEIS_DRASTIRIOTITON": {
+        "name": "RYTHMISTIKA_YPODOXEIS_DRASTIRIOTITON",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/RYTHMISTIKA/RYTHMISTIKA_YPODOXEIS_DRASTIRIOTITON/MapServer",
+        "layers": {
+          "0": {
+            "id": 0,
+            "name": "Υποδοχείς Δραστηριοτήτων – Χρήσεις",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/RYTHMISTIKA/RYTHMISTIKA_YPODOXEIS_DRASTIRIOTITON/0"
+          }
+        }
+      }
+    },
+    "temp": {
+      "MyMapService2": {
+        "name": "MyMapService2",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/temp/MyMapService2/MapServer",
+        "layers": {}
+      },
+      "MyMapService": {
+        "name": "MyMapService",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/temp/MyMapService/MapServer",
+        "layers": {}
+      },
+      "test": {
+        "name": "test",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/temp/test/MapServer",
+        "layers": {}
+      }
+    },
+    "TEST_DXF2GDB_SERVICE": {
+      "DATAINTEROP_TEST": {
+        "name": "DATAINTEROP_TEST",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/TEST_DXF2GDB_SERVICE/DATAINTEROP_TEST/MapServer",
+        "layers": {
+          "0": {
+            "id": 0,
+            "name": "1_PREPARATION",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/TEST_DXF2GDB_SERVICE/DATAINTEROP_TEST/0"
+          }
+        }
+      },
+      "ExtractZionData": {
+        "name": "ExtractZionData",
+        "type": "GPServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/TEST_DXF2GDB_SERVICE/ExtractZionData/GPServer",
+        "layers": {}
+      },
+      "gml2gdb": {
+        "name": "gml2gdb",
+        "type": "GPServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/TEST_DXF2GDB_SERVICE/gml2gdb/GPServer",
+        "layers": {}
+      },
+      "TEST_PREPARE": {
+        "name": "TEST_PREPARE",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/TEST_DXF2GDB_SERVICE/TEST_PREPARE/MapServer",
+        "layers": {
+          "0": {
+            "id": 0,
+            "name": "1_PREPARATION",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/TEST_DXF2GDB_SERVICE/TEST_PREPARE/0"
+          }
+        }
+      }
+    },
+    "Thematic_Map": {
+      "ThematicMap": {
+        "name": "ThematicMap",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Thematic_Map/ThematicMap/MapServer",
+        "layers": {
+          "0": {
+            "id": 0,
+            "name": "Εγγραφές Χρήσεων ΓΠΣ",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Thematic_Map/ThematicMap/0"
+          },
+          "1": {
+            "id": 1,
+            "name": "Πολύγωνα Χρήσεων ΓΠΣ",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Thematic_Map/ThematicMap/1"
+          },
+          "2": {
+            "id": 2,
+            "name": "Γενικές Χρήσεις Γης",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Thematic_Map/ThematicMap/2"
+          },
+          "3": {
+            "id": 3,
+            "name": "Ειδικές Χρήσεις Γης",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Thematic_Map/ThematicMap/3"
+          },
+          "4": {
+            "id": 4,
+            "name": "Πεζόδρομος",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Thematic_Map/ThematicMap/4"
+          },
+          "5": {
+            "id": 5,
+            "name": "Πολύγωνα Όρων Δόμησης Οικοδομικό Σύστημα",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Thematic_Map/ThematicMap/5"
+          },
+          "6": {
+            "id": 6,
+            "name": "Πολύγωνα Όρων Δόμησης Αριθμός Ορόφων - Ύψος",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Thematic_Map/ThematicMap/6"
+          },
+          "7": {
+            "id": 7,
+            "name": "Πολύγωνα Όρων Δόμησης Κάλυψη",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Thematic_Map/ThematicMap/7"
+          },
+          "8": {
+            "id": 8,
+            "name": "Πολύγωνα Όρων Δόμησης Αρτιότητα",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Thematic_Map/ThematicMap/8"
+          },
+          "9": {
+            "id": 9,
+            "name": "Τομέας Συντελεστή Δόμησης",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Thematic_Map/ThematicMap/9"
+          }
+        }
+      }
+    },
+    "Utilities": {
+      "Geometry": {
+        "name": "Geometry",
+        "type": "GeometryServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Utilities/Geometry/GeometryServer",
+        "layers": {}
+      },
+      "PrintingTools": {
+        "name": "PrintingTools",
+        "type": "GPServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Utilities/PrintingTools/GPServer",
+        "layers": {}
+      },
+      "Search_indexer": {
+        "name": "Search_indexer",
+        "type": "GPServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Utilities/Search_indexer/GPServer",
+        "layers": {}
+      },
+      "Search": {
+        "name": "Search",
+        "type": "SearchServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/Utilities/Search/SearchServer",
+        "layers": {}
+      }
+    },
+    "wms_firstlevel": {
+      "wms_firtslevel": {
+        "name": "wms_firtslevel",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/wms_firstlevel/wms_firtslevel/MapServer",
+        "layers": {
+          "0": {
+            "id": 0,
+            "name": "Πολύγωνα Χρήσεων ΓΠΣ",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/wms_firstlevel/wms_firtslevel/0"
+          },
+          "1": {
+            "id": 1,
+            "name": "ΣΧΟΟΑΠ - ΓΠΣ - ΖΟΕ - ΤΧΣ",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/wms_firstlevel/wms_firtslevel/1"
+          }
+        }
+      }
+    },
+    "wms_secondlevel": {
+      "wms_secondlevel": {
+        "name": "wms_secondlevel",
+        "type": "MapServer",
+        "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/wms_secondlevel/wms_secondlevel/MapServer",
+        "layers": {
+          "0": {
+            "id": 0,
+            "name": "Χώροι Κοινόχρηστων – Κοινωφελών λειτουργιών",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/wms_secondlevel/wms_secondlevel/0"
+          },
+          "1": {
+            "id": 1,
+            "name": "Πολεοδομικές Γραμμές",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/wms_secondlevel/wms_secondlevel/1"
+          },
+          "2": {
+            "id": 2,
+            "name": "Τομέας Συντελεστή Δόμησης",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/wms_secondlevel/wms_secondlevel/2"
+          },
+          "3": {
+            "id": 3,
+            "name": "Πολύγωνα Όρων Δόμησης Οικοδομικό Σύστημα",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/wms_secondlevel/wms_secondlevel/3"
+          },
+          "4": {
+            "id": 4,
+            "name": "Πολύγωνα Όρων Δόμησης Αριθμός Ορόφων - Ύψος",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/wms_secondlevel/wms_secondlevel/4"
+          },
+          "5": {
+            "id": 5,
+            "name": "Πολύγωνα Όρων Δόμησης Κάλυψη",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/wms_secondlevel/wms_secondlevel/5"
+          },
+          "6": {
+            "id": 6,
+            "name": "Πολύγωνα Όρων Δόμησης Αρτιότητα",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/wms_secondlevel/wms_secondlevel/6"
+          },
+          "7": {
+            "id": 7,
+            "name": "Χρήσεις Γης",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/wms_secondlevel/wms_secondlevel/7"
+          },
+          "8": {
+            "id": 8,
+            "name": "Οικοδομικά Τετράγωνα",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services/wms_secondlevel/wms_secondlevel/8"
+          }
+        }
+      }
+    }
+  }
+}

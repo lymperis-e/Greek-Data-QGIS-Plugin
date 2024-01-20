@@ -48,7 +48,7 @@ PY_FILES = \
 
 UI_FILES = grData_dockwidget_base.ui
 
-EXTRAS = metadata.txt icon.png
+EXTRAS = metadata.txt assets/img/icon.png
 
 EXTRA_DIRS =
 

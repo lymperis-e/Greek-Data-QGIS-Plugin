@@ -1,0 +1,861 @@
+{
+  "services": [
+    {
+      "AM_ForestAdministration": {
+        "AM_ForestAdministration_HC": {
+          "name": "AM_ForestAdministration_HC",
+          "type": "MapServer",
+          "url": "http://gis.ktimanet.gr/inspire/rest/services/AM_ForestAdministration/AM_ForestAdministration_HC/MapServer",
+          "layers": {
+            "0": {
+              "id": 0,
+              "name": "AM_ForestAdministration_HC",
+              "url": "http://gis.ktimanet.gr/inspire/rest/services/AM_ForestAdministration/AM_ForestAdministration_HC/0"
+            }
+          }
+        }
+      },
+      "cadastralparcels": {
+        "CadastralParcel": {
+          "name": "CadastralParcel",
+          "type": "MapServer",
+          "url": "http://gis.ktimanet.gr/inspire/rest/services/cadastralparcels/CadastralParcel/MapServer",
+          "layers": {
+            "0": {
+              "id": 0,
+              "name": "cp:CadastralParcel (Surface)",
+              "url": "http://gis.ktimanet.gr/inspire/rest/services/cadastralparcels/CadastralParcel/0"
+            }
+          }
+        },
+        "CadastralParcelWMS": {
+          "name": "CadastralParcelWMS",
+          "type": "MapServer",
+          "url": "http://gis.ktimanet.gr/inspire/rest/services/cadastralparcels/CadastralParcelWMS/MapServer",
+          "layers": {
+            "0": {
+              "id": 0,
+              "name": "cp:CadastralParcel (Surface)",
+              "url": "http://gis.ktimanet.gr/inspire/rest/services/cadastralparcels/CadastralParcelWMS/0"
+            }
+          }
+        }
+      },
+      "CP_GGRS87": {
+        "ORIAOTA_EGSA87_Kastelorizo": {
+          "name": "ORIAOTA_EGSA87_Kastelorizo",
+          "type": "MapServer",
+          "url": "http://gis.ktimanet.gr/inspire/rest/services/CP_GGRS87/ORIAOTA_EGSA87_Kastelorizo/MapServer",
+          "layers": {
+            "0": {
+              "id": 0,
+              "name": "ORIAOTA_EGSA87_202012_Kastelorizo",
+              "url": "http://gis.ktimanet.gr/inspire/rest/services/CP_GGRS87/ORIAOTA_EGSA87_Kastelorizo/0"
+            }
+          }
+        },
+        "ORIAOTA_EGSA87": {
+          "name": "ORIAOTA_EGSA87",
+          "type": "MapServer",
+          "url": "http://gis.ktimanet.gr/inspire/rest/services/CP_GGRS87/ORIAOTA_EGSA87/MapServer",
+          "layers": {
+            "0": {
+              "id": 0,
+              "name": "ORIAOTA_EGSA87_202012",
+              "url": "http://gis.ktimanet.gr/inspire/rest/services/CP_GGRS87/ORIAOTA_EGSA87/0"
+            },
+            "1": {
+              "id": 1,
+              "name": "ORIAOTA_EGSA87_202012_Kastelorizo",
+              "url": "http://gis.ktimanet.gr/inspire/rest/services/CP_GGRS87/ORIAOTA_EGSA87/1"
+            }
+          }
+        }
+      },
+      "Grids": {
+        "Grid_2500_WGS84": {
+          "name": "Grid_2500_WGS84",
+          "type": "MapServer",
+          "url": "http://gis.ktimanet.gr/inspire/rest/services/Grids/Grid_2500_WGS84/MapServer",
+          "layers": {
+            "0": {
+              "id": 0,
+              "name": "GRID_2500_WGS84",
+              "url": "http://gis.ktimanet.gr/inspire/rest/services/Grids/Grid_2500_WGS84/0"
+            }
+          }
+        }
+      },
+      "Utilities": {
+        "RasterUtilities": {
+          "name": "RasterUtilities",
+          "type": "GPServer",
+          "url": "http://gis.ktimanet.gr/inspire/rest/services/Utilities/RasterUtilities/GPServer",
+          "layers": {}
+        }
+      }
+    },
+    {
+      "SampleWorldCities": {
+        "name": "SampleWorldCities",
+        "type": "MapServer",
+        "url": "http://gis.ggb.gr/arcgis/rest/services//SampleWorldCities/MapServer",
+        "layers": {
+          "0": {
+            "id": 0,
+            "name": "Cities",
+            "url": "http://gis.ggb.gr/arcgis/rest/services//SampleWorldCities/0"
+          },
+          "1": {
+            "id": 1,
+            "name": "Continent",
+            "url": "http://gis.ggb.gr/arcgis/rest/services//SampleWorldCities/1"
+          },
+          "2": {
+            "id": 2,
+            "name": "World",
+            "url": "http://gis.ggb.gr/arcgis/rest/services//SampleWorldCities/2"
+          }
+        }
+      },
+      "VIPE": {
+        "ChorovatisChriseis": {
+          "name": "ChorovatisChriseis",
+          "type": "MapServer",
+          "url": "http://gis.ggb.gr/arcgis/rest/services//VIPE/ChorovatisChriseis/MapServer",
+          "layers": {
+            "0": {
+              "id": 0,
+              "name": "ΝΟΜΟΘΕΤΗΜΕΝΕΣ ΧΡΗΣΕΙΣ ΓΗΣ ΠΑΡΑΓ. ΔΡΑΣΤΗΡΙΟΤΗΤΩΝ",
+              "url": "http://gis.ggb.gr/arcgis/rest/services//VIPE/ChorovatisChriseis/0"
+            },
+            "1": {
+              "id": 1,
+              "name": "ΑΤΥΠΕΣ ΒΙΟΜΗΧ. ΣΥΓΚΕΝΤΡΩΣΕΙΣ",
+              "url": "http://gis.ggb.gr/arcgis/rest/services//VIPE/ChorovatisChriseis/1"
+            }
+          }
+        },
+        "eidiko_plaisio_tourismou": {
+          "name": "eidiko_plaisio_tourismou",
+          "type": "MapServer",
+          "url": "http://gis.ggb.gr/arcgis/rest/services//VIPE/eidiko_plaisio_tourismou/MapServer",
+          "layers": {
+            "0": {
+              "id": 0,
+              "name": "Τουριστικά Καταφύγια-Αγκυροβόλια",
+              "url": "http://gis.ggb.gr/arcgis/rest/services//VIPE/eidiko_plaisio_tourismou/0"
+            },
+            "1": {
+              "id": 1,
+              "name": "Ξενοδοχειακοί Λιμένες",
+              "url": "http://gis.ggb.gr/arcgis/rest/services//VIPE/eidiko_plaisio_tourismou/1"
+            },
+            "2": {
+              "id": 2,
+              "name": "Μαρίνες",
+              "url": "http://gis.ggb.gr/arcgis/rest/services//VIPE/eidiko_plaisio_tourismou/2"
+            },
+            "3": {
+              "id": 3,
+              "name": "Ζώνες Ναυσιπλοΐας – Αναψυχής",
+              "url": "http://gis.ggb.gr/arcgis/rest/services//VIPE/eidiko_plaisio_tourismou/3"
+            },
+            "4": {
+              "id": 4,
+              "name": "Σημεία Ιαματικού Τουρισμού",
+              "url": "http://gis.ggb.gr/arcgis/rest/services//VIPE/eidiko_plaisio_tourismou/4"
+            },
+            "5": {
+              "id": 5,
+              "name": "Σημεία Χιονοδρομικού Τουρισμού",
+              "url": "http://gis.ggb.gr/arcgis/rest/services//VIPE/eidiko_plaisio_tourismou/5"
+            },
+            "6": {
+              "id": 6,
+              "name": "Κατηγοριοποίηση Τουριστικών Περιοχών",
+              "url": "http://gis.ggb.gr/arcgis/rest/services//VIPE/eidiko_plaisio_tourismou/6"
+            },
+            "7": {
+              "id": 7,
+              "name": "Περιοχές Εναλλακτικών Μορφών Τουρισμού",
+              "url": "http://gis.ggb.gr/arcgis/rest/services//VIPE/eidiko_plaisio_tourismou/7"
+            },
+            "8": {
+              "id": 8,
+              "name": "Μητροπολιτικές Περιοχές Αττικής-Θεσσαλονίκης",
+              "url": "http://gis.ggb.gr/arcgis/rest/services//VIPE/eidiko_plaisio_tourismou/8"
+            },
+            "9": {
+              "id": 9,
+              "name": "Περιοχές Υψομέτρου > 800μ.",
+              "url": "http://gis.ggb.gr/arcgis/rest/services//VIPE/eidiko_plaisio_tourismou/9"
+            }
+          }
+        },
+        "EidikoXwrotajikoViomichanias": {
+          "name": "EidikoXwrotajikoViomichanias",
+          "type": "MapServer",
+          "url": "http://gis.ggb.gr/arcgis/rest/services//VIPE/EidikoXwrotajikoViomichanias/MapServer",
+          "layers": {
+            "0": {
+              "id": 0,
+              "name": "Diagram-II_ATTIKI_egsa87.tif",
+              "url": "http://gis.ggb.gr/arcgis/rest/services//VIPE/EidikoXwrotajikoViomichanias/0"
+            },
+            "1": {
+              "id": 1,
+              "name": "Εθνικό πρότυπο χωροταξικής οργάνωσης της βιομηχανίας",
+              "url": "http://gis.ggb.gr/arcgis/rest/services//VIPE/EidikoXwrotajikoViomichanias/1"
+            },
+            "2": {
+              "id": 2,
+              "name": "Πρότυπο χωροταξικής οργάνωσης της βιομηχανίας στην Αττική",
+              "url": "http://gis.ggb.gr/arcgis/rest/services//VIPE/EidikoXwrotajikoViomichanias/2"
+            },
+            "3": {
+              "id": 3,
+              "name": "Κατευθύνσεις για τη χωρική βιομηχανική πολιτική σε επίπεδο νομού",
+              "url": "http://gis.ggb.gr/arcgis/rest/services//VIPE/EidikoXwrotajikoViomichanias/3"
+            },
+            "4": {
+              "id": 4,
+              "name": "Kατευθύνσεις για τη χωρική βιομηχανική πολιτική στο Ν. ΑΤΤΙΚΗΣ",
+              "url": "http://gis.ggb.gr/arcgis/rest/services//VIPE/EidikoXwrotajikoViomichanias/4"
+            }
+          }
+        },
+        "elstat_Q": {
+          "name": "elstat_Q",
+          "type": "MapServer",
+          "url": "http://gis.ggb.gr/arcgis/rest/services//VIPE/elstat_Q/MapServer",
+          "layers": {
+            "0": {
+              "id": 0,
+              "name": "ΔΗΜΟΙ - ΠΛΗΘΥΣΜΟΣ 2011",
+              "url": "http://gis.ggb.gr/arcgis/rest/services//VIPE/elstat_Q/0"
+            },
+            "1": {
+              "id": 1,
+              "name": "ΠΕΡΙΦ. ΕΝΟΤΗΤΕΣ - Α.Ε.Π. 2012",
+              "url": "http://gis.ggb.gr/arcgis/rest/services//VIPE/elstat_Q/1"
+            },
+            "2": {
+              "id": 2,
+              "name": "ΠΕΡΙΦΕΡΕΙΕΣ",
+              "url": "http://gis.ggb.gr/arcgis/rest/services//VIPE/elstat_Q/2"
+            }
+          }
+        },
+        "IoniaImage": {
+          "name": "IoniaImage",
+          "type": "MapServer",
+          "url": "http://gis.ggb.gr/arcgis/rest/services//VIPE/IoniaImage/MapServer",
+          "layers": {
+            "0": {
+              "id": 0,
+              "name": "IONIA_P3.tif",
+              "url": "http://gis.ggb.gr/arcgis/rest/services//VIPE/IoniaImage/0"
+            }
+          }
+        },
+        "opsna": {
+          "name": "opsna",
+          "type": "MapServer",
+          "url": "http://gis.ggb.gr/arcgis/rest/services//VIPE/opsna/MapServer",
+          "layers": {
+            "0": {
+              "id": 0,
+              "name": "opsna",
+              "url": "http://gis.ggb.gr/arcgis/rest/services//VIPE/opsna/0"
+            }
+          }
+        },
+        "ppxsaa": {
+          "name": "ppxsaa",
+          "type": "MapServer",
+          "url": "http://gis.ggb.gr/arcgis/rest/services//VIPE/ppxsaa/MapServer",
+          "layers": {
+            "0": {
+              "id": 0,
+              "name": "Β2 Ανατολική Μακεδονία Θράκη",
+              "url": "http://gis.ggb.gr/arcgis/rest/services//VIPE/ppxsaa/0"
+            },
+            "1": {
+              "id": 1,
+              "name": "Β1 Ιονίων Νησιών",
+              "url": "http://gis.ggb.gr/arcgis/rest/services//VIPE/ppxsaa/1"
+            },
+            "2": {
+              "id": 2,
+              "name": "Β1 Κεντρικής Πελοποννήσου",
+              "url": "http://gis.ggb.gr/arcgis/rest/services//VIPE/ppxsaa/2"
+            },
+            "3": {
+              "id": 3,
+              "name": "Β1 Κεντρικής Μακεδονίας",
+              "url": "http://gis.ggb.gr/arcgis/rest/services//VIPE/ppxsaa/3"
+            }
+          }
+        },
+        "Transportation": {
+          "name": "Transportation",
+          "type": "MapServer",
+          "url": "http://gis.ggb.gr/arcgis/rest/services//VIPE/Transportation/MapServer",
+          "layers": {
+            "0": {
+              "id": 0,
+              "name": "Transportation",
+              "url": "http://gis.ggb.gr/arcgis/rest/services//VIPE/Transportation/0"
+            }
+          }
+        },
+        "vipe2publish": {
+          "name": "vipe2publish",
+          "type": "MapServer",
+          "url": "http://gis.ggb.gr/arcgis/rest/services//VIPE/vipe2publish/MapServer",
+          "layers": {
+            "0": {
+              "id": 0,
+              "name": "Όριο ΒΙΠΕ",
+              "url": "http://gis.ggb.gr/arcgis/rest/services//VIPE/vipe2publish/0"
+            },
+            "1": {
+              "id": 1,
+              "name": "Οικόπεδα",
+              "url": "http://gis.ggb.gr/arcgis/rest/services//VIPE/vipe2publish/1"
+            },
+            "2": {
+              "id": 2,
+              "name": "Ρυμοτομία με Όρους Δόμησης",
+              "url": "http://gis.ggb.gr/arcgis/rest/services//VIPE/vipe2publish/2"
+            }
+          }
+        },
+        "VipeBaseLayers": {
+          "name": "VipeBaseLayers",
+          "type": "MapServer",
+          "url": "http://gis.ggb.gr/arcgis/rest/services//VIPE/VipeBaseLayers/MapServer",
+          "layers": {
+            "0": {
+              "id": 0,
+              "name": "Εγκαταστάσεις με οδηγία SEVESO",
+              "url": "http://gis.ggb.gr/arcgis/rest/services//VIPE/VipeBaseLayers/0"
+            },
+            "1": {
+              "id": 1,
+              "name": "Οδικό Δίκτυο",
+              "url": "http://gis.ggb.gr/arcgis/rest/services//VIPE/VipeBaseLayers/1"
+            },
+            "2": {
+              "id": 2,
+              "name": "Σιδηροδρομικό Δίκτυο",
+              "url": "http://gis.ggb.gr/arcgis/rest/services//VIPE/VipeBaseLayers/2"
+            },
+            "3": {
+              "id": 3,
+              "name": "Ποταμοί",
+              "url": "http://gis.ggb.gr/arcgis/rest/services//VIPE/VipeBaseLayers/3"
+            },
+            "4": {
+              "id": 4,
+              "name": "Λίμνες",
+              "url": "http://gis.ggb.gr/arcgis/rest/services//VIPE/VipeBaseLayers/4"
+            },
+            "5": {
+              "id": 5,
+              "name": "Ζώνες Προστασίας Ορεινού Όγκου Αιγάλεω",
+              "url": "http://gis.ggb.gr/arcgis/rest/services//VIPE/VipeBaseLayers/5"
+            },
+            "6": {
+              "id": 6,
+              "name": "Ζώνες Προστασίας Ορεινού Όγκου Λαυρίου",
+              "url": "http://gis.ggb.gr/arcgis/rest/services//VIPE/VipeBaseLayers/6"
+            },
+            "7": {
+              "id": 7,
+              "name": "Ζώνες Προστασίας Ορεινού Όγκου Πάρνηθας",
+              "url": "http://gis.ggb.gr/arcgis/rest/services//VIPE/VipeBaseLayers/7"
+            },
+            "8": {
+              "id": 8,
+              "name": "Ζώνες Προστασίας Ορεινού Όγκου Πεντέλης",
+              "url": "http://gis.ggb.gr/arcgis/rest/services//VIPE/VipeBaseLayers/8"
+            },
+            "9": {
+              "id": 9,
+              "name": "Εθνικό Πάρκο Σχινιά-Μαραθώνα",
+              "url": "http://gis.ggb.gr/arcgis/rest/services//VIPE/VipeBaseLayers/9"
+            },
+            "10": {
+              "id": 10,
+              "name": "Εθνικοί Δρυμοί",
+              "url": "http://gis.ggb.gr/arcgis/rest/services//VIPE/VipeBaseLayers/10"
+            },
+            "11": {
+              "id": 11,
+              "name": "Εθνικά Πάρκα",
+              "url": "http://gis.ggb.gr/arcgis/rest/services//VIPE/VipeBaseLayers/11"
+            },
+            "12": {
+              "id": 12,
+              "name": "Φορείς Διαχείρισης Προστατευόμενων Περιοχών",
+              "url": "http://gis.ggb.gr/arcgis/rest/services//VIPE/VipeBaseLayers/12"
+            },
+            "13": {
+              "id": 13,
+              "name": "Περιοχές NATURA2000",
+              "url": "http://gis.ggb.gr/arcgis/rest/services//VIPE/VipeBaseLayers/13"
+            },
+            "14": {
+              "id": 14,
+              "name": "Όρια Δήμων (Καλλικράτη)",
+              "url": "http://gis.ggb.gr/arcgis/rest/services//VIPE/VipeBaseLayers/14"
+            },
+            "15": {
+              "id": 15,
+              "name": "Όρια Περιφερειακών Ενοτήτων",
+              "url": "http://gis.ggb.gr/arcgis/rest/services//VIPE/VipeBaseLayers/15"
+            },
+            "16": {
+              "id": 16,
+              "name": "Όρια Περιφερειών",
+              "url": "http://gis.ggb.gr/arcgis/rest/services//VIPE/VipeBaseLayers/16"
+            }
+          }
+        },
+        "vipeLabels": {
+          "name": "vipeLabels",
+          "type": "MapServer",
+          "url": "http://gis.ggb.gr/arcgis/rest/services//VIPE/vipeLabels/MapServer",
+          "layers": {
+            "0": {
+              "id": 0,
+              "name": "Όριο ΒΙΠΕ",
+              "url": "http://gis.ggb.gr/arcgis/rest/services//VIPE/vipeLabels/0"
+            }
+          }
+        }
+      }
+    },
+    {
+      "anorthosite": {
+        "name": "anorthosite",
+        "type": "MapServer",
+        "url": "https://gaia.igme.gr/server/rest/services//anorthosite/MapServer",
+        "layers": {
+          "0": {
+            "id": 0,
+            "name": "anorthosite",
+            "url": "https://gaia.igme.gr/server/rest/services//anorthosite/0"
+          }
+        }
+      },
+      "EngeolMaps_MIL1": {
+        "name": "EngeolMaps_MIL1",
+        "type": "MapServer",
+        "url": "https://gaia.igme.gr/server/rest/services//EngeolMaps_MIL1/MapServer",
+        "layers": {
+          "1": {
+            "id": 1,
+            "name": "engeol.engeoladmin.points",
+            "url": "https://gaia.igme.gr/server/rest/services//EngeolMaps_MIL1/1"
+          },
+          "2": {
+            "id": 2,
+            "name": "engeol.engeoladmin.lines",
+            "url": "https://gaia.igme.gr/server/rest/services//EngeolMaps_MIL1/2"
+          },
+          "3": {
+            "id": 3,
+            "name": "engeol.engeoladmin.poly",
+            "url": "https://gaia.igme.gr/server/rest/services//EngeolMaps_MIL1/3"
+          },
+          "4": {
+            "id": 4,
+            "name": "engeol.engeoladmin.geotrisis",
+            "url": "https://gaia.igme.gr/server/rest/services//EngeolMaps_MIL1/4"
+          },
+          "5": {
+            "id": 5,
+            "name": "engeol.engeoladmin.Geotechnical",
+            "url": "https://gaia.igme.gr/server/rest/services//EngeolMaps_MIL1/5"
+          },
+          "6": {
+            "id": 6,
+            "name": "engeol.engeoladmin.Orygmata",
+            "url": "https://gaia.igme.gr/server/rest/services//EngeolMaps_MIL1/6"
+          },
+          "7": {
+            "id": 7,
+            "name": "engeol.engeoladmin.Katalilotita",
+            "url": "https://gaia.igme.gr/server/rest/services//EngeolMaps_MIL1/7"
+          },
+          "8": {
+            "id": 8,
+            "name": "engeol.engeoladmin.Epidektikotita",
+            "url": "https://gaia.igme.gr/server/rest/services//EngeolMaps_MIL1/8"
+          },
+          "9": {
+            "id": 9,
+            "name": "engeol.engeoladmin.Other_maps",
+            "url": "https://gaia.igme.gr/server/rest/services//EngeolMaps_MIL1/9"
+          }
+        }
+      },
+      "Main_Layers": {
+        "name": "Main_Layers",
+        "type": "MapServer",
+        "url": "https://gaia.igme.gr/server/rest/services//Main_Layers/MapServer",
+        "layers": {
+          "0": {
+            "id": 0,
+            "name": "PMS",
+            "url": "https://gaia.igme.gr/server/rest/services//Main_Layers/0"
+          },
+          "1": {
+            "id": 1,
+            "name": "PMS_Points",
+            "url": "https://gaia.igme.gr/server/rest/services//Main_Layers/1"
+          },
+          "2": {
+            "id": 2,
+            "name": "PMS_Oria",
+            "url": "https://gaia.igme.gr/server/rest/services//Main_Layers/2"
+          },
+          "3": {
+            "id": 3,
+            "name": "PMS_Areas",
+            "url": "https://gaia.igme.gr/server/rest/services//Main_Layers/3"
+          },
+          "4": {
+            "id": 4,
+            "name": "PAIM",
+            "url": "https://gaia.igme.gr/server/rest/services//Main_Layers/4"
+          },
+          "5": {
+            "id": 5,
+            "name": "PAIM_Points",
+            "url": "https://gaia.igme.gr/server/rest/services//Main_Layers/5"
+          },
+          "6": {
+            "id": 6,
+            "name": "PAIM_Oria",
+            "url": "https://gaia.igme.gr/server/rest/services//Main_Layers/6"
+          },
+          "7": {
+            "id": 7,
+            "name": "PAIM_Areas",
+            "url": "https://gaia.igme.gr/server/rest/services//Main_Layers/7"
+          }
+        }
+      },
+      "More_Layers": {
+        "name": "More_Layers",
+        "type": "MapServer",
+        "url": "https://gaia.igme.gr/server/rest/services//More_Layers/MapServer",
+        "layers": {
+          "0": {
+            "id": 0,
+            "name": "ADMINISTRATIVE STRUCTURE",
+            "url": "https://gaia.igme.gr/server/rest/services//More_Layers/0"
+          },
+          "9": {
+            "id": 9,
+            "name": "REGIONAL UNIT",
+            "url": "https://gaia.igme.gr/server/rest/services//More_Layers/9"
+          },
+          "10": {
+            "id": 10,
+            "name": "DECENTRALIZED ADMINISTRATION",
+            "url": "https://gaia.igme.gr/server/rest/services//More_Layers/10"
+          },
+          "11": {
+            "id": 11,
+            "name": "ADMINISTRATIVE REGION",
+            "url": "https://gaia.igme.gr/server/rest/services//More_Layers/11"
+          },
+          "12": {
+            "id": 12,
+            "name": "NATURA",
+            "url": "https://gaia.igme.gr/server/rest/services//More_Layers/12"
+          },
+          "13": {
+            "id": 13,
+            "name": "LITHOLOGY",
+            "url": "https://gaia.igme.gr/server/rest/services//More_Layers/13"
+          },
+          "14": {
+            "id": 14,
+            "name": "SURFACE GEOLOGY",
+            "url": "https://gaia.igme.gr/server/rest/services//More_Layers/14"
+          }
+        }
+      },
+      "Sounding_MIL1": {
+        "name": "Sounding_MIL1",
+        "type": "MapServer",
+        "url": "https://gaia.igme.gr/server/rest/services//Sounding_MIL1/MapServer",
+        "layers": {
+          "0": {
+            "id": 0,
+            "name": "geophysics.geophysics_admin.soundings",
+            "url": "https://gaia.igme.gr/server/rest/services//Sounding_MIL1/0"
+          }
+        }
+      },
+      "Cartography": {
+        "Geological": {
+          "name": "Geological",
+          "type": "MapServer",
+          "url": "https://gaia.igme.gr/server/rest/services//Cartography/Geological/MapServer",
+          "layers": {
+            "1": {
+              "id": 1,
+              "name": "Spring",
+              "url": "https://gaia.igme.gr/server/rest/services//Cartography/Geological/1"
+            },
+            "2": {
+              "id": 2,
+              "name": "OreOccurence",
+              "url": "https://gaia.igme.gr/server/rest/services//Cartography/Geological/2"
+            },
+            "3": {
+              "id": 3,
+              "name": "Mine",
+              "url": "https://gaia.igme.gr/server/rest/services//Cartography/Geological/3"
+            },
+            "4": {
+              "id": 4,
+              "name": "TectonicContact",
+              "url": "https://gaia.igme.gr/server/rest/services//Cartography/Geological/4"
+            },
+            "5": {
+              "id": 5,
+              "name": "Fault",
+              "url": "https://gaia.igme.gr/server/rest/services//Cartography/Geological/5"
+            },
+            "7": {
+              "id": 7,
+              "name": "Geology",
+              "url": "https://gaia.igme.gr/server/rest/services//Cartography/Geological/7"
+            }
+          }
+        },
+        "Lithology_Age": {
+          "name": "Lithology_Age",
+          "type": "MapServer",
+          "url": "https://gaia.igme.gr/server/rest/services//Cartography/Lithology_Age/MapServer",
+          "layers": {
+            "0": {
+              "id": 0,
+              "name": "1GE_Final2",
+              "url": "https://gaia.igme.gr/server/rest/services//Cartography/Lithology_Age/0"
+            }
+          }
+        }
+      },
+      "Geochemistry": {
+        "Cu": {
+          "name": "Cu",
+          "type": "MapServer",
+          "url": "https://gaia.igme.gr/server/rest/services//Geochemistry/Cu/MapServer",
+          "layers": {
+            "0": {
+              "id": 0,
+              "name": "Cu",
+              "url": "https://gaia.igme.gr/server/rest/services//Geochemistry/Cu/0"
+            }
+          }
+        },
+        "STSD": {
+          "name": "STSD",
+          "type": "MapServer",
+          "url": "https://gaia.igme.gr/server/rest/services//Geochemistry/STSD/MapServer",
+          "layers": {
+            "0": {
+              "id": 0,
+              "name": "STSD",
+              "url": "https://gaia.igme.gr/server/rest/services//Geochemistry/STSD/0"
+            }
+          }
+        }
+      },
+      "Geology1M": {
+        "Geology1M": {
+          "name": "Geology1M",
+          "type": "MapServer",
+          "url": "https://gaia.igme.gr/server/rest/services//Geology1M/Geology1M/MapServer",
+          "layers": {
+            "0": {
+              "id": 0,
+              "name": "Faults",
+              "url": "https://gaia.igme.gr/server/rest/services//Geology1M/Geology1M/0"
+            },
+            "1": {
+              "id": 1,
+              "name": "Korimata",
+              "url": "https://gaia.igme.gr/server/rest/services//Geology1M/Geology1M/1"
+            },
+            "2": {
+              "id": 2,
+              "name": "Lithology",
+              "url": "https://gaia.igme.gr/server/rest/services//Geology1M/Geology1M/2"
+            }
+          }
+        }
+      },
+      "HydroGeology": {
+        "Rivers": {
+          "name": "Rivers",
+          "type": "MapServer",
+          "url": "https://gaia.igme.gr/server/rest/services//HydroGeology/Rivers/MapServer",
+          "layers": {
+            "0": {
+              "id": 0,
+              "name": "RiversALL",
+              "url": "https://gaia.igme.gr/server/rest/services//HydroGeology/Rivers/0"
+            }
+          }
+        },
+        "SerresSamy": {
+          "name": "SerresSamy",
+          "type": "MapServer",
+          "url": "https://gaia.igme.gr/server/rest/services//HydroGeology/SerresSamy/MapServer",
+          "layers": {}
+        },
+        "ΔΙΠΥΝ": {
+          "name": "ΔΙΠΥΝ",
+          "type": "MapServer",
+          "url": "https://gaia.igme.gr/server/rest/services//HydroGeology/ΔΙΠΥΝ/MapServer",
+          "layers": {
+            "1": {
+              "id": 1,
+              "name": "Υδροσημεία",
+              "url": "https://gaia.igme.gr/server/rest/services//HydroGeology/ΔΙΠΥΝ/1"
+            },
+            "7": {
+              "id": 7,
+              "name": "ΓΚΠΣ",
+              "url": "https://gaia.igme.gr/server/rest/services//HydroGeology/ΔΙΠΥΝ/7"
+            },
+            "11": {
+              "id": 11,
+              "name": "Υδατικά Διαμερίσματα",
+              "url": "https://gaia.igme.gr/server/rest/services//HydroGeology/ΔΙΠΥΝ/11"
+            }
+          }
+        },
+        "ΣΑΜΥ": {
+          "name": "ΣΑΜΥ",
+          "type": "MapServer",
+          "url": "https://gaia.igme.gr/server/rest/services//HydroGeology/ΣΑΜΥ/MapServer",
+          "layers": {
+            "0": {
+              "id": 0,
+              "name": "Υδροσημεία",
+              "url": "https://gaia.igme.gr/server/rest/services//HydroGeology/ΣΑΜΥ/0"
+            }
+          }
+        },
+        "ΣΑΜΥΙΙ": {
+          "name": "ΣΑΜΥΙΙ",
+          "type": "MapServer",
+          "url": "https://gaia.igme.gr/server/rest/services//HydroGeology/ΣΑΜΥΙΙ/MapServer",
+          "layers": {
+            "0": {
+              "id": 0,
+              "name": "ΣΑΜΥ ΙΙ",
+              "url": "https://gaia.igme.gr/server/rest/services//HydroGeology/ΣΑΜΥΙΙ/0"
+            }
+          }
+        }
+      },
+      "MarblesAtlas": {
+        "Marbles": {
+          "name": "Marbles",
+          "type": "MapServer",
+          "url": "https://gaia.igme.gr/server/rest/services//MarblesAtlas/Marbles/MapServer",
+          "layers": {
+            "4": {
+              "id": 4,
+              "name": "Άτλας Μαρμάρων",
+              "url": "https://gaia.igme.gr/server/rest/services//MarblesAtlas/Marbles/4"
+            }
+          }
+        }
+      },
+      "Metallogenetic": {
+        "Metal": {
+          "name": "Metal",
+          "type": "MapServer",
+          "url": "https://gaia.igme.gr/server/rest/services//Metallogenetic/Metal/MapServer",
+          "layers": {
+            "0": {
+              "id": 0,
+              "name": "metallogenetic.sde.Sites",
+              "url": "https://gaia.igme.gr/server/rest/services//Metallogenetic/Metal/0"
+            }
+          }
+        }
+      },
+      "SamplingDrilling": {
+        "Sampling_Drilling": {
+          "name": "Sampling_Drilling",
+          "type": "MapServer",
+          "url": "https://gaia.igme.gr/server/rest/services//SamplingDrilling/Sampling_Drilling/MapServer",
+          "layers": {
+            "1": {
+              "id": 1,
+              "name": "Δειγματοληπτικές Γεωτρήσεις",
+              "url": "https://gaia.igme.gr/server/rest/services//SamplingDrilling/Sampling_Drilling/1"
+            },
+            "8": {
+              "id": 8,
+              "name": "Περιοχές Έρευνας",
+              "url": "https://gaia.igme.gr/server/rest/services//SamplingDrilling/Sampling_Drilling/8"
+            }
+          }
+        }
+      },
+      "seismotectonics": {
+        "active_seismic_faults": {
+          "name": "active_seismic_faults",
+          "type": "MapServer",
+          "url": "https://gaia.igme.gr/server/rest/services//seismotectonics/active_seismic_faults/MapServer",
+          "layers": {
+            "0": {
+              "id": 0,
+              "name": "FAULT_TRACES",
+              "url": "https://gaia.igme.gr/server/rest/services//seismotectonics/active_seismic_faults/0"
+            },
+            "1": {
+              "id": 1,
+              "name": "FAULT_ZONES",
+              "url": "https://gaia.igme.gr/server/rest/services//seismotectonics/active_seismic_faults/1"
+            },
+            "2": {
+              "id": 2,
+              "name": "EARTHQUAKES_ASSOCIATED",
+              "url": "https://gaia.igme.gr/server/rest/services//seismotectonics/active_seismic_faults/2"
+            }
+          }
+        }
+      },
+      "Topography": {
+        "ΔΙΑΝΟΜΗ_50000": {
+          "name": "ΔΙΑΝΟΜΗ_50000",
+          "type": "MapServer",
+          "url": "https://gaia.igme.gr/server/rest/services//Topography/ΔΙΑΝΟΜΗ_50000/MapServer",
+          "layers": {
+            "0": {
+              "id": 0,
+              "name": "GYS_50000",
+              "url": "https://gaia.igme.gr/server/rest/services//Topography/ΔΙΑΝΟΜΗ_50000/0"
+            }
+          }
+        }
+      }
+    }
+  ]
+}
