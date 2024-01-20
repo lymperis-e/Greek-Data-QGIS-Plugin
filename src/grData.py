@@ -43,7 +43,7 @@ from .sub.custom_geoserver_requests import custom_geoserver_get_thumbnail as CGG
 from .sub.custom_geoserver_requests import custom_geoserver_load_service as CGLS
 
 # Local Imports
-from .sub.helper_functions import fill_subtree_widget, fill_tree_widget
+from .sub.helper_functions import fill_subtree_widget, fill_tree_widget, fillServiceTree
 
 basePath = os.path.dirname(os.path.abspath(__file__))
 settings_path = os.path.join(basePath, "assets/sets")
@@ -357,26 +357,54 @@ class grData:
             widget=self.dockwidget.conn_list_widget,
             value=[s.name for s in services],
             expanded=False,
-            clicked=self.expand_service,
         )
 
         # When a widget item is clicked, show details
-        # self.dockwidget.conn_list_widget.itemClicked.connect(self.expand_service)
+        self.dockwidget.conn_list_widget.itemClicked.connect(
+            self.handle_connections_list_click
+        )
 
-    def expand_service(self):
-        name = self.dockwidget.conn_list_widget.selectedItems()[0].text(0)
-        try:
-            service = self.serviceManager.getService(name)
-            fill_subtree_widget(
-                self.dockwidget.conn_list_widget.selectedItems()[0], service.getLayers()
-            )
-        except ServiceNotExists as e:
-            print(e)
-            print([s.name for s in self.serviceManager.getServicesList()])
-            # fill_subtree_widget(self.dockwidget.conn_list_widget.selectedItems()[0], [e] )
+        self.dockwidget.conn_list_widget.itemDoubleClicked.connect(
+            self.handle_connections_list_double_click
+        )
 
-    def getLayerDetails(self, listItem):
-        l_name = listItem.text()
+    def handle_connections_list_click(self, item, column):
+        parent = item.parent()
+
+        # Top level item (service)
+        if not parent:
+            self.expand_service(item)
+
+        # Child item (layer)
+        else:
+            self.expand_layer(item, parent)
+
+    def handle_connections_list_double_click(self, item, column):
+        parent = item.parent()
+
+        # Top level item (service)
+        if not parent:
+            return
+
+        self.add_layer(item, parent)
+
+    def expand_service(self, item):
+        if item.childCount() > 0:
+            return
+
+        name = item.text(0)
+        service = self.serviceManager.getService(name)
+        fillServiceTree(item, service)
+
+    def expand_layer(self, item, parent):
+        service = self.serviceManager.getService(parent.text(0))
+        layer = service.getLayer(parent.indexOfChild(item))
+        print(f"Layer: {layer.name} ({layer.type}): {layer.url}")
+
+    def add_layer(self, item, parent):
+        service = self.serviceManager.getService(parent.text(0))
+        layer = service.getLayer(parent.indexOfChild(item))
+        layer.addToMap()
 
     # --------------------------------------------------------------------------
 

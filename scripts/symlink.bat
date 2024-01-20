@@ -1,1 +1,1 @@
-mklink /J "C:\Users\User\AppData\Roaming\QGIS\QGIS3\profiles\default\python\plugins\grdata" "C:\Users\User\Documents\dev_personal\grdata"
+mklink /J "C:\Users\User\AppData\Roaming\QGIS\QGIS3\profiles\default\python\plugins\grdata" "C:\Users\User\Documents\dev_personal\grdata\src"

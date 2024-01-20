@@ -17,7 +17,7 @@ class LoadEsriAsync(QgsTask):
     loaded = pyqtSignal(list)
 
     def __init__(self, url):
-        super().__init__("Loading calabilities frmo ArcGIS server", QgsTask.CanCancel)
+        super().__init__(f"Loading from {url} (ESRI server)", QgsTask.CanCancel)
 
         self.url = url
         self.capabilities = dict()
@@ -27,6 +27,9 @@ class LoadEsriAsync(QgsTask):
     def query_esri_server(
         self, url, parent_url=None, parent_type=None
     ) -> Dict[str, Dict[str, str]]:
+        # Clean url
+        url = url.rstrip("/")
+
         # Query the REST endpoint
         payload = {"f": "pjson"}
         response = requests.get(
@@ -65,13 +68,7 @@ class LoadEsriAsync(QgsTask):
         for layer in response.get("layers", []):
             layer_id = int(layer["id"])
             layer_name = layer["name"]
-            layer_url = url
-
-            if parent_url:
-                layer_url = parent_url
-            if parent_type:
-                layer_url += f"/{parent_type}"
-            layer_url += f"/{layer_id}"
+            layer_url = f"{url}/{layer_id}"
 
             service_layers[layer_id] = {
                 "id": layer_id,
@@ -100,9 +97,10 @@ class LoadEsriAsync(QgsTask):
     def finished(self, result):
         # Success
         if result:
+            print(self.layers)
             self.loaded.emit(self.layers)
             QgsMessageLog.logMessage(
-                "Succesfully fetched Capabilities data from ArcGIS server",
+                f"Succesfully loaded {self.url} (ESRI server)",
                 MESSAGE_CATEGORY,
                 Qgis.Success,
             )
@@ -128,7 +126,7 @@ class ESRIService:
 
         self.capabilities = dict()
         self.available_layers = list()
-        self.layers = dict()
+        self.layers = list()
 
         self.tm = QgsApplication.taskManager()
         self.loaded = False
@@ -151,7 +149,7 @@ class ESRIService:
             if not ltype:
                 continue
             layer_instance = Layer(layer["url"], layer["name"], ltype)
-            self.layers[layer["name"]] = layer_instance
+            self.layers.append(layer_instance)
 
         # Set loaded to true
         self.loaded = True
@@ -163,4 +161,10 @@ class ESRIService:
         if not self.loaded:
             self.load()
 
-        return list(self.layers.keys())
+        return self.layers
+
+    def getLayer(self, idx: int) -> Layer:
+        if not self.loaded:
+            self.load()
+
+        return self.layers[idx]
