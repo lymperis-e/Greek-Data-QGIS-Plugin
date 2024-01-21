@@ -1,13 +1,32 @@
 from os.path import dirname, join
 
 from qgis.PyQt.QtGui import QIcon
-from qgis.PyQt.QtWidgets import QAction, QMenu, QTreeWidgetItem
+from qgis.PyQt.QtWidgets import QTreeWidgetItem
 
 from ..core.Layer import Layer
+from ..core.utils.QUrlIcon import QUrlIcon
 
 plugin_logo = join(dirname(dirname(__file__)), "assets", "img", "icon.png")
 
 
+def get_base_url(url):
+    from urllib.parse import urlparse
+
+    parsed_url = urlparse(url)
+    base_url = f"{parsed_url.scheme}://{parsed_url.netloc}"
+    return base_url
+
+
+def service_icon(service):
+    ico_url = get_base_url(service.url) + "/favicon.ico"
+    qUriIcon = QUrlIcon(ico_url).icon()
+
+    if qUriIcon is None:
+        qUriIcon = QIcon(plugin_logo)
+    return QIcon(qUriIcon)
+
+
+# Layers
 def addLayerItem(layer, parent):
     child = QTreeWidgetItem()
     child.setText(0, unicode(layer.name))
@@ -18,7 +37,7 @@ def addLayerItem(layer, parent):
     parent.addChild(child)
 
 
-def fillServiceTree(parentItem, service, expanded=True):
+def fillServiceLayers(parentItem, service, expanded=True):
     service_layers = service.getLayers()
     for layer in service_layers:
         addLayerItem(layer, parentItem)
@@ -26,6 +45,21 @@ def fillServiceTree(parentItem, service, expanded=True):
     parentItem.setExpanded(expanded)
 
 
+# Services
+def addServiceItem(service, parent):
+    child = QTreeWidgetItem()
+    child.setText(0, unicode(service.name))
+    child.setIcon(0, service_icon(service))
+
+    parent.addChild(child)
+
+
+def fillServices(parentItem, services):
+    for service in services:
+        addServiceItem(service, parentItem.invisibleRootItem())
+
+
+# Generic, to be DEPRECATED
 def fill_tree_item(item, value, exp):
     item.setExpanded(exp)
     if isinstance(value, dict):

@@ -10,7 +10,7 @@ from .ServiceFactory import ServiceFactory
 
 
 class ServiceManager:
-    remote_repo = "https://gist.githubusercontent.com/lymperis-e/2619fc1d13fd57be2faa4373f5bfa825/raw/f879d3ec37706732173654661533c66257c97bfc/services.json"
+    remote_repo = "https://gist.githubusercontent.com/lymperis-e/2619fc1d13fd57be2faa4373f5bfa825/raw/7f143ff2c1ee63ab9d925475293c26ac9a99c3b8/services.json"
 
     def __init__(self):
         self.available_services = self.load_remote_services()

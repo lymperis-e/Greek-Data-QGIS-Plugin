@@ -31,6 +31,7 @@ from qgis.PyQt.QtWidgets import QAction, QTableWidgetItem
 
 from .core.AbstractService import ServiceNotExists
 from .core.ServiceManager import ServiceManager
+from .core.utils.QUrlIcon import QUrlIcon
 
 # Import the code for the DockWidget
 from .grData_dockwidget import grDataDockWidget
@@ -43,7 +44,12 @@ from .sub.custom_geoserver_requests import custom_geoserver_get_thumbnail as CGG
 from .sub.custom_geoserver_requests import custom_geoserver_load_service as CGLS
 
 # Local Imports
-from .sub.helper_functions import fill_subtree_widget, fill_tree_widget, fillServiceTree
+from .sub.helper_functions import (
+    fill_subtree_widget,
+    fill_tree_widget,
+    fillServiceLayers,
+    fillServices,
+)
 
 basePath = os.path.dirname(os.path.abspath(__file__))
 settings_path = os.path.join(basePath, "assets/sets")
@@ -353,11 +359,7 @@ class grData:
     def fill_connections_list(self):
         services = self.serviceManager.getServicesList()
         self.dockwidget.conn_list_widget.clear()
-        fill_tree_widget(
-            widget=self.dockwidget.conn_list_widget,
-            value=[s.name for s in services],
-            expanded=False,
-        )
+        fillServices(self.dockwidget.conn_list_widget, services)
 
         # When a widget item is clicked, show details
         self.dockwidget.conn_list_widget.itemClicked.connect(
@@ -394,7 +396,7 @@ class grData:
 
         name = item.text(0)
         service = self.serviceManager.getService(name)
-        fillServiceTree(item, service)
+        fillServiceLayers(item, service)
 
     def expand_layer(self, item, parent):
         service = self.serviceManager.getService(parent.text(0))

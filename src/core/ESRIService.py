@@ -39,6 +39,10 @@ class LoadEsriAsync(QgsTask):
             timeout=10,
         ).json()
 
+        if "error" in response:
+            self.exception = Exception(response)
+            return None
+
         # Initialize the dictionary for this level of the directory
         service_layers = dict()
 
@@ -97,7 +101,6 @@ class LoadEsriAsync(QgsTask):
     def finished(self, result):
         # Success
         if result:
-            print(self.layers)
             self.loaded.emit(self.layers)
             QgsMessageLog.logMessage(
                 f"Succesfully loaded {self.url} (ESRI server)",
@@ -108,7 +111,7 @@ class LoadEsriAsync(QgsTask):
 
         # Cancelled
         if self.exception is None:
-            self.service_dict_signal.emit(self.layers)
+            self.loaded.emit(self.layers)
             QgsMessageLog.logMessage(
                 f'Request "{self.description()}" not successful but without '
                 "exception (probably the task was manually "
@@ -117,6 +120,13 @@ class LoadEsriAsync(QgsTask):
                 Qgis.Warning,
             )
             return
+
+        # Error
+        QgsMessageLog.logMessage(
+            f"Error while loading {self.url} (ESRI server): {self.exception}",
+            MESSAGE_CATEGORY,
+            Qgis.Critical,
+        )
 
 
 class ESRIService:
