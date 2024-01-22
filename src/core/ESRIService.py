@@ -53,6 +53,7 @@ class LoadEsriAsync(QgsTask):
             "TEST_DXF2GDB_SERVICE",
             "temp",
             "PrintLayouts",
+            "DIONYSIS",
         ]
 
         response = self._get(url)
@@ -148,10 +149,20 @@ class LoadEsriAsync(QgsTask):
 
         # Error
         QgsMessageLog.logMessage(
-            f"Error while loading {self.url} (ESRI server): {self.exception}. Result was: {result}.Capabilities: {self.capabilities}",
+            f"Error while loading {self.url} (ESRI server): {self.exception}.",
             MESSAGE_CATEGORY,
             Qgis.Critical,
         )
+
+
+ESRI_GEOMTRY_TYPES = [
+    None,  # raster
+    "esriGeometryPoint",
+    "esriGeometryMultipoint",
+    "esriGeometryPolyline",
+    "esriGeometryPolygon",
+    "esriGeometryEnvelope",
+]
 
 
 class ESRIService(GrdService):
@@ -171,6 +182,19 @@ class ESRIService(GrdService):
         self.tm = QgsApplication.taskManager()
 
     def _getLayerType(self, layer: Dict[str, str]) -> str:
+        attributes = layer.get("attributes")
+
+        if attributes.get("geometryType") == "esriGeometryPoint":
+            return "esri-feature"
+        if attributes.get("geometryType") == "esriGeometryPolyline":
+            return "esri-feature"
+        if attributes.get("geometryType") == "esriGeometryPolygon":
+            return "esri-feature"
+        if attributes.get("geometryType") == "esriGeometryEnvelope":
+            return "esri-feature"
+        if attributes.get("geometryType") == "esriGeometryMultipoint":
+            return "esri-feature"
+
         if layer["type"] == "MapServer" or layer["type"] == "esri-map":
             return "esri-map"
         if layer["type"] == "FeatureServer" or layer["type"] == "esri-feature":
