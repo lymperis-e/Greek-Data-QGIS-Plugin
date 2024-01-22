@@ -11,7 +11,7 @@ from .ServiceFactory import ServiceFactory
 
 
 class ServiceManager:
-    remote_repo = "https://gist.githubusercontent.com/lymperis-e/2619fc1d13fd57be2faa4373f5bfa825/raw/f09292db0880d37c3bdf9e57b1a98e4cdd56fcf0/services.json"
+    remote_repo = "https://gist.githubusercontent.com/lymperis-e/2619fc1d13fd57be2faa4373f5bfa825/raw"
 
     def __init__(
         self,

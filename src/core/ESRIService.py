@@ -29,12 +29,14 @@ class LoadEsriAsync(QgsTask):
         url = url.rstrip("/")
 
         # Query the REST endpoint
-        payload = {"f": "pjson"}
+        payload = {"f": "json"}
         response = requests.get(
             url,
             params=payload,
             headers={"user-agent": "grdata-qgis-plugin/1.0.0"},
             timeout=10,
+            allow_redirects=True,
+            cookies=None,
         ).json()
 
         if "error" in response:
@@ -44,6 +46,15 @@ class LoadEsriAsync(QgsTask):
         return response
 
     def query_esri_server(self, url, parent_type=None) -> Dict[str, Dict[str, str]]:
+        folders_to_exclude = [
+            "Basemap",
+            "Utilities",
+            "Thematic_Map",
+            "TEST_DXF2GDB_SERVICE",
+            "temp",
+            "PrintLayouts",
+        ]
+
         response = self._get(url)
         if response is None:
             return None
@@ -57,7 +68,10 @@ class LoadEsriAsync(QgsTask):
             service_type = service["type"]
             service_url = f"{url}/{service_name}/{service_type}"
 
-            service_layers = self.query_esri_server(service_url, service_type)
+            _service_layers = self.query_esri_server(service_url, service_type)
+            if not _service_layers:
+                continue
+            service_layers.update(_service_layers)
 
             service_layers[service_name] = {
                 "name": service_name,
@@ -68,6 +82,8 @@ class LoadEsriAsync(QgsTask):
 
         # Recursively add any subdirectories and layers to the dictionary
         for folder in response.get("folders", list()):
+            if folder in folders_to_exclude:
+                continue
             folder_url = f"{url}/{folder}"
             folder_dict = self.query_esri_server(folder_url, folder)
             if folder_dict:
@@ -132,7 +148,7 @@ class LoadEsriAsync(QgsTask):
 
         # Error
         QgsMessageLog.logMessage(
-            f"Error while loading {self.url} (ESRI server): {self.exception}",
+            f"Error while loading {self.url} (ESRI server): {self.exception}. Result was: {result}.Capabilities: {self.capabilities}",
             MESSAGE_CATEGORY,
             Qgis.Critical,
         )

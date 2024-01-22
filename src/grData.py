@@ -374,11 +374,6 @@ class grData:
             self.connListChanged
         )
 
-        # Click
-        # self.dockwidget.conn_list_widget.itemClicked.connect(
-        #    self.handle_connections_list_click
-        # )
-
         # Double-click
         self.dockwidget.conn_list_widget.itemDoubleClicked.connect(
             self.handle_connections_list_double_click
@@ -392,11 +387,6 @@ class grData:
             filter_tree_widget_leafs(self.dockwidget.conn_list_widget, filter_text)
         else:
             return
-
-    # def handle_connections_list_click(self, item, column):
-    #    parent = item.parent()
-    #    # Top level item (service)
-    #    if not parent:
 
     def handle_connections_list_double_click(self, item, column):
         parent = item.parent()
