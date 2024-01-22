@@ -94,7 +94,7 @@ class ArcServer_load_service(QgsTask):
                 if r.status_code == 200:
                     response_obj = json.loads(r.content)
                     C_layers = response_obj["layers"]  # C_layers is a LIST of DICTS
-                    layers_list = []
+                    layers_list = list()
 
                     i = 0
                     for layer in C_layers:

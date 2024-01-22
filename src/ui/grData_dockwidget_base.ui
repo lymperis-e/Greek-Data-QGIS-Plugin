@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>611</width>
-    <height>701</height>
+    <width>631</width>
+    <height>740</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -945,7 +945,7 @@ QTreetWidget::item::active {
              </widget>
             </item>
             <item>
-             <layout class="QHBoxLayout" name="horizontalLayout_2">
+             <layout class="QHBoxLayout" name="horizontalLayout">
               <item>
                <widget class="QLabel" name="label_7">
                 <property name="font">
@@ -958,6 +958,9 @@ QTreetWidget::item::active {
                  <string>Filter : </string>
                 </property>
                </widget>
+              </item>
+              <item>
+               <widget class="QComboBox" name="filter_services_combobox"/>
               </item>
               <item>
                <widget class="QLineEdit" name="filter_services_line_edit">
@@ -987,27 +990,10 @@ QTreetWidget::item::active {
                <enum>Qt::Vertical</enum>
               </property>
               <widget class="QWidget" name="widget_15" native="true">
-               <layout class="QGridLayout" name="gridLayout_32">
-                <item row="0" column="0">
-                 <layout class="QGridLayout" name="gridLayout_33">
-                  <item row="0" column="0">
-                   <widget class="QCheckBox" name="custom_geoserver_details_checkbox_2">
-                    <property name="font">
-                     <font>
-                      <pointsize>9</pointsize>
-                      <weight>75</weight>
-                      <bold>true</bold>
-                     </font>
-                    </property>
-                    <property name="text">
-                     <string>Layer Details</string>
-                    </property>
-                    <property name="checked">
-                     <bool>true</bool>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="0" column="1">
+               <layout class="QVBoxLayout" name="verticalLayout_3">
+                <item>
+                 <layout class="QVBoxLayout" name="verticalLayout_2">
+                  <item>
                    <widget class="QLabel" name="custom_geoserver_loading_label_3">
                     <property name="enabled">
                      <bool>true</bool>
@@ -1031,8 +1017,64 @@ QTreetWidget::item::active {
                     </property>
                    </widget>
                   </item>
-                  <item row="2" column="0" colspan="2">
-                   <widget class="QTreeWidget" name="custom_geoserver_details_tree_2">
+                  <item>
+                   <widget class="QCheckBox" name="current_layers_details_checkbox">
+                    <property name="font">
+                     <font>
+                      <pointsize>9</pointsize>
+                      <weight>75</weight>
+                      <bold>true</bold>
+                     </font>
+                    </property>
+                    <property name="text">
+                     <string>Layer Details</string>
+                    </property>
+                    <property name="checked">
+                     <bool>true</bool>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="current_layer_name_label">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="font">
+                     <font>
+                      <pointsize>11</pointsize>
+                      <weight>75</weight>
+                      <bold>true</bold>
+                     </font>
+                    </property>
+                    <property name="text">
+                     <string/>
+                    </property>
+                    <property name="wordWrap">
+                     <bool>true</bool>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="current_layer_description_label">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="text">
+                     <string/>
+                    </property>
+                    <property name="wordWrap">
+                     <bool>true</bool>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QTreeWidget" name="current_layer_details_tree">
                     <property name="enabled">
                      <bool>true</bool>
                     </property>
@@ -1046,16 +1088,25 @@ QTreetWidget::item::active {
                      <bool>true</bool>
                     </property>
                     <property name="animated">
+                     <bool>true</bool>
+                    </property>
+                    <property name="headerHidden">
                      <bool>false</bool>
                     </property>
                     <property name="columnCount">
-                     <number>1</number>
+                     <number>2</number>
                     </property>
                     <attribute name="headerVisible">
                      <bool>false</bool>
                     </attribute>
                     <attribute name="headerCascadingSectionResizes">
                      <bool>false</bool>
+                    </attribute>
+                    <attribute name="headerMinimumSectionSize">
+                     <number>60</number>
+                    </attribute>
+                    <attribute name="headerDefaultSectionSize">
+                     <number>120</number>
                     </attribute>
                     <attribute name="headerHighlightSections">
                      <bool>false</bool>
@@ -1065,22 +1116,11 @@ QTreetWidget::item::active {
                       <string notr="true">1</string>
                      </property>
                     </column>
-                   </widget>
-                  </item>
-                  <item row="1" column="0" colspan="2">
-                   <widget class="QLabel" name="custom_geoserver_layer_description_label_2">
-                    <property name="sizePolicy">
-                     <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-                      <horstretch>0</horstretch>
-                      <verstretch>0</verstretch>
-                     </sizepolicy>
-                    </property>
-                    <property name="text">
-                     <string/>
-                    </property>
-                    <property name="wordWrap">
-                     <bool>true</bool>
-                    </property>
+                    <column>
+                     <property name="text">
+                      <string notr="true">2</string>
+                     </property>
+                    </column>
                    </widget>
                   </item>
                  </layout>
@@ -1104,7 +1144,7 @@ QTreetWidget::item::active {
                    <number>9</number>
                   </property>
                   <item row="2" column="0">
-                   <widget class="QPushButton" name="custom_geoserver_add_button_2">
+                   <widget class="QPushButton" name="current_layer_add_to_map_btn">
                     <property name="enabled">
                      <bool>false</bool>
                     </property>

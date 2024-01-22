@@ -5,6 +5,7 @@ from qgis.core import Qgis, QgsApplication, QgsMessageLog, QgsTask
 from qgis.PyQt.QtCore import pyqtSignal
 
 from .Layer import Layer
+from .Service import GrdService
 
 MESSAGE_CATEGORY = "GreekData-GetCapabilities (ArcGIS server)"
 
@@ -24,10 +25,7 @@ class LoadEsriAsync(QgsTask):
         self.layers = list()
         self.exception = None
 
-    def query_esri_server(
-        self, url, parent_url=None, parent_type=None
-    ) -> Dict[str, Dict[str, str]]:
-        # Clean url
+    def _get(self, url):
         url = url.rstrip("/")
 
         # Query the REST endpoint
@@ -43,16 +41,23 @@ class LoadEsriAsync(QgsTask):
             self.exception = Exception(response)
             return None
 
+        return response
+
+    def query_esri_server(self, url, parent_type=None) -> Dict[str, Dict[str, str]]:
+        response = self._get(url)
+        if response is None:
+            return None
+
         # Initialize the dictionary for this level of the directory
         service_layers = dict()
 
         # Add any services at this level of the directory to the dictionary
-        for service in response.get("services", []):
+        for service in response.get("services", list()):
             service_name = service["name"].split("/")[-1]
             service_type = service["type"]
             service_url = f"{url}/{service_name}/{service_type}"
 
-            service_layers = self.query_esri_server(service_url, url, service_type)
+            service_layers = self.query_esri_server(service_url, service_type)
 
             service_layers[service_name] = {
                 "name": service_name,
@@ -62,23 +67,26 @@ class LoadEsriAsync(QgsTask):
             }
 
         # Recursively add any subdirectories and layers to the dictionary
-        for folder in response.get("folders", []):
+        for folder in response.get("folders", list()):
             folder_url = f"{url}/{folder}"
-            folder_dict = self.query_esri_server(folder_url, url, folder)
+            folder_dict = self.query_esri_server(folder_url, folder)
             if folder_dict:
                 service_layers[folder] = folder_dict
 
         # Add any layers for this service to the dictionary
-        for layer in response.get("layers", []):
+        for layer in response.get("layers", list()):
             layer_id = int(layer["id"])
             layer_name = layer["name"]
             layer_url = f"{url}/{layer_id}"
+
+            layer_attributes = self._get(layer_url)
 
             service_layers[layer_id] = {
                 "id": layer_id,
                 "name": layer_name,
                 "url": layer_url,
                 "type": parent_type,
+                "attributes": layer_attributes,
             }
 
             self.layers.append(
@@ -87,6 +95,7 @@ class LoadEsriAsync(QgsTask):
                     "name": layer_name,
                     "url": layer_url,
                     "type": parent_type,
+                    "attributes": layer_attributes,
                 }
             )
 
@@ -129,52 +138,30 @@ class LoadEsriAsync(QgsTask):
         )
 
 
-class ESRIService:
-    def __init__(self, name, url):
-        self.name = name
-        self.url = url
-
-        self.capabilities = dict()
-        self.available_layers = list()
-        self.layers = list()
+class ESRIService(GrdService):
+    def __init__(self, name, url, *args, **kwargs) -> GrdService:
+        super().__init__(
+            name=name,
+            url=url,
+            service_type="esri",
+            loaded=False,
+            capabilities=dict(),
+            available_layers=list(),
+            layers=list(),
+            *args,
+            **kwargs,
+        )
 
         self.tm = QgsApplication.taskManager()
-        self.loaded = False
 
-    def getType(self, layer: Dict[str, str]) -> str:
-        if layer["type"] == "MapServer":
+    def _getLayerType(self, layer: Dict[str, str]) -> str:
+        if layer["type"] == "MapServer" or layer["type"] == "esri-map":
             return "esri-map"
-        if layer["type"] == "FeatureServer":
+        if layer["type"] == "FeatureServer" or layer["type"] == "esri-feature":
             return "esri-feature"
         return None
 
-    def getCapabilities(self) -> Dict:
+    def _getRemoteCapabilities(self) -> Dict:
         capabilities_request = LoadEsriAsync(self.url)
-        capabilities_request.loaded.connect(self.setupLayers)
+        capabilities_request.loaded.connect(self._setupLayers)
         self.tm.addTask(capabilities_request)
-
-    def setupLayers(self, available_layers) -> None:
-        for layer in available_layers:
-            ltype = self.getType(layer)
-            if not ltype:
-                continue
-            layer_instance = Layer(layer["url"], layer["name"], ltype)
-            self.layers.append(layer_instance)
-
-        # Set loaded to true
-        self.loaded = True
-
-    def load(self) -> None:
-        self.getCapabilities()
-
-    def getLayers(self) -> List[Layer]:
-        if not self.loaded:
-            self.load()
-
-        return self.layers
-
-    def getLayer(self, idx: int) -> Layer:
-        if not self.loaded:
-            self.load()
-
-        return self.layers[idx]

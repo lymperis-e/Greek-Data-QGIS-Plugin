@@ -29,7 +29,7 @@ from qgis.PyQt.QtCore import QByteArray, QCoreApplication, QSettings, Qt, QTrans
 from qgis.PyQt.QtGui import QIcon, QPixmap
 from qgis.PyQt.QtWidgets import QAction, QTableWidgetItem
 
-from .core.AbstractService import ServiceNotExists
+from .core.Service import ServiceNotExists
 from .core.ServiceManager import ServiceManager
 from .core.utils.QUrlIcon import QUrlIcon
 
@@ -45,10 +45,11 @@ from .sub.custom_geoserver_requests import custom_geoserver_load_service as CGLS
 
 # Local Imports
 from .sub.helper_functions import (
-    fill_subtree_widget,
     fill_tree_widget,
     fillServiceLayers,
     fillServices,
+    filter_tree_widget_leafs,
+    filter_tree_widget_roots,
 )
 
 basePath = os.path.dirname(os.path.abspath(__file__))
@@ -98,7 +99,7 @@ class grData:
             QCoreApplication.installTranslator(self.translator)
 
         # Declare instance attributes
-        self.actions = []
+        self.actions = list()
         self.menu = self.tr("&Greek Data")
         # TODO: We are going to let the user set this up in a future iteration
         self.toolbar = self.iface.addToolBar("grData")
@@ -354,32 +355,48 @@ class grData:
             # DEV: New tab
             self.fill_connections_list()
 
-    # --------------------------------------------------------------------------
+            # Add filter services targets (services, layers)
+            self.dockwidget.filter_services_combobox.clear()
+            self.dockwidget.filter_services_combobox.addItems(["Services", "Layers"])
 
+            self.dockwidget.filter_services_line_edit.textChanged.connect(
+                self.filter_connections_list
+            )
+
+    # ------------------- NEW  -------------------------------------------------------
     def fill_connections_list(self):
         services = self.serviceManager.getServicesList()
         self.dockwidget.conn_list_widget.clear()
         fillServices(self.dockwidget.conn_list_widget, services)
 
-        # When a widget item is clicked, show details
-        self.dockwidget.conn_list_widget.itemClicked.connect(
-            self.handle_connections_list_click
+        # Selection changed
+        self.dockwidget.conn_list_widget.currentItemChanged.connect(
+            self.connListChanged
         )
 
+        # Click
+        # self.dockwidget.conn_list_widget.itemClicked.connect(
+        #    self.handle_connections_list_click
+        # )
+
+        # Double-click
         self.dockwidget.conn_list_widget.itemDoubleClicked.connect(
             self.handle_connections_list_double_click
         )
 
-    def handle_connections_list_click(self, item, column):
-        parent = item.parent()
-
-        # Top level item (service)
-        if not parent:
-            self.expand_service(item)
-
-        # Child item (layer)
+    def filter_connections_list(self, filter_text):
+        filterTarget = self.dockwidget.filter_services_combobox.currentText()
+        if filterTarget == "Services":
+            filter_tree_widget_roots(self.dockwidget.conn_list_widget, filter_text)
+        elif filterTarget == "Layers":
+            filter_tree_widget_leafs(self.dockwidget.conn_list_widget, filter_text)
         else:
-            self.expand_layer(item, parent)
+            return
+
+    # def handle_connections_list_click(self, item, column):
+    #    parent = item.parent()
+    #    # Top level item (service)
+    #    if not parent:
 
     def handle_connections_list_double_click(self, item, column):
         parent = item.parent()
@@ -388,7 +405,7 @@ class grData:
         if not parent:
             return
 
-        self.add_layer(item, parent)
+        self.add_layer_to_map(item, parent)
 
     def expand_service(self, item):
         if item.childCount() > 0:
@@ -398,17 +415,35 @@ class grData:
         service = self.serviceManager.getService(name)
         fillServiceLayers(item, service)
 
-    def expand_layer(self, item, parent):
-        service = self.serviceManager.getService(parent.text(0))
-        layer = service.getLayer(parent.indexOfChild(item))
-        print(f"Layer: {layer.name} ({layer.type}): {layer.url}")
-
-    def add_layer(self, item, parent):
+    def add_layer_to_map(self, item, parent):
         service = self.serviceManager.getService(parent.text(0))
         layer = service.getLayer(parent.indexOfChild(item))
         layer.addToMap()
 
-    # --------------------------------------------------------------------------
+    def connListChanged(self, layer):
+        selectedItem = self.dockwidget.conn_list_widget.currentItem()
+        parent = selectedItem.parent()
+        if not parent:
+            self.expand_service(selectedItem)
+            return
+
+        service = self.serviceManager.getService(parent.text(0))
+        layer = service.getLayer(parent.indexOfChild(selectedItem))
+
+        print(f"Layer: {layer.name} ({layer.type}): {layer.url} | {layer.attributes}")
+
+        self.dockwidget.current_layer_details_tree.setHeaderLabels(["Key", "Value"])
+        fill_tree_widget(self.dockwidget.current_layer_details_tree, layer.attributes)
+        self.dockwidget.current_layer_description_label.setText(
+            layer.attributes["description"]
+        )
+        self.dockwidget.current_layer_name_label.setText(layer.name)
+        self.dockwidget.current_layer_add_to_map_btn.setEnabled(True)
+        self.dockwidget.current_layer_add_to_map_btn.clicked.connect(
+            lambda: layer.addToMap
+        )
+
+    # -------------------- END NEW ------------------------------------------------------
 
     def add_custom_geoserver_layer(self):
         layer_name = None
@@ -625,7 +660,7 @@ class grData:
         # It thus needs to be parsed, and only include the layers' names in the list tree,
         # while all the other details do in the details list
 
-        self.ArcServer_Layers = {}
+        self.ArcServer_Layers = dict()
         self.ArcServer_Layers = services_dict
 
         # Check if it is empty, meaning the request failed

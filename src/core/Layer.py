@@ -12,10 +12,11 @@ from qgis.core import (
 class Layer:
     # Available types:
     # esri-map, esri-feature, wms, wfs
-    def __init__(self, url, name, feature_type):
+    def __init__(self, url, name, feature_type, attributes=None, *args, **kwargs):
         self.url = url
         self.name = name
         self.type = feature_type
+        self.attributes = attributes
 
     def __str__(self) -> str:
         return self.name
@@ -63,6 +64,14 @@ class Layer:
 
     def _QgsWms(self) -> QgsRasterLayer:
         pass
+
+    def toJson(self) -> dict:
+        return {
+            "name": self.name,
+            "url": self.url,
+            "type": self.type,
+            "attributes": self.attributes,
+        }
 
     def getIcon(self) -> str:
         """

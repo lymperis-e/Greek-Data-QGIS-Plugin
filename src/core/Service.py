@@ -56,87 +56,81 @@ class GrdService:
         self.manager = manager
         self.icon = None
 
-        self.load()
+        self._loadConfig()
 
     def __str__(self):
         return self.name
 
-    def getLayerType(self, layer) -> str:
+    def _getLayerType(self, layer) -> str:
         raise NotImplementedError
 
-    def getRemoteCapabilities(self) -> Dict:
+    def _getRemoteCapabilities(self) -> Dict:
         raise NotImplementedError
 
-    def getConfigFile(self) -> str:
+    def _getConfigFile(self) -> str:
         """
         Get the path to the config file
         """
         with open(CONFIG_FILE, "r", encoding="utf-8") as f:
             return json.load(f)
 
-    def getLocalCapabilities(self) -> Union[Dict, None]:
+    def _readServiceJSON(self) -> Union[Dict, None]:
         """
         Get the capabilities of the service from the local config file
         """
-        config = self.getConfigFile()
-        services = config.get("services", None)
+        config = self._getConfigFile()
+        services = config.get("services")
         if not services:
             return None
         for service in services:
-            if service.get("name", None) == self.name:
+            if service.get("name") == self.name:
                 return service
         return None
 
-    def setupLayers(self, available_layers) -> None:
+    def _setupLayers(self, available_layers, export=True) -> None:
         """
         Setup the layers of the service, based on the available layers
         """
-        for layer in available_layers:
-            ltype = self.getLayerType(layer)
-            if not ltype:
-                continue
-            layer_instance = Layer(**layer, feature_type=ltype)
-            self.layers.append(layer_instance)
+        self.layers = [
+            Layer(**layer, feature_type=self._getLayerType(layer))
+            for layer in available_layers
+        ]
 
-        # Export the config & set the loaded flag
-        self.manager.exportConfig()
-        self.loaded = True
+        if len(self.layers) > 0:
+            self.loaded = True
 
-    def load(self, remote=False) -> None:
-        localCapabilities = self.getLocalCapabilities()
-        if not localCapabilities:
-            if remote:
-                self.__getIcon()
-                self.getRemoteCapabilities()
+            if export:
+                self.exportConfig()
+
+    def _loadConfig(self) -> None:
+        """
+        Load the service from the local config file
+        """
+        serviceConf = self._readServiceJSON()
+        if not serviceConf:
             return
 
-        if (
-            localCapabilities.get("layers") is None
-            or localCapabilities.get("layers") == []
-        ):
-            if remote:
-                self.getRemoteCapabilities()
-            return
+        self.capabilities = serviceConf.get("capabilities")
+        self.available_layers = serviceConf.get("available_layers")
+        self.icon = serviceConf.get("icon")
+        self._setupLayers(serviceConf.get("layers"), export=False)
 
-        if localCapabilities.get("icon") is None:
-            if remote:
-                self.__getIcon()
-            return
-
-        self.icon = localCapabilities.get("icon", None)
-        availableLayers = localCapabilities.get("available_layers", None)
-        if availableLayers is not None:
-            self.setupLayers(availableLayers)
+    def _fetchRemoteConfig(self) -> None:
+        """
+        Fetch the remote config of the service
+        """
+        self._getRemoteCapabilities()
+        self.__getIcon()
 
     def getLayers(self) -> List[Layer]:
         if not self.loaded or len(self.layers) == 0:
-            self.load(remote=True)
+            self._fetchRemoteConfig()
 
         return self.layers
 
     def getLayer(self, idx: int) -> Layer:
         if not self.loaded:
-            self.load()
+            self._fetchRemoteConfig()
 
         return self.layers[idx]
 
@@ -150,6 +144,24 @@ class GrdService:
             "icon": self.icon,
             "layers": [layer.toJson() for layer in self.layers],
         }
+
+    def exportConfig(self) -> None:
+        with open(CONFIG_FILE, "r", encoding="utf-8") as f:
+            current_config = json.load(f)
+            services = current_config.get("services", None)
+
+            if not services:
+                current_config["services"] = [self.toJson()]
+            else:
+                for idx, service in enumerate(services):
+                    if service.get("name", None) == self.name:
+                        services[idx] = self.toJson()
+                        break
+                else:
+                    current_config["services"].append(self.toJson())
+
+        with open(CONFIG_FILE, "w", encoding="utf-8") as f:
+            json.dump(current_config, f, indent=4)
 
     def __getIcon(self) -> str:
         names_to_try = [
@@ -174,5 +186,5 @@ class GrdService:
             response = requests.get(ico_url, timeout=5)
             if response.status_code == 200:
                 self.icon = ico_url
-                self.manager.exportConfig()
+                self.exportConfig()
                 return
