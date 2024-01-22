@@ -5,6 +5,7 @@ from qgis.core import (
     QgsCoordinateReferenceSystem,
     QgsProject,
     QgsRasterLayer,
+    QgsRectangle,
     QgsVectorLayer,
 )
 
@@ -20,6 +21,15 @@ class Layer:
 
     def __str__(self) -> str:
         return self.name
+
+    def __repr__(self) -> str:
+        return f"<GrdLayer: {self.name}>"
+
+    def __eq__(self, other) -> bool:
+        return self.url == other.url
+
+    def extent(self) -> QgsRectangle:
+        return self.getQgisLayer().extent()
 
     def addToMap(self) -> None:
         qgis_layer = self.getQgisLayer()

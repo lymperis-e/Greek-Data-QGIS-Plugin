@@ -420,14 +420,16 @@ class grData:
         service = self.serviceManager.getService(parent.text(0))
         layer = service.getLayer(parent.indexOfChild(selectedItem))
 
-        print(f"Layer: {layer.name} ({layer.type}): {layer.url} | {layer.attributes}")
-
         self.dockwidget.current_layer_details_tree.setHeaderLabels(["Key", "Value"])
         fill_tree_widget(self.dockwidget.current_layer_details_tree, layer.attributes)
         self.dockwidget.current_layer_description_label.setText(
             layer.attributes["description"]
         )
         self.dockwidget.current_layer_name_label.setText(layer.name)
+        self.dockwidget.current_layer_copyright_label.setText(
+            layer.attributes.get("copyrightText")
+        )
+
         self.dockwidget.current_layer_add_to_map_btn.setEnabled(True)
         self.dockwidget.current_layer_add_to_map_btn.clicked.connect(
             lambda: layer.addToMap

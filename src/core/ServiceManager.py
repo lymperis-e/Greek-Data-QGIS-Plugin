@@ -37,7 +37,12 @@ class ServiceManager:
             headers={"user-agent": "grdata-qgis-plugin/2.0"},
             timeout=10,
         )
-        available_services = json.loads(response.content)["services"]
+
+        # try:
+        available_services = json.loads(response.content).get("services")
+        # except Exception as e:
+        #    print(e)
+        #    available_services = list()
 
         return available_services
 
