@@ -22,6 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 """
+
 import os
 import shutil
 import subprocess
@@ -189,7 +190,7 @@ def main():
     """
     Creates a plugin release .zip, and copies the build over to the QGIS plugins folder.
     """
-    plugin_name = "remote_db"
+    plugin_name = "grdata"
     script_dir = os.path.dirname(os.path.abspath(__file__))
     root_dir = os.path.dirname(script_dir)
     src_dir = os.path.join(root_dir, "src")

@@ -13,11 +13,23 @@ from qgis.core import (
 class Layer:
     # Available types:
     # esri-map, esri-feature, wms, wfs
-    def __init__(self, url, name, feature_type, attributes=None, *args, **kwargs):
+    def __init__(
+        self,
+        url,
+        name,
+        feature_type,
+        attributes=None,
+        geometryType=None,
+        extent=None,
+        *args,
+        **kwargs,
+    ):
         self.url = url
         self.name = name
         self.type = feature_type
         self.attributes = attributes
+        self.geometryType = self.__setupGeometry(geometryType)
+        self.extent = extent
 
     def __str__(self) -> str:
         return self.name
@@ -83,6 +95,29 @@ class Layer:
             "attributes": self.attributes,
         }
 
+    def __setupGeometry(self, geom_type) -> str:
+        """
+        Returns the geometry type of the layer
+
+        Returns:
+            str: geometry type
+        """
+        # ESRI
+        if self.type in ("esri", "esri-map", "esri-feature"):
+            if geom_type == "esriGeometryPoint":
+                return "point"
+            if geom_type == "esriGeometryPolyline":
+                return "line"
+            if geom_type == "esriGeometryPolygon":
+                return "polygon"
+            if geom_type == "esriGeometryEnvelope":
+                return "polygon"
+            if geom_type == "esriGeometryMultipoint":
+                return "point"
+            return "raster"
+
+        return None
+
     def getIcon(self) -> str:
         """
         Returns the path to the icon for the layer's type
@@ -90,14 +125,27 @@ class Layer:
         Returns:
             str: icon path
         """
-        if self.type == "esri-feature":
-            return join(
-                dirname(dirname(__file__)), "assets", "icons", "mIconVector.svg"
-            )
-        if self.type == "esri-map":
+
+        if self.geometryType == "raster":
             return join(
                 dirname(dirname(__file__)), "assets", "icons", "mIconRasterLayer.svg"
             )
+
+        if self.geometryType == "point":
+            return join(
+                dirname(dirname(__file__)), "assets", "icons", "mIconPointLayer.svg"
+            )
+
+        if self.geometryType == "line":
+            return join(
+                dirname(dirname(__file__)), "assets", "icons", "mIconLineLayer.svg"
+            )
+
+        if self.geometryType == "polygon":
+            return join(
+                dirname(dirname(__file__)), "assets", "icons", "mIconPolygonLayer.svg"
+            )
+
         if self.type == "wms":
             return join(
                 dirname(dirname(__file__)), "assets", "icons", "mIconRasterLayer.svg"

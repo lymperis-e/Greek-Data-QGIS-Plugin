@@ -10,6 +10,53 @@ from .Service import GrdService
 MESSAGE_CATEGORY = "GreekData-GetCapabilities (ArcGIS server)"
 
 
+def clean_esri_attributes(layer_attributes: Dict[str, str]) -> None:
+    """
+    Modify the layer attributes in place, to remove the "domain" key from the "fields" key, but keep the "domain.description" key
+    """
+    if not layer_attributes:
+        return None
+
+    fields = layer_attributes.get("fields", None)
+    if fields is None:
+        return layer_attributes
+
+    for field in fields:
+        if field.get("domain", None) is not None:
+            field["description"] = field["domain"].get("description", None)
+            field.pop("domain", None)
+
+    layer_attributes["fields"] = fields
+
+    return layer_attributes
+
+
+def filter_esri_attributes(attributes: Dict[str, str]) -> Dict[str, str]:
+    """
+    Only keep desired attributes:
+        - extent
+        - fields
+        - geometryType
+        - name
+        - type
+        - description
+        - copyrightText
+    """
+    return {
+        attr: attributes[attr]
+        for attr in [
+            "extent",
+            "fields",
+            "geometryType",
+            "name",
+            "type",
+            "description",
+            "copyrightText",
+        ]
+        if attr in attributes
+    }
+
+
 class LoadEsriAsync(QgsTask):
     """
     Asynchronously query an ArcGIS server for available services, using a QgsTask
@@ -98,12 +145,26 @@ class LoadEsriAsync(QgsTask):
 
             layer_attributes = self._get(layer_url)
 
+            try:
+                _filtered_attrs = filter_esri_attributes(layer_attributes)
+                _cleaned_attrs = clean_esri_attributes(_filtered_attrs)
+
+            except Exception as e:
+                self.exception = e
+                QgsMessageLog.logMessage(
+                    f"Tried to clean fields for layer {layer_name} but failed: {e}",
+                    MESSAGE_CATEGORY,
+                    Qgis.Warning,
+                )
+
             service_layers[layer_id] = {
                 "id": layer_id,
                 "name": layer_name,
                 "url": layer_url,
                 "type": parent_type,
-                "attributes": layer_attributes,
+                "attributes": _cleaned_attrs,
+                "geometryType": _cleaned_attrs.get("geometryType", None),
+                "extent": _cleaned_attrs.get("extent", None),
             }
 
             self.layers.append(
@@ -112,7 +173,9 @@ class LoadEsriAsync(QgsTask):
                     "name": layer_name,
                     "url": layer_url,
                     "type": parent_type,
-                    "attributes": layer_attributes,
+                    "attributes": _cleaned_attrs,
+                    "geometryType": _cleaned_attrs.get("geometryType", None),
+                    "extent": _cleaned_attrs.get("extent", None),
                 }
             )
 
@@ -182,19 +245,6 @@ class ESRIService(GrdService):
         self.tm = QgsApplication.taskManager()
 
     def _getLayerType(self, layer: Dict[str, str]) -> str:
-        attributes = layer.get("attributes")
-
-        if attributes.get("geometryType") == "esriGeometryPoint":
-            return "esri-feature"
-        if attributes.get("geometryType") == "esriGeometryPolyline":
-            return "esri-feature"
-        if attributes.get("geometryType") == "esriGeometryPolygon":
-            return "esri-feature"
-        if attributes.get("geometryType") == "esriGeometryEnvelope":
-            return "esri-feature"
-        if attributes.get("geometryType") == "esriGeometryMultipoint":
-            return "esri-feature"
-
         if layer["type"] == "MapServer" or layer["type"] == "esri-map":
             return "esri-map"
         if layer["type"] == "FeatureServer" or layer["type"] == "esri-feature":
