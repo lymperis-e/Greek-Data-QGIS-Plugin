@@ -61,13 +61,22 @@ class GrdService:
     def __str__(self):
         return self.name
 
-    def _getLayerType(self, layer) -> str:
+    def _layerDataModel(self, layer) -> str:
+        """
+        Returns the type of the layer (raster, vector)
+        """
+        raise NotImplementedError
+
+    def _layerGeometryType(self, layer) -> str:
+        """
+        Returns the geometry type of the layer (point, line, polygon, raster)
+        """
         raise NotImplementedError
 
     def _getRemoteCapabilities(self) -> Dict:
         raise NotImplementedError
 
-    def _getConfigFile(self) -> str:
+    def _getConfig(self) -> str:
         """
         Get the path to the config file
         """
@@ -78,7 +87,7 @@ class GrdService:
         """
         Get the capabilities of the service from the local config file
         """
-        config = self._getConfigFile()
+        config = self._getConfig()
         services = config.get("services")
         if not services:
             return None
@@ -92,7 +101,11 @@ class GrdService:
         Setup the layers of the service, based on the available layers
         """
         self.layers = [
-            Layer(**layer, feature_type=self._getLayerType(layer))
+            Layer(
+                **layer,
+                data_model=self._layerDataModel(layer),
+                geometry_type=self._layerGeometryType(layer),
+            )
             for layer in available_layers
         ]
 

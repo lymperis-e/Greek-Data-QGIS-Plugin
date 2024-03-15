@@ -251,7 +251,7 @@ class grData:
 
     # ------------------- NEW  -------------------------------------------------------
     def fill_connections_list(self):
-        services = self.serviceManager.getServicesList()
+        services = self.serviceManager.listServices()
         self.dockwidget.conn_list_widget.clear()
         fillServices(self.dockwidget.conn_list_widget, services)
 
@@ -320,6 +320,4 @@ class grData:
         )
 
         self.dockwidget.current_layer_add_to_map_btn.setEnabled(True)
-        self.dockwidget.current_layer_add_to_map_btn.clicked.connect(
-            lambda: layer.addToMap
-        )
+        self.dockwidget.current_layer_add_to_map_btn.clicked.connect(layer.addToMap)

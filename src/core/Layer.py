@@ -11,24 +11,24 @@ from qgis.core import (
 
 
 class Layer:
-    # Available types:
-    # esri-map, esri-feature, wms, wfs
+    # Available datamodels:
+    # esri-raster, esri-vector, wms, wfs
     def __init__(
         self,
         url,
         name,
-        feature_type,
+        data_model,
         attributes=None,
-        geometryType=None,
+        geometry_type=None,
         extent=None,
         *args,
         **kwargs,
     ):
         self.url = url
         self.name = name
-        self.type = feature_type
+        self.type = data_model
         self.attributes = attributes
-        self.geometryType = self.__setupGeometry(geometryType)
+        self.geometryType = self.__setupGeometry(geometry_type)
         self.extent = extent
 
     def __str__(self) -> str:
@@ -40,7 +40,7 @@ class Layer:
     def __eq__(self, other) -> bool:
         return self.url == other.url
 
-    def extent(self) -> QgsRectangle:
+    def qgs_extent(self) -> QgsRectangle:
         return self.getQgisLayer().extent()
 
     def addToMap(self) -> None:
@@ -57,10 +57,10 @@ class Layer:
         """
         Returns the *Layer instance* as a proper QGIS layer object, depending on the instance's type (e.g. WMS, ESRI FeatureServer etc)
         """
-        if self.type == "esri-feature":
+        if self.type == "esri-vector":
             return self._QgsEsriVector()
 
-        if self.type == "esri-map":
+        if self.type == "esri-raster":
             return self._QgsEsriRaster()
         return None
 
@@ -103,7 +103,7 @@ class Layer:
             str: geometry type
         """
         # ESRI
-        if self.type in ("esri", "esri-map", "esri-feature"):
+        if self.type == "esri-vector":
             if geom_type == "esriGeometryPoint":
                 return "point"
             if geom_type == "esriGeometryPolyline":
@@ -114,6 +114,8 @@ class Layer:
                 return "polygon"
             if geom_type == "esriGeometryMultipoint":
                 return "point"
+
+        if self.type == "esri-raster":
             return "raster"
 
         return None

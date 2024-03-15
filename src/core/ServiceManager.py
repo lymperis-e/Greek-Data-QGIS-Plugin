@@ -85,7 +85,7 @@ class ServiceManager:
                 return service
         raise ServiceNotExists(name)
 
-    def getServicesList(self) -> List[GrdService]:
+    def listServices(self) -> List[GrdService]:
         """
         Get the list of services
 

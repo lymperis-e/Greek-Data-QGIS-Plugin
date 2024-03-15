@@ -244,12 +244,15 @@ class ESRIService(GrdService):
 
         self.tm = QgsApplication.taskManager()
 
-    def _getLayerType(self, layer: Dict[str, str]) -> str:
-        if layer["type"] == "MapServer" or layer["type"] == "esri-map":
-            return "esri-map"
-        if layer["type"] == "FeatureServer" or layer["type"] == "esri-feature":
-            return "esri-feature"
+    def _layerDataModel(self, layer: Dict[str, str]) -> str:
+        if layer["type"] == "MapServer" or layer["type"] == "esri-raster":
+            return "esri-raster"
+        if layer["type"] == "FeatureServer" or layer["type"] == "esri-vector":
+            return "esri-vector"
         return None
+
+    def _layerGeometryType(self, layer: Dict[str, str]) -> str:
+        return layer["attributes"].get("geometryType", None)
 
     def _getRemoteCapabilities(self) -> Dict:
         capabilities_request = LoadEsriAsync(self.url)
