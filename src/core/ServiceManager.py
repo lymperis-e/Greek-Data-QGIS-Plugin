@@ -9,6 +9,8 @@ from .OGCService import OGCService
 from .Service import GrdService, ServiceNotExists
 from .ServiceFactory import ServiceFactory
 
+CONFIG_FILE = join(dirname(dirname(__file__)), "assets", "settings", "services.json")
+
 
 class ServiceManager:
     remote_repo = "https://gist.githubusercontent.com/lymperis-e/2619fc1d13fd57be2faa4373f5bfa825/raw"
@@ -24,9 +26,19 @@ class ServiceManager:
             else available_services
         )
         self.services = list() if services is None else services
+        self.servicesConf = self._readConfigFile()
 
         if len(self.services) == 0:
             self.services = self.__instantiate_services()
+
+    def _readConfigFile(self) -> Union[Dict, None]:
+        """
+        Read all the services that are cached locally from the config file
+        """
+        with open(CONFIG_FILE, "r", encoding="utf-8") as f:
+            config = json.load(f)
+
+        return config.get("services")
 
     def __load_remote_services(self) -> Dict[str, str]:
         """
@@ -56,11 +68,19 @@ class ServiceManager:
         services = list()
 
         for service in self.available_services:
+
+            # Get the service configuration
+            sname = service.get("name")
+            sconf = None
+            for s in self.servicesConf:
+                if s.get("name") == sname:
+                    sconf = s
+                    break
+
             service_instance = ServiceFactory(
-                name=service["name"],
-                url=service["url"],
-                service_type=service["type"],
                 serviceManager=self,
+                serviceConf=sconf,
+                **service,
             ).new()
 
             services.append(service_instance)

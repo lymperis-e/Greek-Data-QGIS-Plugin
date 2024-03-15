@@ -40,23 +40,35 @@ class GrdService:
         name,
         url,
         service_type,
-        capabilities,
-        available_layers,
-        layers,
         manager=None,
+        config=None,
         loaded=False,
     ):
         self.name = name
         self.url = url
         self.type = service_type
         self.loaded = loaded
-        self.capabilities = capabilities
-        self.available_layers = available_layers
-        self.layers = layers
         self.manager = manager
+        self.config = config
+        self.layers = None
+        self.capabilities = None
+        self.available_layers = None
         self.icon = None
 
         self._loadConfig()
+
+    def _loadConfig(self) -> None:
+        """
+        Load the service from the local config file
+        """
+        serviceConf = self.config
+        if not serviceConf:
+            return
+
+        self.capabilities = serviceConf.get("capabilities")
+        self.available_layers = serviceConf.get("available_layers")
+        self.icon = serviceConf.get("icon")
+        self._setupLayers(serviceConf.get("layers"), export=False)
 
     def __str__(self):
         return self.name
@@ -75,26 +87,6 @@ class GrdService:
 
     def _getRemoteCapabilities(self) -> Dict:
         raise NotImplementedError
-
-    def _getConfig(self) -> str:
-        """
-        Get the path to the config file
-        """
-        with open(CONFIG_FILE, "r", encoding="utf-8") as f:
-            return json.load(f)
-
-    def _readServiceJSON(self) -> Union[Dict, None]:
-        """
-        Get the capabilities of the service from the local config file
-        """
-        config = self._getConfig()
-        services = config.get("services")
-        if not services:
-            return None
-        for service in services:
-            if service.get("name") == self.name:
-                return service
-        return None
 
     def _setupLayers(self, available_layers, export=True) -> None:
         """
@@ -115,25 +107,12 @@ class GrdService:
             if export:
                 self.exportConfig()
 
-    def _loadConfig(self) -> None:
-        """
-        Load the service from the local config file
-        """
-        serviceConf = self._readServiceJSON()
-        if not serviceConf:
-            return
-
-        self.capabilities = serviceConf.get("capabilities")
-        self.available_layers = serviceConf.get("available_layers")
-        self.icon = serviceConf.get("icon")
-        self._setupLayers(serviceConf.get("layers"), export=False)
-
     def _fetchRemoteConfig(self) -> None:
         """
-        Fetch the remote config of the service
+        Fetch the remote config of the service (e.g. GetCapabilities, ESRI capabilities, etc.)
         """
         self._getRemoteCapabilities()
-        self.__getIcon()
+        self.__getFavicon()
 
     def getLayers(self) -> List[Layer]:
         if not self.loaded or len(self.layers) == 0:
@@ -176,7 +155,7 @@ class GrdService:
         with open(CONFIG_FILE, "w", encoding="utf-8") as f:
             json.dump(current_config, f, indent=4)
 
-    def __getIcon(self) -> str:
+    def __getFavicon(self) -> str:
         names_to_try = [
             "favicon.ico",
             "favicon.png",
