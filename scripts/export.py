@@ -23,9 +23,9 @@ THE SOFTWARE.
 
 """
 
+import argparse
 import os
 import shutil
-import subprocess
 import sys
 import zipfile
 
@@ -233,4 +233,21 @@ def main(install_to_qgis: bool = False):
 
 
 if __name__ == "__main__":
-    main()
+
+    # parse argument to install to QGIS
+    install_to_qgis = False
+    # if len(sys.argv) > 1:
+    #     if sys.argv[1] == "--install":
+    #         install_to_qgis = True
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--install",
+        action="store_true",
+        help="Install the plugin to the QGIS plugins folder.",
+    )
+    args = parser.parse_args()
+    if args.install:
+        install_to_qgis = True
+
+    main(install_to_qgis)
