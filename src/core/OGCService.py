@@ -107,11 +107,11 @@ class LoadOGCAsync(QgsTask):
         self.layers = list()
         self.exception = None
 
-    def _get(self, url):
+    def _get_wfs(self, url):
         url = url.rstrip("/")
 
         # Query the REST endpoint
-        payload = {"f": "json", "request": "GetCapabilities", "service": "WFS"}
+        payload = {"request": "GetCapabilities", "service": "WFS"}
         response = requests.get(
             url,
             params=payload,
@@ -132,23 +132,67 @@ class LoadOGCAsync(QgsTask):
 
         return services
 
-    def query_OGC_server(self, url) -> Dict[str, Dict[str, str]]:
+    def _get_wms(self, url):
+        url = url.rstrip("/")
+        # Query the REST endpoint
+        payload = {"request": "GetCapabilities", "service": "WMS"}
+        response = requests.get(
+            url,
+            params=payload,
+            headers={"user-agent": "grdata-qgis-plugin/1.0.0"},
+            timeout=10,
+            allow_redirects=True,
+            cookies=None,
+        )
 
-        response = self._get(url)
-        if response is None:
+        service_dict = xmltodict.parse(response.content)
+        print(
+            f"Number of layers: {len(service_dict['WMS_Capabilities']['Capability']['Layer'])}"
+        )
+
+        services = service_dict["WMS_Capabilities"]["Capability"]["Layer"]
+
+        if "error" in response:
+            self.exception = Exception(response)
             return None
 
-        # Initialize the dictionary for this level of the directory
+        return services
+
+    def query_OGC_server(self, url) -> Dict[str, Dict[str, str]]:
+
+        wfs_resp = self._get_wfs(url)
+        wms_resp = self._get_wms(url)
+
+        if wfs_resp is None and wms_resp is None:
+            return None
 
         # Add any services at this level of the directory to the dictionary
-        for idx, layer in enumerate(response):
-
+        for idx, layer in enumerate(wfs_resp):
             self.layers.append(
                 {
                     "id": idx,
                     "name": layer.get("Title", layer.get("Name", None)),
                     "url": f"{url}?typename={layer['Name']}",
                     "type": "wfs",
+                    "attributes": {
+                        "crs": layer.get("DefaultCRS", None),
+                        "title": layer.get("Title", None),
+                        "description": layer.get("Abstract", None),
+                        "extent": bbox_from_corners(
+                            layer.get("ows:WGS84BoundingBox", None)
+                        ),
+                    },
+                    "geometryType": None,
+                }
+            )
+
+        for idx, layer in enumerate(wms_resp):
+            self.layers.append(
+                {
+                    "id": idx,
+                    "name": layer.get("Title", layer.get("Name", None)),
+                    "url": f"{url}?typename={layer['Name']}",
+                    "type": "wms",
                     "attributes": {
                         "crs": layer.get("DefaultCRS", None),
                         "title": layer.get("Title", None),

@@ -239,7 +239,5 @@ class Layer:
                 dirname(dirname(__file__)), "assets", "icons", "mIconRasterLayer.svg"
             )
         if self.type == "wfs":
-            return join(
-                dirname(dirname(__file__)), "assets", "icons", "mIconVector.svg"
-            )
+            return join(dirname(dirname(__file__)), "assets", "icons", "icon.png")
         return None
