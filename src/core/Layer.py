@@ -10,6 +10,19 @@ from qgis.core import (
 )
 
 
+# class data model: possible values are esri-raster, esri-vector, wms, wfs
+class DataModel:
+    """
+    Enum for the different data models that can be used in the application.
+    Data models represent the respective ESRI & OGC conventions for data representation (the underlying theoretical data-models)
+    """
+
+    esri_raster = "esri-raster"
+    esri_vector = "esri-vector"
+    wms = "wms"
+    wfs = "wfs"
+
+
 class Layer:
     # Available datamodels:
     # esri-raster, esri-vector, wms, wfs
@@ -18,7 +31,7 @@ class Layer:
         idx,
         url,
         name,
-        data_model,
+        data_model: DataModel,
         attributes=None,
         geometry_type=None,
         extent=None,
@@ -58,11 +71,18 @@ class Layer:
         """
         Returns the *Layer instance* as a proper QGIS layer object, depending on the instance's type (e.g. WMS, ESRI FeatureServer etc)
         """
-        if self.type == "esri-vector":
+        if self.type == DataModel.esri_vector:
             return self._QgsEsriVector()
 
-        if self.type == "esri-raster":
+        if self.type == DataModel.esri_raster:
             return self._QgsEsriRaster()
+
+        if self.type == DataModel.wfs:
+            return self._QgsWfs()
+
+        if self.type == DataModel.wms:
+            return self._QgsWms()
+
         return None
 
     def _QgsEsriVector(self) -> QgsVectorLayer:
@@ -86,7 +106,8 @@ class Layer:
         return QgsVectorLayer(uri, self.name, "OGR")
 
     def _QgsWms(self) -> QgsRasterLayer:
-        pass
+        uri = f"url={self.url}&format=image/png&layers={self.name}"
+        return QgsRasterLayer(uri, self.name, "wms")
 
     def toJson(self) -> dict:
         return {
@@ -104,7 +125,7 @@ class Layer:
             str: geometry type
         """
         # ESRI
-        if self.type == "esri-vector":
+        if self.type == DataModel.esri_vector:
             if geom_type == "esriGeometryPoint":
                 return "point"
             if geom_type == "esriGeometryPolyline":
@@ -116,7 +137,26 @@ class Layer:
             if geom_type == "esriGeometryMultipoint":
                 return "point"
 
-        if self.type == "esri-raster":
+        if self.type == DataModel.esri_raster:
+            return "raster"
+
+        # OGC
+        if self.type == DataModel.wfs:
+            if geom_type == "Point":
+                return "point"
+            if geom_type == "LineString":
+                return "line"
+
+            if geom_type == "MultiLineString":
+                return "line"
+
+            if geom_type == "Polygon":
+                return "polygon"
+
+            if geom_type == "MultiPolygon":
+                return "polygon"
+
+        if self.type == DataModel.wms:
             return "raster"
 
         return None
