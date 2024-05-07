@@ -37,6 +37,9 @@ class ServiceManager:
         """
         Reload the services
         """
+        del self.services[:]
+        del self.servicesConf[:]
+
         self.servicesConf = self._readConfigFile()
         self.services = self.__instantiate_services()
 

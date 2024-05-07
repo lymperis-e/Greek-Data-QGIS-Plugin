@@ -107,12 +107,14 @@ class grData:
         self.rubber_band: QgsRubberBand = QgsRubberBand(
             self.iface.mapCanvas(), Qgis.GeometryType.Polygon
         )
+
         self.serviceManager = ServiceManager()
 
         # Load remote services
         self.updater = GrdSourcesUpdater()
         self.updater.update(
-            callback=self.serviceManager.reloadServices,
+            callback=lambda: self.serviceManager.reloadServices()
+            # and self.fill_connections_list(reload=True),
         )
 
     def tr(self, message):
@@ -302,17 +304,19 @@ class grData:
             self.dockwidget.conn_list_widget.currentItemChanged.connect(
                 self.connListChanged
             )
+            # Connections list: Double-click
+            self.dockwidget.conn_list_widget.itemDoubleClicked.connect(
+                self.handle_connections_list_double_click
+            )
 
     # ------------------- NEW  -------------------------------------------------------
-    def fill_connections_list(self):
+    def fill_connections_list(self, reload=False):
+        if reload:
+            self.serviceManager.reloadServices()
+
         services = self.serviceManager.listServices()
         self.dockwidget.conn_list_widget.clear()
         fillServices(self.dockwidget.conn_list_widget, services)
-
-        # Double-click
-        self.dockwidget.conn_list_widget.itemDoubleClicked.connect(
-            self.handle_connections_list_double_click
-        )
 
     def filter_connections_list(self, filter_text):
         filterTarget = self.dockwidget.filter_services_combobox.currentText()

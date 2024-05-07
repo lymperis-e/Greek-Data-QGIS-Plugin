@@ -18,7 +18,7 @@ class FetchFromGithub(QgsTask):
     """
 
     fetched = pyqtSignal(list)
-    github_url = "https://raw.githubusercontent.com/lymperis-e/Greek-Data-QGIS-Plugin/dev/source.json"
+    github_url = "https://raw.githubusercontent.com/lymperis-e/Greek-Data-QGIS-Plugin/dev/services.json"
 
     def __init__(self):
         super().__init__(
@@ -55,17 +55,20 @@ class FetchFromGithub(QgsTask):
         of a service has been modified, the service will not be updated.
         """
         with open(CONFIG_FILE, "r", encoding="utf-8") as file:
-            local_services = json.load(file)
+            local_services = json.load(file).get("services", [])
+
+        # Index the local services by url
+        local_services_index = {service["url"]: service for service in local_services}
 
         new_services = []
         for service in fetched_services:
-            if service not in local_services:
+            if not service["url"] in local_services_index.keys():
                 new_services.append(service)
 
         return new_services
 
     def run(self):
-        fetched_services = self.__fetch()
+        fetched_services = self.__fetch().get("services", None)
 
         if fetched_services is None:
             return False
