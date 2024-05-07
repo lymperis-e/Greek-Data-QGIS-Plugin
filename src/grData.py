@@ -58,6 +58,7 @@ from .sub.helper_functions import (
     filter_tree_widget_leafs,
     filter_tree_widget_roots,
 )
+from .sub.Updater import GrdSourcesUpdater
 
 basePath = os.path.dirname(os.path.abspath(__file__))
 settings_path = os.path.join(basePath, "assets/settings")
@@ -107,6 +108,12 @@ class grData:
             self.iface.mapCanvas(), Qgis.GeometryType.Polygon
         )
         self.serviceManager = ServiceManager()
+
+        # Load remote services
+        self.updater = GrdSourcesUpdater()
+        self.updater.update(
+            callback=self.serviceManager.reloadServices,
+        )
 
     def tr(self, message):
         """Get the translation for a string using Qt translation API.
