@@ -5,7 +5,7 @@ from qgis.core import Qgis, QgsApplication, QgsMessageLog, QgsTask
 from qgis.PyQt.QtCore import pyqtSignal
 
 from ..sub.xml import xmltodict
-from .Layer import Layer
+from .Layer import DataModel, Layer
 from .Service import GrdService
 
 MESSAGE_CATEGORY = "GreekData-GetCapabilities (ArcGIS server)"
@@ -55,6 +55,40 @@ def filter_OGC_attributes(attributes: Dict[str, str]) -> Dict[str, str]:
             "copyrightText",
         ]
         if attr in attributes
+    }
+
+
+def bbox_from_corners(bbox) -> str:
+    """
+    Convert WFS repr :
+    <ows:LowerCorner>20.786230268362047 36.20732655645524</ows:LowerCorner>
+    <ows:UpperCorner>28.15668655964659 41.55731605723071</ows:UpperCorner>
+
+    to:
+    "spatialReference": {
+        "wkid": 4326
+    },
+    "xmax": 23.348496228518172,
+    "xmin": 23.236629377543807,
+    "ymax": 39.03960686276656,
+    "ymin": 38.990246073097865
+    """
+
+    lower_corner = bbox.get("ows:LowerCorner", None)
+    upper_corner = bbox.get("ows:UpperCorner", None)
+
+    if lower_corner is None or upper_corner is None:
+        return None
+
+    lower_corner = [float(x) for x in lower_corner.split()]
+    upper_corner = [float(x) for x in upper_corner.split()]
+
+    return {
+        "xmin": lower_corner[0],
+        "xmax": upper_corner[0],
+        "ymin": lower_corner[1],
+        "ymax": upper_corner[1],
+        "spatialReference": {"wkid": 4326},
     }
 
 
@@ -113,15 +147,16 @@ class LoadOGCAsync(QgsTask):
                 {
                     "id": idx,
                     "name": layer.get("Title", layer.get("Name", None)),
-                    "url": f"{url}/{layer['Name']}",
-                    "type": "vector",
+                    "url": f"{url}?typename={layer['Name']}",
+                    "type": "wfs",
                     "attributes": {
                         "title": layer.get("Title", None),
                         "description": layer.get("Abstract", None),
-                        "extent": layer.get("LatLongBoundingBox", None),
+                        "extent": bbox_from_corners(
+                            layer.get("ows:WGS84BoundingBox", None)
+                        ),
                     },
                     "geometryType": None,
-                    "extent": layer.get("ows:WGS84BoundingBox", None),
                 }
             )
 
@@ -180,7 +215,7 @@ class OGCService(GrdService):
         super().__init__(
             name=name,
             url=url,
-            service_type="OGC",
+            service_type="ogc",
             loaded=False,
             *args,
             **kwargs,
@@ -189,11 +224,11 @@ class OGCService(GrdService):
         self.tm = QgsApplication.taskManager()
 
     def _layerDataModel(self, layer: Dict[str, str]) -> str:
-        if layer["type"] == "vector":
-            return "OGC-Vector"
+        if layer["type"] == "wfs":
+            return DataModel.wfs
 
-        if layer["type"] == "raster":
-            return "OGC-Raster"
+        if layer["type"] == "wms":
+            return DataModel.wms
 
         return None
 

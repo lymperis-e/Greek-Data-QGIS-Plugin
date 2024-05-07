@@ -69,23 +69,33 @@ class ServiceManager:
         """
         services = list()
 
-        for service in self.available_services:
-
-            # Get the service configuration
-            sname = service.get("name")
-            sconf = None
-            for s in self.servicesConf:
-                if s.get("name") == sname:
-                    sconf = s
-                    break
-
+        for service in self.servicesConf:
             service_instance = ServiceFactory(
-                serviceManager=self,
-                serviceConf=sconf,
-                **service,
+                serviceManager=self, serviceConf=service, **service
             ).new()
 
             services.append(service_instance)
+
+        # Old implementation, prioritize remote repo
+        # for service in self.available_services:
+
+        #     print(f"Creating service {service.get('name')}")
+
+        #     # Get the service configuration
+        #     sname = service.get("name")
+        #     sconf = None
+        #     for s in self.servicesConf:
+        #         if s.get("name") == sname:
+        #             sconf = s
+        #             break
+
+        #     service_instance = ServiceFactory(
+        #         serviceManager=self,
+        #         serviceConf=sconf,
+        #         **service,
+        #     ).new()
+
+        #     services.append(service_instance)
 
         return services
 

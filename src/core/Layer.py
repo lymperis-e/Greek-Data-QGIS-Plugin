@@ -3,6 +3,7 @@ from typing import Callable, Union
 
 from qgis.core import (
     QgsCoordinateReferenceSystem,
+    QgsDataSourceUri,
     QgsProject,
     QgsRasterLayer,
     QgsRectangle,
@@ -34,7 +35,6 @@ class Layer:
         data_model: DataModel,
         attributes=None,
         geometry_type=None,
-        extent=None,
         **kwargs,
     ):
         self.id = idx
@@ -43,7 +43,7 @@ class Layer:
         self.type = data_model
         self.attributes = attributes
         self.geometryType = self.__setupGeometry(geometry_type)
-        self.extent = extent
+        self.extent = attributes.get("extent", None)
 
     def __str__(self) -> str:
         return self.name
@@ -57,8 +57,23 @@ class Layer:
     def qgs_extent(self) -> QgsRectangle:
         return self.getQgisLayer().extent()
 
+    def native_extent(self) -> QgsRectangle:
+        return (
+            QgsRectangle(
+                self.extent["xmin"],
+                self.extent["ymin"],
+                self.extent["xmax"],
+                self.extent["ymax"],
+            ),
+            f"EPSG:{self.extent['spatialReference']['wkid']}",
+        )
+
     def addToMap(self) -> None:
         qgis_layer = self.getQgisLayer()
+
+        # if not qgis_layer:
+        #     return
+
         crs = QgsCoordinateReferenceSystem("EPSG:2100")
         qgis_layer.setCrs(crs)
 
@@ -102,12 +117,23 @@ class Layer:
         return QgsRasterLayer(uri, self.name, "arcgismapserver")
 
     def _QgsWfs(self) -> QgsVectorLayer:
-        uri = "{url}/ows?service=WFS&request=GetFeature&version=2.0.0&outputFormat=json&srsName=EPSG:4326&typeNames={self.name}"
-        return QgsVectorLayer(uri, self.name, "OGR")
+
+        url = self.url.split("?")[0]
+        typename = self.url.split("typename=")[1].split("&")[0]
+
+        ds = QgsDataSourceUri()
+        ds.setParam("url", url)
+        ds.setParam("typename", typename)
+        ds.setParam("service", "WFS")
+        ds.setParam("version", "auto")
+        ds.setParam("restrictToRequestBBOX", "1")
+        ds.setParam("pagingEnabled", "true")
+        # uri = f"{self.url}&SERVICE=WFS&REQUEST=GetFeature"
+        return QgsVectorLayer(ds.uri(), self.name, "WFS")
 
     def _QgsWms(self) -> QgsRasterLayer:
-        uri = f"url={self.url}&format=image/png&layers={self.name}"
-        return QgsRasterLayer(uri, self.name, "wms")
+        uri = self.url
+        return QgsRasterLayer(uri, self.name, "WMS")
 
     def toJson(self) -> dict:
         return {

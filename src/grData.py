@@ -23,10 +23,21 @@
 """
 import os
 
-from qgis.core import Qgis, QgsApplication, QgsMessageLog, QgsProject, QgsVectorLayer
-from qgis.gui import QgsMessageBar
+from qgis.core import (
+    Qgis,
+    QgsApplication,
+    QgsCoordinateReferenceSystem,
+    QgsFillSymbol,
+    QgsGeometry,
+    QgsMessageLog,
+    QgsProject,
+    QgsRectangle,
+    QgsSimpleLineSymbolLayer,
+    QgsVectorLayer,
+)
+from qgis.gui import QgsMessageBar, QgsRubberBand
 from qgis.PyQt.QtCore import QByteArray, QCoreApplication, QSettings, Qt, QTranslator
-from qgis.PyQt.QtGui import QIcon, QPixmap
+from qgis.PyQt.QtGui import QColor, QIcon, QPixmap
 from qgis.PyQt.QtWidgets import QAction, QTableWidgetItem
 
 from .core.Service import ServiceNotExists
@@ -92,6 +103,9 @@ class grData:
         self.dockwidget = None
 
         # DEV
+        self.rubber_band: QgsRubberBand = QgsRubberBand(
+            self.iface.mapCanvas(), Qgis.GeometryType.Polygon
+        )
         self.serviceManager = ServiceManager()
 
     def tr(self, message):
@@ -180,6 +194,27 @@ class grData:
 
         return action
 
+    def rubberband_from_current_bbox(self):
+        self.rubber_band.reset(Qgis.GeometryType.Polygon)
+
+        bbox, bbox_crs = (
+            self.serviceManager.selectedService.selectedLayer.native_extent()
+        )
+        rect = QgsRectangle(bbox)
+        rubber_geom = QgsGeometry.fromRect(rect)
+
+        # self.rubber_band.setFillColor(Qt.red)
+        self.rubber_band.setFillColor(QColor(255, 0, 0, 20))
+        self.rubber_band.setStrokeColor(QColor(255, 0, 0, 100))
+
+        # Set the rubber band geometry
+        self.rubber_band.setToGeometry(
+            rubber_geom, QgsCoordinateReferenceSystem(bbox_crs)
+        )  # ("EPSG:4326"))
+
+        # Show the rubber band on the map canvas
+        self.rubber_band.show()
+
     def initGui(self):
         """Create the menu entries and toolbar icons inside the QGIS GUI."""
         icon_path = os.path.join(os.path.dirname(__file__), "assets", "img", "icon.png")
@@ -201,10 +236,12 @@ class grData:
         # disconnects
         self.dockwidget.closingPlugin.disconnect(self.onClosePlugin)
         self.pluginIsActive = False
+        self.rubber_band.hide()
 
     def unload(self):
         """Removes the plugin menu item and icon from QGIS GUI."""
 
+        self.rubber_band.hide()
         # print "** UNLOAD grData"
         self.first_start = True
         for action in self.actions:
@@ -254,16 +291,16 @@ class grData:
                 self.add_layer_to_map
             )
 
+            # Connections list: Selection changed
+            self.dockwidget.conn_list_widget.currentItemChanged.connect(
+                self.connListChanged
+            )
+
     # ------------------- NEW  -------------------------------------------------------
     def fill_connections_list(self):
         services = self.serviceManager.listServices()
         self.dockwidget.conn_list_widget.clear()
         fillServices(self.dockwidget.conn_list_widget, services)
-
-        # Selection changed
-        self.dockwidget.conn_list_widget.currentItemChanged.connect(
-            self.connListChanged
-        )
 
         # Double-click
         self.dockwidget.conn_list_widget.itemDoubleClicked.connect(
@@ -316,10 +353,10 @@ class grData:
             self.serviceManager.setSelectedService(service.name)
             self.serviceManager.selectedService.setSelectedLayer(layer.id)
 
-        print(
-            f"selected service: {self.serviceManager.selectedService.name}, selected layer: {self.serviceManager.selectedService.selectedLayer.name}"
-        )
-        self.serviceManager.selectedService.selectedLayer.addToMap()
+        # print(
+        #     f"selected service: {self.serviceManager.selectedService.name}, selected layer: {self.serviceManager.selectedService.selectedLayer.name}"
+        # )
+        bbox = self.serviceManager.selectedService.selectedLayer.addToMap()
 
     def connListChanged(self, layer):
         selectedItem = self.dockwidget.conn_list_widget.currentItem()
@@ -349,4 +386,10 @@ class grData:
         )
 
         self.dockwidget.current_layer_add_to_map_btn.setEnabled(True)
-        # layer.addToMap)
+
+        # Display the layer's extent
+        try:
+            self.rubberband_from_current_bbox()
+        except Exception as e:
+            # QgsMessageLog.logMessage(str(e), "grData", Qgis.Critical)
+            None
