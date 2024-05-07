@@ -356,7 +356,7 @@ class grData:
         # print(
         #     f"selected service: {self.serviceManager.selectedService.name}, selected layer: {self.serviceManager.selectedService.selectedLayer.name}"
         # )
-        bbox = self.serviceManager.selectedService.selectedLayer.addToMap()
+        self.serviceManager.selectedService.selectedLayer.addToMap()
 
     def connListChanged(self, layer):
         selectedItem = self.dockwidget.conn_list_widget.currentItem()

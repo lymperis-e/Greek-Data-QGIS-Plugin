@@ -58,6 +58,11 @@ class Layer:
         return self.getQgisLayer().extent()
 
     def native_extent(self) -> QgsRectangle:
+        crs = (
+            self.extent["spatialReference"]["latestWkid"]
+            if "latestWkid" in self.extent["spatialReference"]
+            else self.extent["spatialReference"]["wkid"]
+        )
         return (
             QgsRectangle(
                 self.extent["xmin"],
@@ -65,8 +70,17 @@ class Layer:
                 self.extent["xmax"],
                 self.extent["ymax"],
             ),
-            f"EPSG:{self.extent['spatialReference']['wkid']}",
+            f"EPSG:{crs}",
         )
+
+    def get_crs(self) -> str:
+        if self.type in (DataModel.esri_vector, DataModel.esri_raster):
+            return self.extent["spatialReference"]["latestWkid"]
+
+        elif self.type in (DataModel.wfs, DataModel.wms):
+            return self.attributes["crs"]
+
+        return None
 
     def addToMap(self) -> None:
         qgis_layer = self.getQgisLayer()
@@ -74,7 +88,8 @@ class Layer:
         # if not qgis_layer:
         #     return
 
-        crs = QgsCoordinateReferenceSystem("EPSG:2100")
+        CRS = self.get_crs()
+        crs = QgsCoordinateReferenceSystem(CRS)
         qgis_layer.setCrs(crs)
 
         # if not qgis_layer.isValid():
@@ -104,16 +119,19 @@ class Layer:
         """
         Wraps the instance in a QgsVectorLayer
         """
-        uri = "crs='EPSG:2100' " + f"url='{self.url}' "
+        CRS = self.get_crs()
+        uri = f"crs='{CRS}' " + f"url='{self.url}' "
         return QgsVectorLayer(uri, self.name, "arcgisfeatureserver")
 
     def _QgsEsriRaster(self) -> QgsRasterLayer:
         """
         Wraps the instance in a QgsRasterLayer
         """
+        CRS = self.get_crs()
+
         lyrId = self.url.split("/")[-1]
         bareUrl = self.url.split("/" + lyrId)[0]
-        uri = f"crs='EPSG:2100' format='PNG32' layer='{lyrId}' url='{bareUrl}' "
+        uri = f"crs='{CRS}' format='PNG32' layer='{lyrId}' url='{bareUrl}' "
         return QgsRasterLayer(uri, self.name, "arcgismapserver")
 
     def _QgsWfs(self) -> QgsVectorLayer:

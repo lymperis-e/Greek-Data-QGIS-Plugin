@@ -150,6 +150,7 @@ class LoadOGCAsync(QgsTask):
                     "url": f"{url}?typename={layer['Name']}",
                     "type": "wfs",
                     "attributes": {
+                        "crs": layer.get("DefaultCRS", None),
                         "title": layer.get("Title", None),
                         "description": layer.get("Abstract", None),
                         "extent": bbox_from_corners(
