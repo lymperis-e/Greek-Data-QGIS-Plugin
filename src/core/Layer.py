@@ -78,7 +78,8 @@ class Layer:
             return self.extent["spatialReference"]["latestWkid"]
 
         elif self.type in (DataModel.wfs, DataModel.wms):
-            return self.attributes["crs"]
+            crs_str = self.attributes["crs"].replace("urn:ogc:def:crs:EPSG::", "")
+            return int(crs_str) if crs_str.isdigit() else crs_str
 
         return None
 
