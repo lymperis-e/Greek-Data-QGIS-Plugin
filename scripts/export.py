@@ -186,7 +186,7 @@ def get_qgis_plugins_dir() -> str:
     return qgis_plugins_dir
 
 
-def main():
+def main(install_to_qgis: bool = False):
     """
     Creates a plugin release .zip, and copies the build over to the QGIS plugins folder.
     """
@@ -215,22 +215,21 @@ def main():
 
     create_release(plugin_name, src_dir, dest_dir, exclude_list)
 
-    # Copy the release to the QGIS plugins folder
-    qgis_plugins_dir = os.path.join(
-        get_qgis_plugins_dir(),
-        plugin_name,
-    )
-    copy_release_to_qgis_plugins(dest_dir, qgis_plugins_dir)
+    if install_to_qgis:
+        # Copy the release to the QGIS plugins folder
+        qgis_plugins_dir = os.path.join(
+            get_qgis_plugins_dir(),
+            plugin_name,
+        )
+        copy_release_to_qgis_plugins(dest_dir, qgis_plugins_dir)
 
-    print("Files copied successfully.")
+        # Open the QGIS plugins folder
+        print(f"Plugin installed successfully at {qgis_plugins_dir}.")
+        # subprocess.Popen(f'explorer "{qgis_plugins_dir}"')
 
     # Clear & remove the release directory
     clear_directory(dest_dir)
     os.rmdir(dest_dir)
-
-    # Open the QGIS plugins folder
-    print(f"Plugin installed successfully at {qgis_plugins_dir}.")
-    # subprocess.Popen(f'explorer "{qgis_plugins_dir}"')
 
 
 if __name__ == "__main__":
