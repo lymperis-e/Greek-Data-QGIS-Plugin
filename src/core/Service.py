@@ -55,6 +55,8 @@ class GrdService:
         self.available_layers = None
         self.icon = None
 
+        self.selectedLayer = None
+
         self._loadConfig()
 
     def _loadConfig(self) -> None:
@@ -94,11 +96,12 @@ class GrdService:
         """
         self.layers = [
             Layer(
+                idx=i,
                 **layer,
                 data_model=self._layerDataModel(layer),
                 geometry_type=self._layerGeometryType(layer),
             )
-            for layer in available_layers
+            for i, layer in enumerate(available_layers)
         ]
 
         if len(self.layers) > 0:
@@ -112,7 +115,12 @@ class GrdService:
         Fetch the remote config of the service (e.g. GetCapabilities, ESRI capabilities, etc.)
         """
         self._getRemoteCapabilities()
-        self.__getFavicon()
+        # self.__getFavicon()
+
+    def setSelectedLayer(self, idx: int) -> None:
+        if idx is None:
+            self.selectedLayer = None
+        self.selectedLayer = self.layers[idx]
 
     def getLayers(self) -> List[Layer]:
         if not self.loaded or len(self.layers) == 0:
@@ -134,7 +142,7 @@ class GrdService:
             "capabilities": self.capabilities,
             "available_layers": self.available_layers,
             "icon": self.icon,
-            "layers": [layer.toJson() for layer in self.layers],
+            "layers": [layer.toJson() for layer in self.layers] if self.layers else [],
         }
 
     def exportConfig(self) -> None:
@@ -155,28 +163,28 @@ class GrdService:
         with open(CONFIG_FILE, "w", encoding="utf-8") as f:
             json.dump(current_config, f, indent=4)
 
-    def __getFavicon(self) -> str:
-        names_to_try = [
-            "favicon.ico",
-            "favicon.png",
-            "favicon.gif",
-            "favicon.jpg",
-            "icon.ico",
-            "icon.png",
-            "icon.gif",
-            "ico.png",
-            "ico.gif",
-            "ico.jpg",
-            "logo.png",
-            "logo.gif",
-            "logo.jpg",
-            "logo.ico",
-        ]
+    # def __getFavicon(self) -> str:
+    #     names_to_try = [
+    #         "favicon.ico",
+    #         "favicon.png",
+    #         "favicon.gif",
+    #         "favicon.jpg",
+    #         "icon.ico",
+    #         "icon.png",
+    #         "icon.gif",
+    #         "ico.png",
+    #         "ico.gif",
+    #         "ico.jpg",
+    #         "logo.png",
+    #         "logo.gif",
+    #         "logo.jpg",
+    #         "logo.ico",
+    #     ]
 
-        for name in names_to_try:
-            ico_url = get_base_url(self.url) + "/" + name
-            response = requests.get(ico_url, timeout=5)
-            if response.status_code == 200:
-                self.icon = ico_url
-                self.exportConfig()
-                return
+    #     for name in names_to_try:
+    #         ico_url = get_base_url(self.url) + "/" + name
+    #         response = requests.get(ico_url, timeout=5)
+    #         if response.status_code == 200:
+    #             self.icon = ico_url
+    #             self.exportConfig()
+    #             return

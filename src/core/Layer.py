@@ -15,15 +15,16 @@ class Layer:
     # esri-raster, esri-vector, wms, wfs
     def __init__(
         self,
+        idx,
         url,
         name,
         data_model,
         attributes=None,
         geometry_type=None,
         extent=None,
-        *args,
         **kwargs,
     ):
+        self.id = idx
         self.url = url
         self.name = name
         self.type = data_model

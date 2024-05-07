@@ -24,6 +24,7 @@
 import os
 
 from qgis.core import Qgis, QgsApplication, QgsMessageLog, QgsProject, QgsVectorLayer
+from qgis.gui import QgsMessageBar
 from qgis.PyQt.QtCore import QByteArray, QCoreApplication, QSettings, Qt, QTranslator
 from qgis.PyQt.QtGui import QIcon, QPixmap
 from qgis.PyQt.QtWidgets import QAction, QTableWidgetItem
@@ -249,6 +250,10 @@ class grData:
                 self.filter_connections_list
             )
 
+            self.dockwidget.current_layer_add_to_map_btn.clicked.connect(
+                self.add_layer_to_map
+            )
+
     # ------------------- NEW  -------------------------------------------------------
     def fill_connections_list(self):
         services = self.serviceManager.listServices()
@@ -289,12 +294,32 @@ class grData:
 
         name = item.text(0)
         service = self.serviceManager.getService(name)
+
+        if service.getLayers() is None:
+            msg_bar = self.iface.messageBar()
+            msg_bar.pushMessage(
+                "Loading ",
+                f"Service {name} is being loaded",
+                level=Qgis.Info,
+            )
+            return
+
         fillServiceLayers(item, service)
 
-    def add_layer_to_map(self, item, parent):
-        service = self.serviceManager.getService(parent.text(0))
-        layer = service.getLayer(parent.indexOfChild(item))
-        layer.addToMap()
+    def add_layer_to_map(self, item=None, parent=None):
+
+        if item and parent:
+            service = self.serviceManager.getService(parent.text(0))
+            layer = service.getLayer(parent.indexOfChild(item))
+
+            # Set selected service & layer
+            self.serviceManager.setSelectedService(service.name)
+            self.serviceManager.selectedService.setSelectedLayer(layer.id)
+
+        print(
+            f"selected service: {self.serviceManager.selectedService.name}, selected layer: {self.serviceManager.selectedService.selectedLayer.name}"
+        )
+        self.serviceManager.selectedService.selectedLayer.addToMap()
 
     def connListChanged(self, layer):
         selectedItem = self.dockwidget.conn_list_widget.currentItem()
@@ -305,6 +330,10 @@ class grData:
 
         service = self.serviceManager.getService(parent.text(0))
         layer = service.getLayer(parent.indexOfChild(selectedItem))
+
+        # Set selected service & layer
+        self.serviceManager.setSelectedService(service.name)
+        self.serviceManager.selectedService.setSelectedLayer(layer.id)
 
         self.dockwidget.current_layer_details_tree.setHeaderLabels(["Key", "Value"])
         fill_tree_widget(self.dockwidget.current_layer_details_tree, layer.attributes)
@@ -320,4 +349,4 @@ class grData:
         )
 
         self.dockwidget.current_layer_add_to_map_btn.setEnabled(True)
-        self.dockwidget.current_layer_add_to_map_btn.clicked.connect(layer.addToMap)
+        # layer.addToMap)

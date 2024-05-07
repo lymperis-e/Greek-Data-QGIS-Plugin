@@ -31,6 +31,8 @@ class ServiceManager:
         if len(self.services) == 0:
             self.services = self.__instantiate_services()
 
+        self.selectedService = None
+
     def _readConfigFile(self) -> Union[Dict, None]:
         """
         Read all the services that are cached locally from the config file
@@ -86,6 +88,15 @@ class ServiceManager:
             services.append(service_instance)
 
         return services
+
+    def setSelectedService(self, name: str) -> None:
+        """
+        Set the selected service
+
+        Args:
+            name (str): The name of the service
+        """
+        self.selectedService = self.getService(name)
 
     def getService(self, name: str) -> GrdService:
         """
