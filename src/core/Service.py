@@ -94,6 +94,9 @@ class GrdService:
         """
         Setup the layers of the service, based on the available layers
         """
+
+        lrs = available_layers if available_layers else []
+
         self.layers = [
             Layer(
                 idx=i,
@@ -101,7 +104,7 @@ class GrdService:
                 data_model=self._layerDataModel(layer),
                 geometry_type=self._layerGeometryType(layer),
             )
-            for i, layer in enumerate(available_layers)
+            for i, layer in enumerate(lrs)
         ]
 
         if len(self.layers) > 0:

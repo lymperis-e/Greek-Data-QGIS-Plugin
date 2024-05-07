@@ -62,6 +62,7 @@ def fillServiceLayers(parentItem, service, expanded=True):
 
 # Services
 def addServiceItem(service, parent):
+    print(service)
     child = QTreeWidgetItem()
     child.setText(0, unicode(service.name))
     child.setIcon(0, service_qicon(service))
