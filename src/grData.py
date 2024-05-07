@@ -112,10 +112,7 @@ class grData:
 
         # Load remote services
         self.updater = GrdSourcesUpdater()
-        self.updater.update(
-            callback=lambda: self.serviceManager.reloadServices()
-            # and self.fill_connections_list(reload=True),
-        )
+        self.updater.update(callback=self.serviceManager.reloadServices)
 
     def tr(self, message):
         """Get the translation for a string using Qt translation API.
