@@ -2,7 +2,7 @@
 [general]
 name=Greek Data
 qgisMinimumVersion=3.0
-homepage=https://github.com/lymperis-e/Greek-Data-QGIS-Plugin
+homepage=https://www.elymperis.com/greekdata-qgis
 category=Web
 icon=assets/img/icon.png
 server=False
@@ -20,7 +20,7 @@ repository=https://github.com/lymperis-e/Greek-Data-QGIS-Plugin
 # plugin_dependencies=
 
 description=Simple & centralised access to open geospatial datasets for Greece, provided by official government agencies and institutions. This plugin provides catalog search and direct layer loading functions for a variety of official greek data sources.
-about=Easy and quick access to open geospatial data for Greece. Originally developed for <a href="https://www.geomeletitiki.gr/">Geomeletitiki Consulting Engineers</a> by <a href="https://gr.linkedin.com/in/efstathios-lymperis-975702188">Efstathios Lymperis</a>, Geologist & GIS Developer
+about=Easy and quick access to open geospatial data for Greece. Version 2.0 introduces a new interface, along with some opther features. Please refer to the <a href="https://www.elymperis.com/greekdata-qgis">Geomeletitiki Consulting Engineers</a> by <a href="https://gr.linkedin.com/in/efstathios-lymperis-975702188">Efstathios Lymperis</a>, Geologist & GIS Developer
 
 
 
