@@ -1,10 +1,8 @@
 import json
+import time
 from os.path import dirname, join
-from typing import Dict, List, Union
+from typing import Dict, List
 
-import requests
-
-from ..sub.helper_functions import get_base_url
 from .Layer import Layer
 
 CONFIG_FILE = join(dirname(dirname(__file__)), "assets", "settings", "services.json")
@@ -50,6 +48,7 @@ class GrdService:
         self.loaded = loaded
         self.manager = manager
         self.config = config
+        self.updated_at = None
         self.layers = None
         self.capabilities = None
         self.available_layers = None
@@ -67,10 +66,11 @@ class GrdService:
         if not serviceConf:
             return
 
+        self.updated_at: int = serviceConf.get("updated_at", None)
         self.capabilities = serviceConf.get("capabilities")
-        self.available_layers = serviceConf.get("available_layers")
-        self.icon = serviceConf.get("icon")
-        self._setupLayers(serviceConf.get("layers"), export=False)
+        self.available_layers: List = serviceConf.get("available_layers")
+        self.icon: str = serviceConf.get("icon")
+        self._setupLayers(serviceConf.get("layers"), export_conf=False)
 
     def __str__(self):
         return self.name
@@ -90,7 +90,7 @@ class GrdService:
     def _getRemoteCapabilities(self) -> Dict:
         raise NotImplementedError
 
-    def _setupLayers(self, available_layers, export=True) -> None:
+    def _setupLayers(self, available_layers, export_conf=True) -> None:
         """
         Setup the layers of the service, based on the available layers
         """
@@ -110,7 +110,7 @@ class GrdService:
         if len(self.layers) > 0:
             self.loaded = True
 
-            if export:
+            if export_conf:
                 self.exportConfig()
 
     def _fetchRemoteConfig(self) -> None:
@@ -118,22 +118,39 @@ class GrdService:
         Fetch the remote config of the service (e.g. GetCapabilities, ESRI capabilities, etc.)
         """
         self._getRemoteCapabilities()
+        self.updated_at = int(time.time())
         # self.__getFavicon()
 
-    def setSelectedLayer(self, idx: int) -> None:
+    def _setSelectedLayer(self, idx: int) -> None:
         if idx is None:
             self.selectedLayer = None
         self.selectedLayer = self.layers[idx]
 
+    def __layersExpired(self) -> bool:
+        """
+        The service's layers have not been updated recently (1 week)
+        and need to be refreshed from the server.
+        """
+        MAX_AGE = 604800  # 1 week
+
+        unix_time_now = int(time.time())
+        if self.updated_at is None:
+            return True
+
+        return unix_time_now - self.updated_at > MAX_AGE
+
     def getLayers(self) -> List[Layer]:
-        if not self.loaded or len(self.layers) == 0:
+        if not self.loaded or self.__layersExpired() or len(self.layers) == 0:
             self._fetchRemoteConfig()
 
         return self.layers
 
     def getLayer(self, idx: int) -> Layer:
-        if not self.loaded:
+        if not self.loaded or self.__layersExpired():
             self._fetchRemoteConfig()
+
+        if idx >= len(self.layers):
+            raise ServiceNotExists(self.name)
 
         return self.layers[idx]
 
@@ -142,6 +159,7 @@ class GrdService:
             "name": self.name,
             "url": self.url,
             "type": self.type,
+            "updated_at": self.updated_at,
             "capabilities": self.capabilities,
             "available_layers": self.available_layers,
             "icon": self.icon,
@@ -165,29 +183,3 @@ class GrdService:
 
         with open(CONFIG_FILE, "w", encoding="utf-8") as f:
             json.dump(current_config, f, indent=4)
-
-    # def __getFavicon(self) -> str:
-    #     names_to_try = [
-    #         "favicon.ico",
-    #         "favicon.png",
-    #         "favicon.gif",
-    #         "favicon.jpg",
-    #         "icon.ico",
-    #         "icon.png",
-    #         "icon.gif",
-    #         "ico.png",
-    #         "ico.gif",
-    #         "ico.jpg",
-    #         "logo.png",
-    #         "logo.gif",
-    #         "logo.jpg",
-    #         "logo.ico",
-    #     ]
-
-    #     for name in names_to_try:
-    #         ico_url = get_base_url(self.url) + "/" + name
-    #         response = requests.get(ico_url, timeout=5)
-    #         if response.status_code == 200:
-    #             self.icon = ico_url
-    #             self.exportConfig()
-    #             return

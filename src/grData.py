@@ -282,7 +282,6 @@ class grData:
             self.dockwidget.current_layer_details_tree.setColumnWidth(0, 150)
             self.dockwidget.current_layer_details_tree.setColumnWidth(1, 250)
             self.dockwidget.current_layer_details_tree.setSortingEnabled(True)
-
             self.dockwidget.current_layer_details_tree.setHeaderHidden(False)
 
             # Add filter services targets (services, layers)
@@ -340,6 +339,7 @@ class grData:
         name = item.text(0)
         service = self.serviceManager.getService(name)
 
+        # Service's laeyrs are lazily loaded from the server the first time they are requested
         if service.getLayers() is None:
             msg_bar = self.iface.messageBar()
             msg_bar.pushMessage(
