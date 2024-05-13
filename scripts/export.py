@@ -203,12 +203,13 @@ def main(install_to_qgis: bool = False):
         "release",
         "scripts",
         "pb_tool.cfg",
-        "*.pyc",
-        "*pylintrc",
-        "*.bat",
+        ".pyc",
+        "pylintrc",
+        ".bat",
         ".gitignore",
         ".gitattributes",
         "access_token",
+        "__pycache__",
     ]
 
     print(f"Copying files from {src_dir} to {dest_dir}...")
