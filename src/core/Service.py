@@ -3,6 +3,8 @@ import time
 from os.path import dirname, join
 from typing import Dict, List
 
+from qgis.PyQt.QtCore import QObject, pyqtSignal
+
 from .Layer import Layer
 
 CONFIG_FILE = join(dirname(dirname(__file__)), "assets", "settings", "services.json")
@@ -18,7 +20,15 @@ class ServiceNotExists(Exception):
         return f"Service '{self.service_name}' does not exist."
 
 
-class GrdService:
+# loaded, loading, error, not_loaded
+class GrdServiceState:
+    LOADED = "loaded"
+    LOADING = "loading"
+    ERROR = "error"
+    NOT_LOADED = "not_loaded"
+
+
+class GrdService(QObject):
     """
     Base class for all services
 
@@ -33,6 +43,8 @@ class GrdService:
         - manager: The service manager
     """
 
+    changed = pyqtSignal(str)
+
     def __init__(
         self,
         name,
@@ -42,6 +54,8 @@ class GrdService:
         config=None,
         loaded=False,
     ):
+        super().__init__()
+
         self.name = name
         self.url = url
         self.type = service_type
@@ -53,8 +67,10 @@ class GrdService:
         self.capabilities = None
         self.available_layers = None
         self.icon = None
-
         self.selectedLayer = None
+
+        self.loaded = loaded
+        self.state = GrdServiceState.LOADED if loaded else GrdServiceState.NOT_LOADED
 
         self._loadConfig()
 
@@ -109,6 +125,8 @@ class GrdService:
 
         if len(self.layers) > 0:
             self.loaded = True
+            self.state = GrdServiceState.LOADED
+            self.changed.emit(GrdServiceState.LOADED)
 
             if export_conf:
                 self.exportConfig()
@@ -117,11 +135,14 @@ class GrdService:
         """
         Fetch the remote config of the service (e.g. GetCapabilities, ESRI capabilities, etc.)
         """
+
+        self.state = GrdServiceState.LOADING
+        self.changed.emit(GrdServiceState.LOADING)
+
         self._getRemoteCapabilities()
         self.updated_at = int(time.time())
-        # self.__getFavicon()
 
-    def _setSelectedLayer(self, idx: int) -> None:
+    def setSelectedLayer(self, idx: int) -> None:
         if idx is None:
             self.selectedLayer = None
         self.selectedLayer = self.layers[idx]

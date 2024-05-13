@@ -27,20 +27,15 @@ from qgis.core import (
     Qgis,
     QgsApplication,
     QgsCoordinateReferenceSystem,
-    QgsFillSymbol,
     QgsGeometry,
-    QgsMessageLog,
-    QgsProject,
     QgsRectangle,
-    QgsSimpleLineSymbolLayer,
-    QgsVectorLayer,
 )
-from qgis.gui import QgsMessageBar, QgsRubberBand
-from qgis.PyQt.QtCore import QByteArray, QCoreApplication, QSettings, Qt, QTranslator
-from qgis.PyQt.QtGui import QColor, QIcon, QPixmap
-from qgis.PyQt.QtWidgets import QAction, QTableWidgetItem
+from qgis.gui import QgsRubberBand
+from qgis.PyQt.QtCore import QCoreApplication, QSettings, Qt, QTranslator
+from qgis.PyQt.QtGui import QColor, QIcon
+from qgis.PyQt.QtWidgets import QAction
 
-from .core.Service import ServiceNotExists
+from .core.Service import GrdServiceState
 from .core.ServiceManager import ServiceManager
 from .core.utils.QUrlIcon import QUrlIcon
 
@@ -311,6 +306,7 @@ class grData:
             self.serviceManager.reloadServices()
 
         services = self.serviceManager.listServices()
+
         self.dockwidget.conn_list_widget.clear()
         fillServices(self.dockwidget.conn_list_widget, services)
 
@@ -333,20 +329,50 @@ class grData:
         self.add_layer_to_map(item, parent)
 
     def expand_service(self, item):
+        """
+        Lazy-load a service, wait for it to load and then update the list and expand it
+        """
         if item.childCount() > 0:
             return
 
         name = item.text(0)
+        icon = item.icon(0)
         service = self.serviceManager.getService(name)
 
-        # Service's laeyrs are lazily loaded from the server the first time they are requested
-        if service.getLayers() is None:
-            msg_bar = self.iface.messageBar()
-            msg_bar.pushMessage(
-                "Loading ",
-                f"Service {name} is being loaded",
-                level=Qgis.Info,
+        # Service's layers are lazily loaded from the server the first time they are requested
+        if not service.loaded:
+            service.changed.connect(
+                lambda x: (
+                    fillServiceLayers(item, service, expanded=True)
+                    if x == GrdServiceState.LOADED
+                    else None
+                )
             )
+
+            # Item text changes
+            service.changed.connect(
+                lambda x: (
+                    item.setText(0, name)
+                    if x == GrdServiceState.LOADED or x == GrdServiceState.ERROR
+                    else None
+                )
+            )
+
+            service.changed.connect(
+                lambda x: (
+                    item.setText(0, f"{name} (loading...)")
+                    if x == GrdServiceState.LOADING
+                    else None
+                )
+            )
+
+        if service.getLayers() is None:
+            # msg_bar = self.iface.messageBar()
+            # msg_bar.pushMessage(
+            #     "Loading ",
+            #     f"Service {name} is being loaded",
+            #     level=Qgis.Info,
+            # )
             return
 
         fillServiceLayers(item, service)

@@ -78,6 +78,7 @@ def addServiceItem(service, parent):
 def fillServices(parentItem, services):
     for service in services:
         serviceItem = addServiceItem(service, parentItem.invisibleRootItem())
+
         if service.loaded:
             fillServiceLayers(serviceItem, service, expanded=False)
 

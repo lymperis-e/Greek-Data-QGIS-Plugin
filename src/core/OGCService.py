@@ -146,9 +146,9 @@ class LoadOGCAsync(QgsTask):
         )
 
         service_dict = xmltodict.parse(response.content)
-        print(
-            f"Number of layers: {len(service_dict['WMS_Capabilities']['Capability']['Layer'])}"
-        )
+        # print(
+        #     f"Number of layers: {len(service_dict['WMS_Capabilities']['Capability']['Layer'])}"
+        # )
 
         services = service_dict["WMS_Capabilities"]["Capability"]["Layer"]
 
