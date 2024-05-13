@@ -1,15 +1,6 @@
 {
     "services": [
         {
-            "name": "TEST YPEN",
-            "url": "http://test.ypen.gr/geoserver/ows",
-            "type": "ogc",
-            "capabilities": null,
-            "available_layers": null,
-            "icon": null,
-            "layers": []
-        },
-        {
             "name": "Geoportal YPEN",
             "url": "http://geoportal.ypen.gr/geoserver/ows",
             "type": "ogc",
