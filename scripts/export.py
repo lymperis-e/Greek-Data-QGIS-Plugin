@@ -24,6 +24,8 @@ THE SOFTWARE.
 """
 
 import argparse
+import fnmatch
+import glob
 import os
 import shutil
 import sys
@@ -41,6 +43,15 @@ def clear_directory(path):
                 os.remove(item_path)
 
 
+def is_ignored(path, ignore_patterns):
+    """Check if the given path matches any of the ignore patterns."""
+    print(f"path: {path}")
+    return any(
+        fnmatch.fnmatch(path, pattern) or pattern.replace("*", "") in str(path)
+        for pattern in ignore_patterns
+    )
+
+
 def clear_or_create_directory(path):
     if os.path.exists(path):
         clear_directory(path)
@@ -49,16 +60,21 @@ def clear_or_create_directory(path):
         os.makedirs(path)
 
 
-def copy_files(src_dir, dest_dir, exclude_list):
+def copy_files(src_dir, dest_dir):
+
+    # Validate input directories
+    if not os.path.exists(src_dir):
+        print(f"Source directory does not exist: {src_dir}")
+        return
+    if not os.access(dest_dir, os.W_OK):
+        print(f"Destination directory is not writable: {dest_dir}")
+        return
+
     clear_or_create_directory(dest_dir)
 
     for item in os.listdir(src_dir):
         src_item = os.path.join(src_dir, item)
         dest_item = os.path.join(dest_dir, item)
-
-        # Check if the item should be excluded
-        if any(exclude_item in src_item for exclude_item in exclude_list):
-            continue
 
         if os.path.isdir(src_item):
             # Recursively copy subdirectories
@@ -66,6 +82,39 @@ def copy_files(src_dir, dest_dir, exclude_list):
         else:
             # Copy individual files
             shutil.copy2(src_item, dest_item)
+
+
+# def remove_ignored_files(path, exclude_list):
+def remove_ignored_files(path, exclude_list):
+    """
+    Recursively removes files and directories in a specified directory that match any of the patterns in ignore_patterns.
+
+    :param directory: The directory to traverse.
+    :param exclude_list: A list of glob patterns for files and directories to remove.
+    """
+    # Use glob to find all files and directories recursively
+    all_items = glob.glob(os.path.join(path, "**"), recursive=True)
+
+    # Reverse the list to handle nested items first
+    for item in reversed(all_items):
+        if os.path.isfile(item) or os.path.isdir(item):
+            for pattern in exclude_list:
+                if glob.fnmatch.fnmatch(os.path.basename(item), pattern):
+                    # Check if it's a file or directory and remove accordingly
+                    if os.path.isdir(item):
+                        # Use shutil.rmtree to remove non-empty directories
+                        try:
+                            shutil.rmtree(item)
+                            print(f"Removed directory: {item}")
+                        except Exception as e:
+                            print(f"Error removing directory {item}: {e}")
+                    else:
+                        try:
+                            os.remove(item)
+                            print(f"Removed file: {item}")
+                        except OSError as e:
+                            print(f"Error removing file {item}: {e}")
+                    break  # No need to check other patterns once a match is found
 
 
 def create_release(plugin_name, src_dir, dest_dir, exclude_list):
@@ -82,7 +131,10 @@ def create_release(plugin_name, src_dir, dest_dir, exclude_list):
     clear_or_create_directory(dest_dir)
 
     # Copy the files over to the release directory
-    copy_files(src_dir, dest_dir, exclude_list)
+    copy_files(src_dir, dest_dir)
+
+    # Remove ignored files
+    remove_ignored_files(dest_dir, exclude_list)
 
     # Create the release zip file
     release_dir = os.path.dirname(dest_dir)
@@ -197,19 +249,19 @@ def main(install_to_qgis: bool = False):
     dest_dir = os.path.join(root_dir, "release", plugin_name)
     exclude_list = [
         "Makefile",
-        ".git",
+        "*.git",
         "tests",
-        ".vscode",
+        "*.vscode",
         "release",
         "scripts",
         "pb_tool.cfg",
-        ".pyc",
+        "*.pyc",
         "pylintrc",
-        ".bat",
-        ".gitignore",
-        ".gitattributes",
+        "*.bat",
+        "*.gitignore",
+        "*.gitattributes",
         "access_token",
-        "__pycache__",
+        "*__pycache__*",
     ]
 
     print(f"Copying files from {src_dir} to {dest_dir}...")
