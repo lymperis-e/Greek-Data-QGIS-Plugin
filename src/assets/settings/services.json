@@ -1,0 +1,211 @@
+{
+    "services": [
+        {
+            "name": "Geoportal YPEN",
+            "url": "http://geoportal.ypen.gr/geoserver/ows",
+            "type": "ogc",
+            "capabilities": null,
+            "available_layers": null,
+            "icon": "https://ypen.gov.gr/wp-content/uploads/2020/04/logo-ypen.jpg",
+            "layers": []
+        },
+        {
+            "name": "Geoportal RAAEY",
+            "url": "https://geo.rae.gr/geoserver/ows",
+            "type": "ogc",
+            "capabilities": null,
+            "available_layers": null,
+            "icon": "https://www.rae.gr/wp-content/uploads/2024/04/PAAEY_Logo_GR.png",
+            "layers": []
+        },
+        {
+            "name": "\u039c\u03b7\u03c4\u03c1\u03bf\u03c0\u03bf\u03bb\u03b9\u03c4\u03b9\u03ba\u03cc\u03c2 \u03a3\u03c7\u03b5\u03b4\u03b9\u03b1\u03c3\u03bc\u03cc\u03c2 \u0391\u03b8\u03b7\u03bd\u03ce\u03bd",
+            "url": "http://msa.ypeka.gr/geoserver/ows",
+            "type": "ogc",
+            "capabilities": null,
+            "available_layers": null,
+            "icon": "",
+            "layers": []
+        },
+        {
+            "name": "MapsPortal YPEN",
+            "url": "http://mapsportal.ypen.gr/geoserver/ows",
+            "type": "ogc",
+            "capabilities": null,
+            "available_layers": null,
+            "icon": "https://ypen.gov.gr/wp-content/uploads/2020/04/logo-ypen.jpg",
+            "layers": []
+        },
+        {
+            "name": "\u039a\u03c4\u03b7\u03bc\u03b1\u03c4\u03bf\u03bb\u03cc\u03b3\u03b9\u03bf",
+            "url": "http://gis.ktimanet.gr/inspire/rest/services",
+            "type": "esri",
+            "capabilities": null,
+            "available_layers": null,
+            "icon": "https://www.ktimatologio.gr/favicon.ico",
+            "layers": []
+        },
+        {
+            "name": "\u0393\u03b5\u03bd\u03b9\u03ba\u03ae \u0393\u03c1\u03b1\u03bc\u03bc\u03b1\u03c4\u03b5\u03af\u03b1 \u0392\u03b9\u03bf\u03bc\u03b7\u03c7\u03b1\u03bd\u03af\u03b1\u03c2",
+            "url": "http://gis.ggb.gr/arcgis/rest/services",
+            "type": "esri",
+            "capabilities": null,
+            "available_layers": null,
+            "icon": null,
+            "layers": []
+        },
+        {
+            "name": "\u0395.\u0391.\u0393.\u039c.\u0395.",
+            "url": "https://gaia.igme.gr/server/rest/services",
+            "type": "esri",
+            "capabilities": null,
+            "available_layers": null,
+            "icon": "https://gaia.igme.gr/favicon.ico",
+            "layers": []
+        },
+        {
+            "name": "\u03a5\u03b4\u03c1\u03bf\u03bb\u03b7\u03c8\u03af\u03b5\u03c2 \u0393.\u0393.\u03a5.",
+            "url": "http://lmt.ypeka.gr/arcgis/rest/services",
+            "type": "esri",
+            "capabilities": null,
+            "available_layers": null,
+            "icon": "http://lmt.ypeka.gr/favicon.ico",
+            "layers": []
+        },
+        {
+            "name": "\u0395.\u039b.\u03a3.\u03a4.\u0391.\u03a4.",
+            "url": "https://gisserver.statistics.gr/webgis/rest/services",
+            "type": "esri",
+            "capabilities": null,
+            "available_layers": null,
+            "icon": "https://www.statistics.gr/o/elstat-theme/images/elstat_logo.png",
+            "layers": []
+        },
+        {
+            "name": "\u03a0\u03b5\u03c1\u03b9\u03c6\u03ad\u03c1\u03b5\u03b9\u03b1 \u039a\u03c1\u03ae\u03c4\u03b7\u03c2",
+            "url": "https://geoportal.apdkritis.gov.gr/webgis/rest/services",
+            "type": "esri",
+            "capabilities": null,
+            "available_layers": null,
+            "icon": "https://www.crete.gov.gr/wp-content/uploads/2020/11/cropped-logowhite.png",
+            "layers": []
+        },
+        {
+            "name": "ePoleodomia",
+            "url": "http://gis.epoleodomia.gov.gr/arcgis/rest/services",
+            "type": "esri",
+            "capabilities": null,
+            "available_layers": null,
+            "icon": null,
+            "layers": []
+        },
+        {
+            "name": "\u0394\u03ae\u03bc\u03bf\u03c2 \u03a3\u03b5\u03c1\u03c1\u03ce\u03bd",
+            "url": "https://geocloud.infodim.gr/giswa/rest/services",
+            "type": "esri",
+            "capabilities": null,
+            "available_layers": null,
+            "icon": null,
+            "layers": []
+        },
+        {
+            "name": "\u0394\u03ae\u03bc\u03bf\u03c2 \u0392\u03cc\u03bb\u03bf\u03c5",
+            "url": "https://services1.arcgis.com/pEPtv3H99tct0yyg/arcgis/rest/services",
+            "type": "esri",
+            "capabilities": null,
+            "available_layers": null,
+            "icon": "https://dimosvolos.gr/sites/all/themes/volosportal/img/logo.png",
+            "layers": []
+        },
+        {
+            "name": "\u0394\u03ae\u03bc\u03bf\u03c2 \u03a4\u03c1\u03b9\u03ba\u03ba\u03b1\u03af\u03c9\u03bd",
+            "url": "https://services8.arcgis.com/WviT8ecuvqxI4l6m/arcgis/rest/services",
+            "type": "esri",
+            "capabilities": null,
+            "available_layers": null,
+            "icon": "https://trikalacity.gr/wp-content/themes/trikalaTpl/images/logo-dhmou.png",
+            "layers": []
+        },
+        {
+            "name": "\u0394\u03ae\u03bc\u03bf\u03c2 \u039a\u03b1\u03bb\u03b1\u03bc\u03b1\u03c1\u03b9\u03ac\u03c2",
+            "url": "https://services8.arcgis.com/5IrPMaiHYysccvch/arcgis/rest/services/",
+            "type": "esri",
+            "capabilities": null,
+            "available_layers": null,
+            "icon": "https://kalamaria.gr/wp-content/uploads/2016/04/favicon.png",
+            "layers": []
+        },
+        {
+            "name": "\u0394\u03ae\u03bc\u03bf\u03c2 \u039a\u03bf\u03b6\u03ac\u03bd\u03b7\u03c2",
+            "url": "https://services8.arcgis.com/4lHpWT7YoiJ0hk3u/arcgis/rest/services",
+            "type": "esri",
+            "capabilities": null,
+            "available_layers": null,
+            "icon": null,
+            "layers": []
+        },
+        {
+            "name": "\u0394\u03ae\u03bc\u03bf\u03c2 \u03a3\u03c4\u03b1\u03c5\u03c1\u03bf\u03cd\u03c0\u03bf\u03bb\u03b7\u03c2",
+            "url": "https://services3.arcgis.com/sMRN1skMfkslexa0/ArcGIS/rest/services",
+            "type": "esri",
+            "capabilities": null,
+            "available_layers": null,
+            "icon": null,
+            "layers": []
+        },
+        {
+            "name": "\u0394\u03ae\u03bc\u03bf\u03c2 \u0391\u03b8\u03b7\u03bd\u03b1\u03af\u03c9\u03bd",
+            "url": "http://gis.cityofathens.gr/geoserver/ows",
+            "type": "ogc",
+            "capabilities": null,
+            "available_layers": null,
+            "icon": "https://www.cityofathens.gr/favicon-32x32.png",
+            "layers": []
+        },
+        {
+            "name": "\u0394\u03ae\u03bc\u03bf\u03c2 \u0398\u03b5\u03c3\u03c3\u03b1\u03bb\u03bf\u03bd\u03af\u03ba\u03b7\u03c2",
+            "url": "https://maps.thessaloniki.gr/server/rest/services",
+            "type": "esri",
+            "capabilities": null,
+            "available_layers": null,
+            "icon": "https://thessaloniki.gr/wp-content/uploads/2017/03/cropped-icon-32x32.png",
+            "layers": []
+        },
+        {
+            "name": "\u0394\u03ae\u03bc\u03bf\u03c2 \u03a0\u03b5\u03b9\u03c1\u03b1\u03b9\u03ac",
+            "url": "https://sdi.piraeus.gov.gr/geoserver/vecpiraeus/ows",
+            "type": "ogc",
+            "capabilities": null,
+            "available_layers": null,
+            "icon": null,
+            "layers": []
+        },
+        {
+            "name": "\u0394\u03ae\u03bc\u03bf\u03c2 \u03a0\u03b5\u03c1\u03b9\u03c3\u03c4\u03b5\u03c1\u03af\u03bf\u03c5",
+            "url": "https://pgis.peristeri.gr/server/rest/services/peristeri",
+            "type": "esri",
+            "capabilities": null,
+            "available_layers": null,
+            "icon": null,
+            "layers": []
+        },
+        {
+            "name": "\u0394\u03ae\u03bc\u03bf\u03c2 \u0391\u03b3\u03af\u03b1\u03c2 \u03a0\u03b1\u03c1\u03b1\u03c3\u03ba\u03b5\u03c5\u03ae\u03c2",
+            "url": "https://gis.agiaparaskevi.gr/geoserver/vec/ows",
+            "type": "ogc",
+            "capabilities": null,
+            "available_layers": null,
+            "icon": null,
+            "layers": []
+        },
+        {
+            "name": "\u0394\u03ae\u03bc\u03bf\u03c2 \u0391\u03bc\u03b1\u03c1\u03bf\u03c5\u03c3\u03af\u03bf\u03c5",
+            "url": "https://gis.maroussi.gr/geoserver/maroussi/ows",
+            "type": "ogc",
+            "capabilities": null,
+            "available_layers": null,
+            "icon": null,
+            "layers": []
+        }
+    ]
+}

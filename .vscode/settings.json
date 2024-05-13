@@ -1,0 +1,19 @@
+{
+  //"python.languageServer": "Jedi",
+  "python.linting.enabled": false,
+  "python.linting.flake8Enabled": false,
+  "editor.formatOnSave": true,
+  "[python]": {
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit"
+    }
+  },
+  "python.testing.unittestEnabled": false,
+  "python.testing.nosetestsEnabled": false,
+  "python.testing.pytestEnabled": false,
+  "files.associations": {
+    "metadata.txt": "ini"
+  },
+  "python.linting.pylintEnabled": true,
+  "python.linting.pycodestyleEnabled": true
+}

@@ -1,0 +1,8 @@
+<RCC>
+  <qresource prefix="/plugins/grData">
+    <file>assets/img/geodata-biglogo.png</file>
+    <file>assets/img/green.png</file>
+    <file>/assets/img/icon.png</file>
+    <file>assets/img/ypeka4.png</file>
+  </qresource>
+</RCC>

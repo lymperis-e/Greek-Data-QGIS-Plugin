@@ -1,0 +1,25 @@
+
+[general]
+name=Greek Data
+qgisMinimumVersion=3.0
+homepage=https://github.com/lymperis-e/Greek-Data-QGIS-Plugin
+category=Web
+icon=assets/img/icon.png
+server=False
+experimental=False
+hasProcessingProvider=no
+tags=python, greek, gov.gr, epoleodomia, poleodomia, ypen, geodata, gov, data
+version=2.0.0
+author=Lymperis Efstathios
+email=geo.elymperis@gmail.com
+tracker=https://github.com/lymperis-e/Greek-Data-QGIS-Plugin/issues
+repository=https://github.com/lymperis-e/Greek-Data-QGIS-Plugin
+# changelog=
+# plugin_dependencies=
+description=Simple & centralised access to open geospatial datasets for Greece, provided by official government agencies and institutions. This plugin provides catalog search and direct layer loading functions for a variety of official greek data sources.
+about=Easy and quick access to open geospatial data for Greece. Refer <a href="https://www.elymperis.com/greekdata-qgis">here</a> for more information. Originally developed for <a href="https://www.geomeletitiki.gr">Geomeletitiki Consulting Engineers</a> by <a href="https://gr.linkedin.com/in/efstathios-lymperis-975702188">Efstathios Lymperis</a>, Geoscientist & Geospatial Software Engineer.<br /> <br /> Version 2.0 is a complete re-write and features a new interface, along with some other features. You can read more <a href="https://www.elymperis.com/greekdata-qgis">here</a>. The main change, is that fetched layers are now cached in a local settings.json file, so that they can be searched through and accessed easily. They then get updated every 7 days. Since the change is quite significant, the version has been bumped to 2.0.0, and your feedback is more than welcome.
+
+
+
+
+
