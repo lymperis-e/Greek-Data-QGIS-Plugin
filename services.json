@@ -29,7 +29,7 @@
         },
         {
             "name": "Επικαιροποίηση Masterplan Αντιπλημμυρικών έργων Αττικής",
-            "url": "http://mpattiki.etme.gr:8181/geoserver/ows",
+            "url": "http://mpattiki.etme.gr:8181/geoserver/MP_ATTIKI_WIP_MASTER_FILES_2022/ows",
             "type": "ogc",
             "capabilities": null,
             "available_layers": null,

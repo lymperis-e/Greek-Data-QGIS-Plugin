@@ -28,6 +28,15 @@
             "layers": []
         },
         {
+            "name": "Επικαιροποίηση Masterplan Αντιπλημμυρικών έργων Αττικής",
+            "url": "http://mpattiki.etme.gr:8181/geoserver/MP_ATTIKI_WIP_MASTER_FILES_2022/ows",
+            "type": "ogc",
+            "capabilities": null,
+            "available_layers": null,
+            "icon": "https://mpattiki.etme.gr/images/logo/logo_antiplymirika_small.png",
+            "layers": []
+        },
+        {
             "name": "MapsPortal YPEN",
             "url": "http://mapsportal.ypen.gr/geoserver/ows",
             "type": "ogc",
@@ -37,8 +46,17 @@
             "layers": []
         },
         {
-            "name": "\u039a\u03c4\u03b7\u03bc\u03b1\u03c4\u03bf\u03bb\u03cc\u03b3\u03b9\u03bf",
+            "name": "Ktimanet",
             "url": "http://gis.ktimanet.gr/inspire/rest/services",
+            "type": "esri",
+            "capabilities": null,
+            "available_layers": null,
+            "icon": "https://www.ktimatologio.gr/favicon.ico",
+            "layers": []
+        },
+        {
+            "name": "Ψηφιακός Χάρτης Κτηματολογίου",
+            "url": "https://services-eu1.arcgis.com/40tFGWzosjaLJpmn/ArcGIS/rest/services",
             "type": "esri",
             "capabilities": null,
             "available_layers": null,
