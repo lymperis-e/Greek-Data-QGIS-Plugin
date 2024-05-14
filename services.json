@@ -28,6 +28,15 @@
             "layers": []
         },
         {
+            "name": "Επικαιροποίηση Masterplan Αντιπλημμυρικών έργων Αττικής",
+            "url": "http://mpattiki.etme.gr:8181/geoserver/ows",
+            "type": "ogc",
+            "capabilities": null,
+            "available_layers": null,
+            "icon": "https://mpattiki.etme.gr/images/logo/logo_antiplymirika_small.png",
+            "layers": []
+        },
+        {
             "name": "MapsPortal YPEN",
             "url": "http://mapsportal.ypen.gr/geoserver/ows",
             "type": "ogc",
