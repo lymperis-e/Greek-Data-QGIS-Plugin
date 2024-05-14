@@ -33,7 +33,7 @@ from qgis.core import (
 from qgis.gui import QgsRubberBand
 from qgis.PyQt.QtCore import QCoreApplication, QSettings, Qt, QTranslator
 from qgis.PyQt.QtGui import QColor, QIcon
-from qgis.PyQt.QtWidgets import QAction
+from qgis.PyQt.QtWidgets import QAction, QListWidgetItem
 
 from .core.Service import GrdServiceState
 from .core.ServiceManager import ServiceManager
@@ -57,6 +57,7 @@ from .sub.Updater import GrdSourcesUpdater
 
 basePath = os.path.dirname(os.path.abspath(__file__))
 settings_path = os.path.join(basePath, "assets/settings")
+loader_icon = os.path.join(basePath, "assets/icons/spinner.gif")
 
 
 class grData:
@@ -98,11 +99,7 @@ class grData:
         self.pluginIsActive = False
         self.dockwidget = None
 
-        # DEV
-        self.rubber_band: QgsRubberBand = QgsRubberBand(
-            self.iface.mapCanvas(), Qgis.GeometryType.Polygon
-        )
-
+        self.rubber_band: QgsRubberBand = QgsRubberBand(self.iface.mapCanvas())
         self.serviceManager = ServiceManager()
 
         # Load remote services
@@ -268,7 +265,6 @@ class grData:
             self.iface.addDockWidget(Qt.LeftDockWidgetArea, self.dockwidget)
             self.dockwidget.show()
 
-            # DEV: New tab
             self.fill_connections_list()
 
             self.dockwidget.current_layer_details_tree.setHeaderLabels(
@@ -300,7 +296,6 @@ class grData:
                 self.handle_connections_list_double_click
             )
 
-    # ------------------- NEW  -------------------------------------------------------
     def fill_connections_list(self, reload=False):
         if reload:
             self.serviceManager.reloadServices()
@@ -328,7 +323,7 @@ class grData:
 
         self.add_layer_to_map(item, parent)
 
-    def expand_service(self, item):
+    def expand_service(self, item: QListWidgetItem):
         """
         Lazy-load a service, wait for it to load and then update the list and expand it
         """
@@ -352,7 +347,7 @@ class grData:
             # Item text changes
             service.changed.connect(
                 lambda x: (
-                    item.setText(0, name)
+                    item.setIcon(0, icon)
                     if x == GrdServiceState.LOADED or x == GrdServiceState.ERROR
                     else None
                 )
@@ -360,7 +355,7 @@ class grData:
 
             service.changed.connect(
                 lambda x: (
-                    item.setText(0, f"{name} (loading...)")
+                    item.setIcon(0, QIcon(loader_icon))
                     if x == GrdServiceState.LOADING
                     else None
                 )

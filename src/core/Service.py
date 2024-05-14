@@ -131,6 +131,10 @@ class GrdService(QObject):
             if export_conf:
                 self.exportConfig()
 
+        else:
+            self.state = GrdServiceState.ERROR
+            self.changed.emit(GrdServiceState.ERROR)
+
     def _fetchRemoteConfig(self) -> None:
         """
         Fetch the remote config of the service (e.g. GetCapabilities, ESRI capabilities, etc.)

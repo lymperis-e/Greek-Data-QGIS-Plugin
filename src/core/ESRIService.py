@@ -235,9 +235,6 @@ class ESRIService(GrdService):
             url=url,
             service_type="esri",
             loaded=False,
-            # capabilities=dict(),
-            # available_layers=list(),
-            # layers=list(),
             *args,
             **kwargs,
         )
