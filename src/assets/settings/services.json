@@ -4,6 +4,8 @@
             "name": "Geoportal YPEN",
             "url": "http://geoportal.ypen.gr/geoserver/ows",
             "type": "ogc",
+            "capabilities": null,
+            "available_layers": null,
             "icon": "https://ypen.gov.gr/wp-content/uploads/2020/04/logo-ypen.jpg",
             "layers": []
         },
@@ -11,13 +13,17 @@
             "name": "Geoportal RAAEY",
             "url": "https://geo.rae.gr/geoserver/ows",
             "type": "ogc",
+            "capabilities": null,
+            "available_layers": null,
             "icon": "https://www.rae.gr/wp-content/uploads/2024/04/PAAEY_Logo_GR.png",
             "layers": []
         },
         {
-            "name": "\u039c\u03b7\u03c4\u03c1\u03bf\u03c0\u03bf\u03bb\u03b9\u03c4\u03b9\u03ba\u03cc\u03c2 \u03a3\u03c7\u03b5\u03b4\u03b9\u03b1\u03c3\u03bc\u03cc\u03c2 \u0391\u03b8\u03b7\u03bd\u03ce\u03bd",
+            "name": "Μητροπολιτικός Σχεδιασμός Αθηνών",
             "url": "http://msa.ypeka.gr/geoserver/ows",
             "type": "ogc",
+            "capabilities": null,
+            "available_layers": null,
             "icon": "",
             "layers": []
         },
@@ -25,6 +31,8 @@
             "name": "Επικαιροποίηση Masterplan Αντιπλημμυρικών έργων Αττικής",
             "url": "http://mpattiki.etme.gr:8181/geoserver/MP_ATTIKI_WIP_MASTER_FILES_2022/ows",
             "type": "ogc",
+            "capabilities": null,
+            "available_layers": null,
             "icon": "https://mpattiki.etme.gr/images/logo/logo_antiplymirika_small.png",
             "layers": []
         },
@@ -32,13 +40,17 @@
             "name": "MapsPortal YPEN",
             "url": "http://mapsportal.ypen.gr/geoserver/ows",
             "type": "ogc",
+            "capabilities": null,
+            "available_layers": null,
             "icon": "https://ypen.gov.gr/wp-content/uploads/2020/04/logo-ypen.jpg",
             "layers": []
         },
         {
-            "name": "Ktimanet",
+            "name": "Κτηματολόγιο (gis.ktimanet.gr)",
             "url": "http://gis.ktimanet.gr/inspire/rest/services",
             "type": "esri",
+            "capabilities": null,
+            "available_layers": null,
             "icon": "https://www.ktimatologio.gr/favicon.ico",
             "layers": []
         },
@@ -46,18 +58,22 @@
             "name": "Ψηφιακός Χάρτης Κτηματολογίου",
             "url": "https://services-eu1.arcgis.com/40tFGWzosjaLJpmn/ArcGIS/rest/services",
             "type": "esri",
+            "capabilities": null,
+            "available_layers": null,
             "icon": "https://www.ktimatologio.gr/favicon.ico",
             "layers": []
         },
         {
-            "name": "\u0393\u03b5\u03bd\u03b9\u03ba\u03ae \u0393\u03c1\u03b1\u03bc\u03bc\u03b1\u03c4\u03b5\u03af\u03b1 \u0392\u03b9\u03bf\u03bc\u03b7\u03c7\u03b1\u03bd\u03af\u03b1\u03c2",
+            "name": "Γενική Γραμματεία Βιομηχανίας",
             "url": "http://gis.ggb.gr/arcgis/rest/services",
             "type": "esri",
+            "capabilities": null,
+            "available_layers": null,
             "icon": null,
             "layers": []
         },
         {
-            "name": "\u0395.\u0391.\u0393.\u039c.\u0395.",
+            "name": "Ε.Α.Γ.Μ.Ε.",
             "url": "https://gaia.igme.gr/server/rest/services",
             "type": "esri",
             "capabilities": null,
@@ -66,7 +82,7 @@
             "layers": []
         },
         {
-            "name": "\u03a5\u03b4\u03c1\u03bf\u03bb\u03b7\u03c8\u03af\u03b5\u03c2 \u0393.\u0393.\u03a5.",
+            "name": "Θέαση σημείων υδροληψίας (Γενική Γραμματεία Υδάτων)",
             "url": "http://lmt.ypeka.gr/arcgis/rest/services",
             "type": "esri",
             "capabilities": null,
@@ -84,7 +100,7 @@
             "layers": []
         },
         {
-            "name": "\u0395.\u039b.\u03a3.\u03a4.\u0391.\u03a4.",
+            "name": "Ε.Λ.Σ.Τ.Α.Τ.",
             "url": "https://gisserver.statistics.gr/webgis/rest/services",
             "type": "esri",
             "capabilities": null,
@@ -93,7 +109,7 @@
             "layers": []
         },
         {
-            "name": "\u03a0\u03b5\u03c1\u03b9\u03c6\u03ad\u03c1\u03b5\u03b9\u03b1 \u039a\u03c1\u03ae\u03c4\u03b7\u03c2",
+            "name": "Περιφέρεια Κρήτης",
             "url": "https://geoportal.apdkritis.gov.gr/webgis/rest/services",
             "type": "esri",
             "capabilities": null,
@@ -111,7 +127,7 @@
             "layers": []
         },
         {
-            "name": "\u0394\u03ae\u03bc\u03bf\u03c2 \u03a3\u03b5\u03c1\u03c1\u03ce\u03bd",
+            "name": "Δήμος Σερρών",
             "url": "https://geocloud.infodim.gr/giswa/rest/services",
             "type": "esri",
             "capabilities": null,
@@ -120,7 +136,7 @@
             "layers": []
         },
         {
-            "name": "\u0394\u03ae\u03bc\u03bf\u03c2 \u0392\u03cc\u03bb\u03bf\u03c5",
+            "name": "Δήμος Βόλου",
             "url": "https://services1.arcgis.com/pEPtv3H99tct0yyg/arcgis/rest/services",
             "type": "esri",
             "capabilities": null,
@@ -129,7 +145,7 @@
             "layers": []
         },
         {
-            "name": "\u0394\u03ae\u03bc\u03bf\u03c2 \u03a4\u03c1\u03b9\u03ba\u03ba\u03b1\u03af\u03c9\u03bd",
+            "name": "Δήμος Τρικκαίων",
             "url": "https://services8.arcgis.com/WviT8ecuvqxI4l6m/arcgis/rest/services",
             "type": "esri",
             "capabilities": null,
@@ -138,7 +154,7 @@
             "layers": []
         },
         {
-            "name": "\u0394\u03ae\u03bc\u03bf\u03c2 \u039a\u03b1\u03bb\u03b1\u03bc\u03b1\u03c1\u03b9\u03ac\u03c2",
+            "name": "Δήμος Καλαμαριάς",
             "url": "https://services8.arcgis.com/5IrPMaiHYysccvch/arcgis/rest/services/",
             "type": "esri",
             "capabilities": null,
@@ -147,7 +163,7 @@
             "layers": []
         },
         {
-            "name": "\u0394\u03ae\u03bc\u03bf\u03c2 \u039a\u03bf\u03b6\u03ac\u03bd\u03b7\u03c2",
+            "name": "Δήμος Κοζάνης",
             "url": "https://services8.arcgis.com/4lHpWT7YoiJ0hk3u/arcgis/rest/services",
             "type": "esri",
             "capabilities": null,
@@ -156,7 +172,7 @@
             "layers": []
         },
         {
-            "name": "\u0394\u03ae\u03bc\u03bf\u03c2 \u03a3\u03c4\u03b1\u03c5\u03c1\u03bf\u03cd\u03c0\u03bf\u03bb\u03b7\u03c2",
+            "name": "Δήμος Σταυρούπολης",
             "url": "https://services3.arcgis.com/sMRN1skMfkslexa0/ArcGIS/rest/services",
             "type": "esri",
             "capabilities": null,
@@ -165,7 +181,7 @@
             "layers": []
         },
         {
-            "name": "\u0394\u03ae\u03bc\u03bf\u03c2 \u0391\u03b8\u03b7\u03bd\u03b1\u03af\u03c9\u03bd",
+            "name": "Δήμος Αθηναίων",
             "url": "http://gis.cityofathens.gr/geoserver/ows",
             "type": "ogc",
             "capabilities": null,
@@ -174,7 +190,7 @@
             "layers": []
         },
         {
-            "name": "\u0394\u03ae\u03bc\u03bf\u03c2 \u0398\u03b5\u03c3\u03c3\u03b1\u03bb\u03bf\u03bd\u03af\u03ba\u03b7\u03c2",
+            "name": "Δήμος Θεσσαλονίκης",
             "url": "https://maps.thessaloniki.gr/server/rest/services",
             "type": "esri",
             "capabilities": null,
@@ -183,7 +199,7 @@
             "layers": []
         },
         {
-            "name": "\u0394\u03ae\u03bc\u03bf\u03c2 \u03a0\u03b5\u03b9\u03c1\u03b1\u03b9\u03ac",
+            "name": "Δήμος Πειραιά",
             "url": "https://sdi.piraeus.gov.gr/geoserver/vecpiraeus/ows",
             "type": "ogc",
             "capabilities": null,
@@ -192,7 +208,7 @@
             "layers": []
         },
         {
-            "name": "\u0394\u03ae\u03bc\u03bf\u03c2 \u03a0\u03b5\u03c1\u03b9\u03c3\u03c4\u03b5\u03c1\u03af\u03bf\u03c5",
+            "name": "Δήμος Περιστερίου",
             "url": "https://pgis.peristeri.gr/server/rest/services/peristeri",
             "type": "esri",
             "capabilities": null,
@@ -201,7 +217,7 @@
             "layers": []
         },
         {
-            "name": "\u0394\u03ae\u03bc\u03bf\u03c2 \u0391\u03b3\u03af\u03b1\u03c2 \u03a0\u03b1\u03c1\u03b1\u03c3\u03ba\u03b5\u03c5\u03ae\u03c2",
+            "name": "Δήμος Αγίας Παρασκευής",
             "url": "https://gis.agiaparaskevi.gr/geoserver/vec/ows",
             "type": "ogc",
             "capabilities": null,
@@ -210,7 +226,7 @@
             "layers": []
         },
         {
-            "name": "\u0394\u03ae\u03bc\u03bf\u03c2 \u0391\u03bc\u03b1\u03c1\u03bf\u03c5\u03c3\u03af\u03bf\u03c5",
+            "name": "Δήμος Αμαρουσίου",
             "url": "https://gis.maroussi.gr/geoserver/maroussi/ows",
             "type": "ogc",
             "capabilities": null,
