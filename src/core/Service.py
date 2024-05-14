@@ -175,7 +175,7 @@ class GrdService(QObject):
             self._fetchRemoteConfig()
 
         if idx >= len(self.layers):
-            raise ServiceNotExists(self.name)
+            print(f"Layer with index {idx} does not exist.")
 
         return self.layers[idx]
 
