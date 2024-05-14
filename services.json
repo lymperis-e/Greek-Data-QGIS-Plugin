@@ -91,6 +91,15 @@
             "layers": []
         },
         {
+            "name": "Σχέδια Διαχείρισης Λεκανών Απορροής Ποταμών",
+            "url": "https://wfdservices.ypeka.gr/geoserver/wfs",
+            "type": "ogc",
+            "capabilities": null,
+            "available_layers": null,
+            "icon": "https://wfdver.ypeka.gr/wp-content/uploads/2023/03/logo_.png",
+            "layers": []
+        },
+        {
             "name": "\u0395.\u039b.\u03a3.\u03a4.\u0391.\u03a4.",
             "url": "https://gisserver.statistics.gr/webgis/rest/services",
             "type": "esri",
