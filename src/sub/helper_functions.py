@@ -1,24 +1,66 @@
-from os.path import dirname, join
+import hashlib
+import os
+from os.path import dirname, isfile, join
+from urllib.parse import urlparse
 
+import requests
 from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import QTreeWidgetItem
 
-from ..core.utils.QUrlIcon import QUrlIcon
+from .cache import ICONS_CACHE_DIR, ensure_cache_directories
 
 plugin_logo = join(dirname(dirname(__file__)), "assets", "img", "icon.png")
 
 
 def get_base_url(url):
-    from urllib.parse import urlparse
-
     parsed_url = urlparse(url)
     base_url = f"{parsed_url.scheme}://{parsed_url.netloc}"
     return base_url
 
 
+def _service_icon_cache_path(service):
+    if not isinstance(service.icon, str) or service.icon == "":
+        return None
+
+    parsed = urlparse(service.icon)
+    _, ext = os.path.splitext(parsed.path)
+    if ext.lower() not in [".png", ".jpg", ".jpeg", ".ico", ".svg", ".webp"]:
+        ext = ".img"
+
+    hashed = hashlib.sha256(service.icon.encode("utf-8")).hexdigest()
+    return join(ICONS_CACHE_DIR, f"{hashed}{ext}")
+
+
+def cache_service_icon(service):
+    """Cache service icon to the plugin .cache/icons directory and return local path."""
+    if service.icon is None:
+        return None
+
+    ensure_cache_directories()
+
+    cache_path = _service_icon_cache_path(service)
+    if cache_path is None:
+        return None
+
+    if isfile(cache_path):
+        return cache_path
+
+    try:
+        response = requests.get(service.icon, timeout=4)
+        if response.status_code != 200:
+            return None
+
+        with open(cache_path, "wb") as f:
+            f.write(response.content)
+
+        return cache_path
+    except Exception:
+        return None
+
+
 def service_qicon(service):
     """
-    Get the icon of a service (if available) by querying the service's url for a favicon.ico
+    Get the icon of a service without blocking the UI thread.
 
     Args:
         service (grdata.core.Service.GrdService): _description_
@@ -29,10 +71,16 @@ def service_qicon(service):
     if service.icon is None:
         return QIcon(plugin_logo)
 
-    qUriIcon = QUrlIcon(service.icon).icon()
-    if qUriIcon is None:
-        return QIcon(plugin_logo)
-    return QIcon(qUriIcon)
+    cache_path = _service_icon_cache_path(service)
+    if cache_path and isfile(cache_path):
+        return QIcon(cache_path)
+
+    # Avoid synchronous network requests while populating the tree.
+    # Use service icon only when it points to a local file.
+    if isinstance(service.icon, str) and isfile(service.icon):
+        return QIcon(service.icon)
+
+    return QIcon(plugin_logo)
 
 
 # ------------

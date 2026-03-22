@@ -1,3 +1,4 @@
+import hashlib
 import json
 from os.path import dirname, join
 from typing import Dict, List, Union
@@ -47,10 +48,29 @@ class ServiceManager:
         """
         Read all the services that are cached locally from the config file
         """
-        with open(CONFIG_FILE, "r", encoding="utf-8") as f:
+        with open(CONFIG_FILE, "r", encoding="utf-8-sig") as f:
             config = json.load(f)
 
-        return config.get("services")
+        services = config.get("services") or []
+        changed = False
+
+        for service in services:
+            if not service.get("id"):
+                service["id"] = self._generate_service_id(service)
+                changed = True
+
+        if changed:
+            config["services"] = services
+            with open(CONFIG_FILE, "w", encoding="utf-8") as f:
+                json.dump(config, f, ensure_ascii=False, indent=4)
+
+        return services
+
+    @staticmethod
+    def _generate_service_id(service: Dict[str, str]) -> str:
+        stable_key = f"{service.get('type', '')}|{service.get('url', '')}"
+        digest = hashlib.sha1(stable_key.encode("utf-8")).hexdigest()[:16]
+        return f"svc_{digest}"
 
     def __load_remote_services(self) -> Dict[str, str]:
         """
@@ -164,7 +184,7 @@ class ServiceManager:
                 json.dump(self.toJson(), f, indent=4)
             return
 
-        with open(settings_path, "r", encoding="utf-8") as f:
+        with open(settings_path, "r", encoding="utf-8-sig") as f:
             current_config = json.load(f)
             current_config = {**current_config, **self.toJson()}
 

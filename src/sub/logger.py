@@ -1,0 +1,1 @@
+LOGGER_CATEGORY = "GreekDataPlugin"

@@ -28,25 +28,23 @@ from qgis.core import (Qgis, QgsApplication, QgsCoordinateReferenceSystem,
 from qgis.gui import QgsRubberBand
 from qgis.PyQt.QtCore import QCoreApplication, QSettings, Qt, QTranslator
 from qgis.PyQt.QtGui import QColor, QIcon
-from qgis.PyQt.QtWidgets import QAction, QListWidgetItem
+from qgis.PyQt.QtWidgets import QAction
 
-from .core.Service import GrdServiceState
 from .core.ServiceManager import ServiceManager
-from .core.utils.QUrlIcon import QUrlIcon
 # Import the code for the DockWidget
 from .grData_dockwidget import grDataDockWidget
 # Initialize Qt resources from file resources.py
 from .resources import *
 # Local Imports
-from .sub.helper_functions import (fill_tree_widget, fillServiceLayers,
-                                   fillServices, filter_tree_widget_leafs,
+from .sub.cache import ensure_cache_directories
+from .sub.helper_functions import (fill_tree_widget, filter_tree_widget_leafs,
                                    filter_tree_widget_roots)
 from .sub.native_datasource_connections import NativeDatasourceConnections
+from .sub.service_tree import ServiceTreeController
 from .sub.Updater import GrdSourcesUpdater
 
 basePath = os.path.dirname(os.path.abspath(__file__))
 settings_path = os.path.join(basePath, "assets/settings")
-loader_icon = os.path.join(basePath, "assets/icons/spinner.gif")
 
 
 class grData:
@@ -93,6 +91,7 @@ class grData:
         self.native_datasource_connections = NativeDatasourceConnections(
             self.iface, self.serviceManager, self.tr
         )
+        ensure_cache_directories()
 
         # Load remote services
         self.updater = GrdSourcesUpdater()
@@ -208,15 +207,9 @@ class grData:
     def initGui(self):
         """Create the menu entries and toolbar icons inside the QGIS GUI."""
         icon_path = os.path.join(os.path.dirname(__file__), "assets", "img", "icon.png")
-        icon = QIcon(icon_path)
-        self.grdata = QAction(icon, "Greek Open Data Access", self.iface.mainWindow())
-        self.grdata.triggered.connect(self.run)
-        self.grdata.setCheckable(False)
-        self.iface.addToolBarIcon(self.grdata)
-
-        self.add_action(
+        self.grdata = self.add_action(
             icon_path,
-            text=self.tr("Greek Data Access"),
+            text=self.tr("Greek Open Data Access"),
             callback=self.run,
             parent=self.iface.mainWindow(),
         )
@@ -237,7 +230,8 @@ class grData:
         for action in self.actions:
             self.iface.removePluginWebMenu(self.tr("&Greek Data"), action)
             self.iface.removeToolBarIcon(action)
-            self.iface.removeToolBarIcon(self.grdata)
+
+        self.actions = []
         # remove the toolbar
         del self.toolbar
 
@@ -257,7 +251,16 @@ class grData:
             self.iface.addDockWidget(Qt.LeftDockWidgetArea, self.dockwidget)
             self.dockwidget.show()
 
+            self.set_layer_details_visible(False)
+
+            self.service_tree = ServiceTreeController(
+                self.dockwidget.conn_list_widget,
+                self.serviceManager,
+                self.native_datasource_connections,
+                self.tr,
+            )
             self.fill_connections_list()
+
 
             self.dockwidget.current_layer_details_tree.setHeaderLabels(
                 ["Attribute", "Value"]
@@ -293,14 +296,20 @@ class grData:
                 self.dockwidget.conn_list_widget
             )
 
+    def set_layer_details_visible(self, visible: bool):
+        self.dockwidget.widget_14.setVisible(visible)
+
+        if not visible:
+            self.dockwidget.current_layer_name_label.setText("...")
+            self.dockwidget.current_layer_url_label.setText("")
+            self.dockwidget.current_layer_description_label.setText("")
+            self.dockwidget.current_layer_copyright_label.setText("")
+            self.dockwidget.current_layer_details_tree.clear()
+            self.dockwidget.current_layer_add_to_map_btn.setEnabled(False)
+            self.rubber_band.hide()
+
     def fill_connections_list(self, reload=False):
-        if reload:
-            self.serviceManager.reloadServices()
-
-        services = self.serviceManager.listServices()
-
-        self.dockwidget.conn_list_widget.clear()
-        fillServices(self.dockwidget.conn_list_widget, services)
+        self.service_tree.fill(reload)
 
     def filter_connections_list(self, filter_text):
         filterTarget = self.dockwidget.filter_services_combobox.currentText()
@@ -320,55 +329,6 @@ class grData:
 
         self.add_layer_to_map(item, parent)
 
-    def expand_service(self, item: QListWidgetItem):
-        """
-        Lazy-load a service, wait for it to load and then update the list and expand it
-        """
-        if item.childCount() > 0:
-            return
-
-        name = item.text(0)
-        icon = item.icon(0)
-        service = self.serviceManager.getService(name)
-
-        # Service's layers are lazily loaded from the server the first time they are requested
-        if not service.loaded:
-            service.changed.connect(
-                lambda x: (
-                    fillServiceLayers(item, service, expanded=True)
-                    if x == GrdServiceState.LOADED
-                    else None
-                )
-            )
-
-            # Item text changes
-            service.changed.connect(
-                lambda x: (
-                    item.setIcon(0, icon)
-                    if x == GrdServiceState.LOADED or x == GrdServiceState.ERROR
-                    else None
-                )
-            )
-
-            service.changed.connect(
-                lambda x: (
-                    item.setIcon(0, QIcon(loader_icon))
-                    if x == GrdServiceState.LOADING
-                    else None
-                )
-            )
-
-        if service.getLayers() is None:
-            # msg_bar = self.iface.messageBar()
-            # msg_bar.pushMessage(
-            #     "Loading ",
-            #     f"Service {name} is being loaded",
-            #     level=Qgis.Info,
-            # )
-            return
-
-        fillServiceLayers(item, service)
-
     def add_layer_to_map(self, item=None, parent=None):
 
         if item and parent:
@@ -386,10 +346,17 @@ class grData:
 
     def connListChanged(self, layer):
         selectedItem = self.dockwidget.conn_list_widget.currentItem()
+        if selectedItem is None:
+            self.set_layer_details_visible(False)
+            return
+
         parent = selectedItem.parent()
         if not parent:
-            self.expand_service(selectedItem)
+            self.set_layer_details_visible(False)
+            self.service_tree.expand_service(selectedItem, fetch_if_needed=False)
             return
+
+        self.set_layer_details_visible(True)
 
         service = self.serviceManager.getService(parent.text(0))
         layer = service.getLayer(parent.indexOfChild(selectedItem))
@@ -417,5 +384,5 @@ class grData:
         try:
             self.rubberband_from_current_bbox()
         except Exception as e:
-            # QgsMessageLog.logMessage(str(e), "grData", Qgis.Critical)
+            # QgsMessageLog.logMessage(str(e), "GreekDataPlugin", Qgis.Critical)
             None

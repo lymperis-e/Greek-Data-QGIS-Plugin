@@ -148,8 +148,11 @@ class NativeDatasourceConnections:
         if item is None:
             return
 
-        service_item = item if item.parent() is None else item.parent()
-        service_name = service_item.text(0)
+        # Only show the action on top-level service rows, not on layer children
+        if item.parent() is not None:
+            return
+
+        service_name = item.text(0)
 
         menu = QMenu(tree_widget)
         add_action = menu.addAction(self.tr("Add As Native QGIS Browser Datasource"))
@@ -169,12 +172,12 @@ class NativeDatasourceConnections:
         if service.type == "ogc":
             self._save_native_connection(
                 "wms",
-                f"{base_name} (WMS)",
+                base_name,
                 url=clean_url,
             )
             self._save_native_connection(
                 "wfs",
-                f"{base_name} (WFS)",
+                base_name,
                 url=clean_url,
             )
             created_connections.extend(["WMS", "WFS"])
@@ -182,12 +185,12 @@ class NativeDatasourceConnections:
         elif service.type == "esri":
             self._save_native_connection(
                 "arcgismapserver",
-                f"{base_name} (ArcGIS MapServer)",
+                base_name,
                 url=clean_url,
             )
             self._save_native_connection(
                 "arcgisfeatureserver",
-                f"{base_name} (ArcGIS FeatureServer)",
+                base_name,
                 url=clean_url,
             )
             created_connections.extend(["ArcGIS MapServer", "ArcGIS FeatureServer"])
@@ -200,7 +203,7 @@ class NativeDatasourceConnections:
         ):
             self._save_native_connection(
                 "xyz",
-                f"{base_name} (XYZ)",
+                base_name,
                 url=service.url,
                 zmin=0,
                 zmax=22,
@@ -221,7 +224,7 @@ class NativeDatasourceConnections:
 
         self.iface.messageBar().pushMessage(
             "grData",
-            f"Added native datasource connection(s): {', '.join(created_connections)}",
+            f"Added native datasource connection(s) for service '{service.name}': {', '.join(created_connections)}",
             level=Qgis.Success,
             duration=5,
         )

@@ -5,6 +5,8 @@ import requests
 from qgis.core import Qgis, QgsApplication, QgsMessageLog, QgsTask
 from qgis.PyQt.QtCore import pyqtSignal
 
+from .logger import LOGGER_CATEGORY
+
 CONFIG_FILE = join(dirname(dirname(__file__)), "assets", "settings", "services.json")
 
 
@@ -18,7 +20,8 @@ class FetchFromGithub(QgsTask):
     """
 
     fetched = pyqtSignal(list)
-    github_url = "https://raw.githubusercontent.com/lymperis-e/Greek-Data-QGIS-Plugin/dev/services.json"
+    github_url = "https://raw.githubusercontent.com/lymperis-e/Greek-Data-QGIS-Plugin/main/src/assets/settings/services.json"
+
 
     def __init__(self):
         super().__init__(
@@ -54,7 +57,7 @@ class FetchFromGithub(QgsTask):
         If a service has been modified in the local services, it will not be updated. For example, if the layers array
         of a service has been modified, the service will not be updated.
         """
-        with open(CONFIG_FILE, "r", encoding="utf-8") as file:
+        with open(CONFIG_FILE, "r", encoding="utf-8-sig") as file:
             local_services = json.load(file).get("services", [])
 
         # Index the local services by url
@@ -78,7 +81,7 @@ class FetchFromGithub(QgsTask):
         if not self.new_services or self.isCanceled():
             return True
 
-        with open(CONFIG_FILE, "r", encoding="utf-8") as file:
+        with open(CONFIG_FILE, "r", encoding="utf-8-sig") as file:
             current_config = json.load(file)
             services = current_config.get("services", None)
 
@@ -97,8 +100,8 @@ class FetchFromGithub(QgsTask):
             self.fetched.emit(self.new_services)
         else:
             QgsMessageLog.logMessage(
-                f"Failed to fetch services from {self.github_url}",
-                "GRData",
+                f"[Updater/FetchFromGithub] Failed to fetch services from {self.github_url}",
+                LOGGER_CATEGORY,
                 Qgis.Critical,
             )
 
@@ -111,7 +114,9 @@ class GrdSourcesUpdater:
         print("New services fetched: ", len(new_services))
         if new_services:
             QgsMessageLog.logMessage(
-                f"New services fetched: {len(new_services)}", "GRData", Qgis.Info
+                f"[Updater/GrdSourcesUpdater] New services fetched: {len(new_services)}",
+                LOGGER_CATEGORY,
+                Qgis.Info,
             )
 
     def update(self, callback=None):
