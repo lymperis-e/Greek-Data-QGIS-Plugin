@@ -54,7 +54,7 @@ class FetchFromGithub(QgsTask):
         If a service has been modified in the local services, it will not be updated. For example, if the layers array
         of a service has been modified, the service will not be updated.
         """
-        with open(CONFIG_FILE, "r", encoding="utf-8") as file:
+        with open(CONFIG_FILE, "r", encoding="utf-8-sig") as file:
             local_services = json.load(file).get("services", [])
 
         # Index the local services by url
@@ -78,7 +78,7 @@ class FetchFromGithub(QgsTask):
         if not self.new_services or self.isCanceled():
             return True
 
-        with open(CONFIG_FILE, "r", encoding="utf-8") as file:
+        with open(CONFIG_FILE, "r", encoding="utf-8-sig") as file:
             current_config = json.load(file)
             services = current_config.get("services", None)
 

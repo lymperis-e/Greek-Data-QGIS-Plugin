@@ -1,13 +1,11 @@
-import json
 import time
-from os.path import dirname, join
 from typing import Dict, List
 
 from qgis.PyQt.QtCore import QObject, pyqtSignal
 
+from ..sub.capabilities_cache import (load_capabilities_cache,
+                                      save_capabilities_cache)
 from .Layer import Layer
-
-CONFIG_FILE = join(dirname(dirname(__file__)), "assets", "settings", "services.json")
 
 
 class ServiceNotExists(Exception):
@@ -50,6 +48,7 @@ class GrdService(QObject):
         name,
         url,
         service_type,
+        service_id=None,
         manager=None,
         config=None,
         loaded=False,
@@ -59,6 +58,7 @@ class GrdService(QObject):
         self.name = name
         self.url = url
         self.type = service_type
+        self.id = service_id or ""
         self.loaded = loaded
         self.manager = manager
         self.config = config
@@ -76,17 +76,23 @@ class GrdService(QObject):
 
     def _loadConfig(self) -> None:
         """
-        Load the service from the local config file
+        Load static service metadata from services.json and dynamic capabilities/layers
+        from cache (.cache/capabilities).
         """
-        serviceConf = self.config
-        if not serviceConf:
-            return
+        serviceConf = self.config or {}
+        self.id = str(serviceConf.get("id", self.id) or "")
+        self.icon = serviceConf.get("icon")
 
-        self.updated_at: int = serviceConf.get("updated_at", None)
-        self.capabilities = serviceConf.get("capabilities")
-        self.available_layers: List = serviceConf.get("available_layers")
-        self.icon: str = serviceConf.get("icon")
-        self._setupLayers(serviceConf.get("layers"), export_conf=False)
+        cached = load_capabilities_cache(service_id=self.id)
+        if cached is not None:
+            self.updated_at = cached.get("updated_at")
+            self.capabilities = cached.get("capabilities")
+            self.available_layers = cached.get("available_layers")
+
+            cached_layers = cached.get("layers")
+            if cached_layers:
+                self._setupLayers(cached_layers, export_conf=False)
+            return
 
     def __str__(self):
         return self.name
@@ -181,6 +187,7 @@ class GrdService(QObject):
 
     def toJson(self) -> dict:
         return {
+            "id": self.id,
             "name": self.name,
             "url": self.url,
             "type": self.type,
@@ -192,19 +199,17 @@ class GrdService(QObject):
         }
 
     def exportConfig(self) -> None:
-        with open(CONFIG_FILE, "r", encoding="utf-8") as f:
-            current_config = json.load(f)
-            services = current_config.get("services", None)
-
-            if not services:
-                current_config["services"] = [self.toJson()]
-            else:
-                for idx, service in enumerate(services):
-                    if service.get("name", None) == self.name:
-                        services[idx] = self.toJson()
-                        break
-                else:
-                    current_config["services"].append(self.toJson())
-
-        with open(CONFIG_FILE, "w", encoding="utf-8") as f:
-            json.dump(current_config, f, indent=4)
+        save_capabilities_cache(
+            service_id=self.id,
+            payload={
+                "id": self.id,
+                "name": self.name,
+                "url": self.url,
+                "type": self.type,
+                "updated_at": self.updated_at,
+                "capabilities": self.capabilities,
+                "available_layers": self.available_layers,
+                "icon": self.icon,
+                "layers": [layer.toJson() for layer in self.layers] if self.layers else [],
+            },
+        )
