@@ -44,8 +44,15 @@ class FetchFromGithub(QgsTask):
                 cookies=None,
             )
             response.raise_for_status()
-            return response.json()
+            try:
+                return response.json()
+            except ValueError:
+                # Some responses include a UTF-8 BOM; decode explicitly and parse.
+                return json.loads(response.content.decode("utf-8-sig"))
         except requests.exceptions.RequestException as e:
+            self.exception = e
+            return None
+        except (ValueError, json.JSONDecodeError) as e:
             self.exception = e
             return None
 
@@ -113,7 +120,7 @@ class FetchFromGithub(QgsTask):
             self.fetched.emit(self.new_services)
         else:
             QgsMessageLog.logMessage(
-                f"[Updater/FetchFromGithub] Failed to fetch services from {self.github_url}",
+                f"[Updater/FetchFromGithub] Failed to fetch services from {self.github_url}. Error: {self.exception}",
                 LOGGER_CATEGORY,
                 Qgis.Critical,
             )

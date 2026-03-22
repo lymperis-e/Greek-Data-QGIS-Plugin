@@ -166,6 +166,10 @@ class Layer:
         Returns:
             str: geometry type
         """
+        # Raster services should stay raster regardless of source geometry metadata.
+        if self.type in (DataModel.esri_raster, DataModel.wms):
+            return "raster"
+
         # Normalize geometry token once to support different providers/encodings.
         geom = str(geom_type or "").strip()
         geom_lower = geom.lower()
@@ -179,9 +183,6 @@ class Layer:
         if "polygon" in geom_lower or "envelope" in geom_lower:
             return "polygon"
 
-        if self.type == DataModel.esri_raster:
-            return "raster"
-
         # OGC
         if self.type == DataModel.wfs and geom:
             # Common GML/QName values: gml:PointPropertyType, MultiLineString, etc.
@@ -191,9 +192,6 @@ class Layer:
                 return "line"
             if "polygon" in geom_lower:
                 return "polygon"
-
-        if self.type == DataModel.wms:
-            return "raster"
 
         return None
 
