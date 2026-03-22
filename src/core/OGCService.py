@@ -147,54 +147,86 @@ class LoadOGCAsync(QgsTask):
 
         return None
 
+    def _request_capabilities(self, url, payload, service_label):
+        """Request OGC capabilities with a one-time SSL-verification fallback."""
+        base_kwargs = {
+            "params": payload,
+            "headers": {"user-agent": "grdata-qgis-plugin/1.0.0"},
+            "timeout": 10,
+            "allow_redirects": True,
+            "cookies": None,
+        }
+
+        try:
+            response = requests.get(url, **base_kwargs)
+            response.raise_for_status()
+            return response
+        except requests.exceptions.SSLError as err:
+            QgsMessageLog.logMessage(
+                f"[OGCService/Loader] {service_label} SSL verification failed for {url}; retrying without certificate verification: {err}",
+                LOGGER_CATEGORY,
+                Qgis.Warning,
+            )
+            response = requests.get(url, verify=False, **base_kwargs)
+            response.raise_for_status()
+            return response
+
     def _get_wfs(self, url):
         url = url.rstrip("/")
 
-        # Query the REST endpoint
-        payload = {"request": "GetCapabilities", "service": "WFS"}
-        response = requests.get(
-            url,
-            params=payload,
-            headers={"user-agent": "grdata-qgis-plugin/1.0.0"},
-            timeout=10,
-            allow_redirects=True,
-            cookies=None,
-        )
+        try:
+            payload = {"request": "GetCapabilities", "service": "WFS"}
+            response = self._request_capabilities(url, payload, "WFS")
 
-        service_dict = xmltodict.parse(response.content)
-        services = service_dict["wfs:WFS_Capabilities"]["FeatureTypeList"].get("FeatureType")
-
-        if "error" in response:
-            self.exception = Exception(response)
+            service_dict = xmltodict.parse(response.content)
+            capabilities = service_dict.get("wfs:WFS_Capabilities", {})
+            feature_type_list = capabilities.get("FeatureTypeList", {})
+            services = feature_type_list.get("FeatureType")
+            return self._as_list(services)
+        except requests.exceptions.RequestException as e:
+            self.exception = e
+            QgsMessageLog.logMessage(
+                f"[OGCService/Loader] WFS capabilities request failed for {url}: {e}",
+                LOGGER_CATEGORY,
+                Qgis.Warning,
+            )
             return None
-
-        return self._as_list(services)
+        except Exception as e:
+            self.exception = e
+            QgsMessageLog.logMessage(
+                f"[OGCService/Loader] WFS capabilities parse failed for {url}: {e}",
+                LOGGER_CATEGORY,
+                Qgis.Warning,
+            )
+            return None
 
     def _get_wms(self, url):
         url = url.rstrip("/")
-        # Query the REST endpoint
-        payload = {"request": "GetCapabilities", "service": "WMS"}
-        response = requests.get(
-            url,
-            params=payload,
-            headers={"user-agent": "grdata-qgis-plugin/1.0.0"},
-            timeout=10,
-            allow_redirects=True,
-            cookies=None,
-        )
+        try:
+            payload = {"request": "GetCapabilities", "service": "WMS"}
+            response = self._request_capabilities(url, payload, "WMS")
 
-        service_dict = xmltodict.parse(response.content)
-        # print(
-        #     f"Number of layers: {len(service_dict['WMS_Capabilities']['Capability']['Layer'])}"
-        # )
-
-        services = service_dict["WMS_Capabilities"]["Capability"].get("Layer")
-
-        if "error" in response:
-            self.exception = Exception(response)
+            service_dict = xmltodict.parse(response.content)
+            capabilities = service_dict.get("WMS_Capabilities", {})
+            capability = capabilities.get("Capability", {})
+            services = capability.get("Layer")
+            return self._as_list(services)
+        except requests.exceptions.RequestException as e:
+            self.exception = e
+            QgsMessageLog.logMessage(
+                f"[OGCService/Loader] WMS capabilities request failed for {url}: {e}",
+                LOGGER_CATEGORY,
+                Qgis.Warning,
+            )
             return None
-
-        return self._as_list(services)
+        except Exception as e:
+            self.exception = e
+            QgsMessageLog.logMessage(
+                f"[OGCService/Loader] WMS capabilities parse failed for {url}: {e}",
+                LOGGER_CATEGORY,
+                Qgis.Warning,
+            )
+            return None
 
     def query_OGC_server(self, url) -> Dict[str, Dict[str, str]]:
 
@@ -269,6 +301,8 @@ class LoadOGCAsync(QgsTask):
         self.capabilities = self.query_OGC_server(self.url)
         if self.isCanceled():
             return False
+        if self.capabilities is None or len(self.layers) == 0:
+            return False
         return True
 
     def finished(self, result):
@@ -284,7 +318,8 @@ class LoadOGCAsync(QgsTask):
 
         # Cancelled
         if self.exception is None:
-            self.loaded.emit(self.layers)
+            # Emit empty payload so downstream service transitions out of LOADING.
+            self.loaded.emit([])
             QgsMessageLog.logMessage(
                 f'[OGCService/Loader] Request "{self.description()}" not successful but without '
                 "exception (probably the task was manually "
@@ -295,6 +330,8 @@ class LoadOGCAsync(QgsTask):
             return
 
         # Error
+        # Emit empty payload so downstream service transitions out of LOADING.
+        self.loaded.emit([])
         QgsMessageLog.logMessage(
             f"[OGCService/Loader] Error while loading {self.url} (OGC server): {self.exception}.",
             LOGGER_CATEGORY,
