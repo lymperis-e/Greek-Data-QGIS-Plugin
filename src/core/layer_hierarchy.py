@@ -98,13 +98,29 @@ class LayerGroup:
                 group.add_child(LayerGroup.from_dict(child_data))
             elif child_data.get("type") == "layer":
                 layer_json = child_data.get("layer_json", {})
+                raw_type = layer_json.get("type", "")
+                attributes = layer_json.get("attributes", {}) or {}
+                raw_geometry = layer_json.get(
+                    "geometry_type",
+                    layer_json.get("geometryType", attributes.get("geometryType")),
+                )
+
+                # Backward compatibility: normalize legacy raw ArcGIS types from cached hierarchy
+                # so geometry parsing/icon selection remains correct.
+                if raw_type == "MapServer":
+                    normalized_type = "esri-raster"
+                elif raw_type == "FeatureServer":
+                    normalized_type = "esri-vector"
+                else:
+                    normalized_type = raw_type
+
                 layer = Layer(
                     idx=layer_json.get("id", 0),
                     url=layer_json.get("url", ""),
                     name=layer_json.get("name", ""),
-                    data_model=layer_json.get("type", ""),
-                    attributes=layer_json.get("attributes", {}),
-                    geometry_type=layer_json.get("geometry_type"),
+                    data_model=normalized_type,
+                    attributes=attributes,
+                    geometry_type=raw_geometry,
                 )
                 group.add_child(layer)
         return group

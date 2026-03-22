@@ -3,8 +3,8 @@ import os
 from qgis.PyQt.QtGui import QBrush, QColor, QIcon
 from qgis.PyQt.QtWidgets import QHeaderView, QPushButton, QTreeWidgetItem
 
-from ..core.Service import GrdServiceState
 from ..core.layer_hierarchy import LayerGroup
+from ..core.Service import GrdServiceState
 from .capabilities_cache import has_capabilities_cache
 from .helper_functions import (cache_service_icon, fillServiceLayers,
                                service_qicon, toggle_tree_widget_all)

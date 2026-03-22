@@ -1,14 +1,9 @@
 from os.path import dirname, join
 from typing import Callable, Union
 
-from qgis.core import (
-    QgsCoordinateReferenceSystem,
-    QgsDataSourceUri,
-    QgsProject,
-    QgsRasterLayer,
-    QgsRectangle,
-    QgsVectorLayer,
-)
+from qgis.core import (QgsCoordinateReferenceSystem, QgsDataSourceUri,
+                       QgsProject, QgsRasterLayer, QgsRectangle,
+                       QgsVectorLayer)
 
 
 # class data model: possible values are esri-raster, esri-vector, wms, wfs
@@ -156,9 +151,11 @@ class Layer:
 
     def toJson(self) -> dict:
         return {
+            "id": self.id,
             "name": self.name,
             "url": self.url,
             "type": self.type,
+            "geometry_type": self.geometryType,
             "attributes": self.attributes,
         }
 
@@ -214,30 +211,25 @@ class Layer:
             str: icon path
         """
 
+        base = join(dirname(dirname(__file__)), "assets", "icons")
+
         if self.geometryType == "raster":
-            return join(
-                dirname(dirname(__file__)), "assets", "icons", "mIconRasterLayer.svg"
-            )
+            return join(base, "mIconRasterLayer.svg")
 
         if self.geometryType == "point":
-            return join(
-                dirname(dirname(__file__)), "assets", "icons", "mIconPointLayer.svg"
-            )
+            return join(base, "mIconPointLayer.svg")
 
         if self.geometryType == "line":
-            return join(
-                dirname(dirname(__file__)), "assets", "icons", "mIconLineLayer.svg"
-            )
+            return join(base, "mIconLineLayer.svg")
 
         if self.geometryType == "polygon":
-            return join(
-                dirname(dirname(__file__)), "assets", "icons", "mIconPolygonLayer.svg"
-            )
+            return join(base, "mIconPolygonLayer.svg")
 
-        if self.type == "wms":
-            return join(
-                dirname(dirname(__file__)), "assets", "icons", "mIconRasterLayer.svg"
-            )
-        if self.type == "wfs":
-            return join(dirname(dirname(__file__)), "assets", "icons", "icon.png")
-        return None
+        # Fallbacks when geometry is not present in capabilities.
+        if self.type in (DataModel.esri_raster, DataModel.wms):
+            return join(base, "mIconRasterLayer.svg")
+
+        if self.type in (DataModel.esri_vector, DataModel.wfs):
+            return join(base, "mIconVector.svg")
+
+        return join(base, "mIconVector.svg")

@@ -267,7 +267,8 @@ class ESRIService(GrdService):
         return None
 
     def _layerGeometryType(self, layer: Dict[str, str]) -> str:
-        return layer["attributes"].get("geometryType", None)
+        attributes = layer.get("attributes") or {}
+        return attributes.get("geometryType", layer.get("geometryType", None))
 
     def _getRemoteCapabilities(self) -> Dict:
         self._current_esri_task = LoadEsriAsync(self.url)
@@ -288,9 +289,11 @@ class ESRIService(GrdService):
                         idx=layer_dict.get("id", 0),
                         url=layer_dict.get("url", ""),
                         name=layer_dict.get("name", ""),
-                        data_model=layer_dict.get("type", ""),
+                        # Use the normalized service data model, not raw ArcGIS type
+                        # (e.g. MapServer/FeatureServer), so geometry icon mapping works.
+                        data_model=self._layerDataModel(layer_dict),
                         attributes=layer_dict.get("attributes", {}),
-                        geometry_type=layer_dict.get("geometryType"),
+                        geometry_type=self._layerGeometryType(layer_dict),
                     )
                     layer_objs.append(layer)
 
