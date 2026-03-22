@@ -1,6 +1,16 @@
 ﻿{
     "services": [
         {
+            "name": "Ενιαίος Ψηφιακός Χάρτης ΤΕΕ",
+            "url": "https://sdigmap.tee.gov.gr/mapping/rest/services/",
+            "type": "esri",
+            "capabilities": null,
+            "available_layers": null,
+            "icon": "https://sdigmap.tee.gov.gr/sdmquery/public/images/LOGO_TEE-378x279.jpg",
+            "id": "svc_1a2b3c4d5e6f7890",
+            "group": "ΤΕΕ"
+        },
+        {
             "name": "Geoportal YPEN",
             "url": "http://geoportal.ypen.gr/geoserver/ows",
             "type": "ogc",
