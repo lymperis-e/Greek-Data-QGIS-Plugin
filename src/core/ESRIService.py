@@ -6,6 +6,7 @@ from qgis.PyQt.QtCore import pyqtSignal
 
 from ..sub.logger import LOGGER_CATEGORY
 from .Layer import Layer
+from .layer_hierarchy import LayerGroup, build_hierarchy_from_flat_with_paths
 from .Service import GrdService
 
 
@@ -69,6 +70,7 @@ class LoadEsriAsync(QgsTask):
         self.url = url
         self.capabilities = dict()
         self.layers = list()
+        self.layer_paths = dict()  # Map layer id -> path string for hierarchy
         self.exception = None
 
     def _get(self, url):
@@ -91,7 +93,18 @@ class LoadEsriAsync(QgsTask):
 
         return response
 
-    def query_esri_server(self, url, parent_type=None) -> Dict[str, Dict[str, str]]:
+    def query_esri_server(self, url, parent_type=None, path_prefix="") -> Dict[str, Dict[str, str]]:
+        """
+        Recursively query ESRI server.
+
+        Args:
+            url: Service URL to query
+            parent_type: Service type (Map/Image/Feature)
+            path_prefix: Current path in hierarchy (e.g., "Folder A/Folder B")
+
+        Returns:
+            Dict of discovered resources at this level
+        """
         folders_to_exclude = [
             "Basemap",
             "Utilities",
@@ -114,8 +127,9 @@ class LoadEsriAsync(QgsTask):
             service_name = service["name"].split("/")[-1]
             service_type = service["type"]
             service_url = f"{url}/{service_name}/{service_type}"
+            service_path = f"{path_prefix}/{service_name}" if path_prefix else service_name
 
-            _service_layers = self.query_esri_server(service_url, service_type)
+            _service_layers = self.query_esri_server(service_url, service_type, service_path)
             if not _service_layers:
                 continue
             service_layers.update(_service_layers)
@@ -132,7 +146,8 @@ class LoadEsriAsync(QgsTask):
             if folder in folders_to_exclude:
                 continue
             folder_url = f"{url}/{folder}"
-            folder_dict = self.query_esri_server(folder_url, folder)
+            folder_path = f"{path_prefix}/{folder}" if path_prefix else folder
+            folder_dict = self.query_esri_server(folder_url, folder, folder_path)
             if folder_dict:
                 service_layers[folder] = folder_dict
 
@@ -166,17 +181,21 @@ class LoadEsriAsync(QgsTask):
                 "extent": _cleaned_attrs.get("extent", None),
             }
 
-            self.layers.append(
-                {
-                    "id": layer_id,
-                    "name": layer_name,
-                    "url": layer_url,
-                    "type": parent_type,
-                    "attributes": _cleaned_attrs,
-                    "geometryType": _cleaned_attrs.get("geometryType", None),
-                    "extent": _cleaned_attrs.get("extent", None),
-                }
-            )
+            layer_dict = {
+                "id": layer_id,
+                "name": layer_name,
+                "url": layer_url,
+                "type": parent_type,
+                "attributes": _cleaned_attrs,
+                "geometryType": _cleaned_attrs.get("geometryType", None),
+                "extent": _cleaned_attrs.get("extent", None),
+            }
+
+            self.layers.append(layer_dict)
+            
+            # Track the path for this layer to rebuild hierarchy later
+            layer_path = f"{path_prefix}/{layer_name}" if path_prefix else layer_name
+            self.layer_paths[layer_id] = layer_path
 
         return service_layers
 
@@ -248,9 +267,37 @@ class ESRIService(GrdService):
         return None
 
     def _layerGeometryType(self, layer: Dict[str, str]) -> str:
-        return layer["attributes"].get("geometryType", None)
+        attributes = layer.get("attributes") or {}
+        return attributes.get("geometryType", layer.get("geometryType", None))
 
     def _getRemoteCapabilities(self) -> Dict:
-        capabilities_request = LoadEsriAsync(self.url)
-        capabilities_request.loaded.connect(self._setupLayers)
-        self.tm.addTask(capabilities_request)
+        self._current_esri_task = LoadEsriAsync(self.url)
+        self._current_esri_task.loaded.connect(self._on_esri_layers_loaded)
+        self.tm.addTask(self._current_esri_task)
+
+    def _on_esri_layers_loaded(self, layers: List) -> None:
+        """Handler for ESRI layers loaded signal. Builds hierarchy and calls _setupLayers."""
+        # Build hierarchical structure from flat layers and layer_paths
+        hierarchy = None
+        if hasattr(self, "_current_esri_task") and self._current_esri_task:
+            layer_paths = self._current_esri_task.layer_paths
+            if layer_paths:
+                # Reconstruct Layer objects for hierarchy building
+                layer_objs = []
+                for layer_dict in layers:
+                    layer = Layer(
+                        idx=layer_dict.get("id", 0),
+                        url=layer_dict.get("url", ""),
+                        name=layer_dict.get("name", ""),
+                        # Use the normalized service data model, not raw ArcGIS type
+                        # (e.g. MapServer/FeatureServer), so geometry icon mapping works.
+                        data_model=self._layerDataModel(layer_dict),
+                        attributes=layer_dict.get("attributes", {}),
+                        geometry_type=self._layerGeometryType(layer_dict),
+                    )
+                    layer_objs.append(layer)
+
+                hierarchy = build_hierarchy_from_flat_with_paths(layer_objs, layer_paths)
+
+        # Call _setupLayers with both flat layers and hierarchy
+        self._setupLayers(layers, export_conf=True, layer_structure=hierarchy)

@@ -1,14 +1,9 @@
 from os.path import dirname, join
 from typing import Callable, Union
 
-from qgis.core import (
-    QgsCoordinateReferenceSystem,
-    QgsDataSourceUri,
-    QgsProject,
-    QgsRasterLayer,
-    QgsRectangle,
-    QgsVectorLayer,
-)
+from qgis.core import (QgsCoordinateReferenceSystem, QgsDataSourceUri,
+                       QgsProject, QgsRasterLayer, QgsRectangle,
+                       QgsVectorLayer)
 
 
 # class data model: possible values are esri-raster, esri-vector, wms, wfs
@@ -41,9 +36,9 @@ class Layer:
         self.url = url
         self.name = name
         self.type = data_model
-        self.attributes = attributes
+        self.attributes = attributes or {}
         self.geometryType = self.__setupGeometry(geometry_type)
-        self.extent = attributes.get("extent", None)
+        self.extent = self.attributes.get("extent", None)
 
     def __str__(self) -> str:
         return self.name
@@ -156,9 +151,11 @@ class Layer:
 
     def toJson(self) -> dict:
         return {
+            "id": self.id,
             "name": self.name,
             "url": self.url,
             "type": self.type,
+            "geometry_type": self.geometryType,
             "attributes": self.attributes,
         }
 
@@ -169,40 +166,32 @@ class Layer:
         Returns:
             str: geometry type
         """
-        # ESRI
-        if self.type == DataModel.esri_vector:
-            if geom_type == "esriGeometryPoint":
-                return "point"
-            if geom_type == "esriGeometryPolyline":
-                return "line"
-            if geom_type == "esriGeometryPolygon":
-                return "polygon"
-            if geom_type == "esriGeometryEnvelope":
-                return "polygon"
-            if geom_type == "esriGeometryMultipoint":
-                return "point"
-
-        if self.type == DataModel.esri_raster:
+        # Raster services should stay raster regardless of source geometry metadata.
+        if self.type in (DataModel.esri_raster, DataModel.wms):
             return "raster"
+
+        # Normalize geometry token once to support different providers/encodings.
+        geom = str(geom_type or "").strip()
+        geom_lower = geom.lower()
+
+        if "point" in geom_lower and "line" not in geom_lower:
+            return "point"
+
+        if "line" in geom_lower:
+            return "line"
+
+        if "polygon" in geom_lower or "envelope" in geom_lower:
+            return "polygon"
 
         # OGC
-        if self.type == DataModel.wfs:
-            if geom_type == "Point":
+        if self.type == DataModel.wfs and geom:
+            # Common GML/QName values: gml:PointPropertyType, MultiLineString, etc.
+            if "point" in geom_lower:
                 return "point"
-            if geom_type == "LineString":
+            if "line" in geom_lower:
                 return "line"
-
-            if geom_type == "MultiLineString":
-                return "line"
-
-            if geom_type == "Polygon":
+            if "polygon" in geom_lower:
                 return "polygon"
-
-            if geom_type == "MultiPolygon":
-                return "polygon"
-
-        if self.type == DataModel.wms:
-            return "raster"
 
         return None
 
@@ -214,30 +203,25 @@ class Layer:
             str: icon path
         """
 
+        base = join(dirname(dirname(__file__)), "assets", "icons")
+
         if self.geometryType == "raster":
-            return join(
-                dirname(dirname(__file__)), "assets", "icons", "mIconRasterLayer.svg"
-            )
+            return join(base, "mIconRasterLayer.svg")
 
         if self.geometryType == "point":
-            return join(
-                dirname(dirname(__file__)), "assets", "icons", "mIconPointLayer.svg"
-            )
+            return join(base, "mIconPointLayer.svg")
 
         if self.geometryType == "line":
-            return join(
-                dirname(dirname(__file__)), "assets", "icons", "mIconLineLayer.svg"
-            )
+            return join(base, "mIconLineLayer.svg")
 
         if self.geometryType == "polygon":
-            return join(
-                dirname(dirname(__file__)), "assets", "icons", "mIconPolygonLayer.svg"
-            )
+            return join(base, "mIconPolygonLayer.svg")
 
-        if self.type == "wms":
-            return join(
-                dirname(dirname(__file__)), "assets", "icons", "mIconRasterLayer.svg"
-            )
-        if self.type == "wfs":
-            return join(dirname(dirname(__file__)), "assets", "icons", "icon.png")
-        return None
+        # Fallbacks when geometry is not present in capabilities.
+        if self.type in (DataModel.esri_raster, DataModel.wms):
+            return join(base, "mIconRasterLayer.svg")
+
+        if self.type in (DataModel.esri_vector, DataModel.wfs):
+            return join(base, "mIconVector.svg")
+
+        return join(base, "mIconVector.svg")

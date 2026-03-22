@@ -20,7 +20,7 @@ class FetchFromGithub(QgsTask):
     """
 
     fetched = pyqtSignal(list)
-    github_url = "https://raw.githubusercontent.com/lymperis-e/Greek-Data-QGIS-Plugin/main/src/assets/settings/services.json"
+    github_url = "https://raw.githubusercontent.com/lymperis-e/Greek-Data-QGIS-Plugin/dev/data/services.stable.json"
 
 
     def __init__(self):
@@ -44,8 +44,15 @@ class FetchFromGithub(QgsTask):
                 cookies=None,
             )
             response.raise_for_status()
-            return response.json()
+            try:
+                return response.json()
+            except ValueError:
+                # Some responses include a UTF-8 BOM; decode explicitly and parse.
+                return json.loads(response.content.decode("utf-8-sig"))
         except requests.exceptions.RequestException as e:
+            self.exception = e
+            return None
+        except (ValueError, json.JSONDecodeError) as e:
             self.exception = e
             return None
 
@@ -61,19 +68,32 @@ class FetchFromGithub(QgsTask):
             local_services = json.load(file).get("services", [])
 
         # Index the local services by url
-        local_services_index = {service["url"]: service for service in local_services}
+        local_services_index = {
+            service.get("url"): service
+            for service in local_services
+            if isinstance(service, dict) and service.get("url")
+        }
 
         new_services = []
         for service in fetched_services:
-            if not service["url"] in local_services_index.keys():
+            if not isinstance(service, dict):
+                continue
+            service_url = service.get("url")
+            if not service_url:
+                continue
+            if service_url not in local_services_index:
                 new_services.append(service)
 
         return new_services
 
     def run(self):
-        fetched_services = self.__fetch().get("services", None)
+        fetched_payload = self.__fetch()
+        if not isinstance(fetched_payload, dict):
+            return False
 
-        if fetched_services is None:
+        fetched_services = fetched_payload.get("services")
+
+        if not isinstance(fetched_services, list):
             return False
 
         self.new_services = self.__compare(fetched_services)
@@ -100,7 +120,7 @@ class FetchFromGithub(QgsTask):
             self.fetched.emit(self.new_services)
         else:
             QgsMessageLog.logMessage(
-                f"[Updater/FetchFromGithub] Failed to fetch services from {self.github_url}",
+                f"[Updater/FetchFromGithub] Failed to fetch services from {self.github_url}. Error: {self.exception}",
                 LOGGER_CATEGORY,
                 Qgis.Critical,
             )

@@ -1,4 +1,6 @@
-from typing import Dict, List, Union
+import time
+from typing import Dict, List, Optional, Union
+from urllib.parse import parse_qs, unquote, urlparse
 
 import requests
 from qgis.core import Qgis, QgsApplication, QgsMessageLog, QgsTask
@@ -7,6 +9,7 @@ from qgis.PyQt.QtCore import pyqtSignal
 from ..sub.logger import LOGGER_CATEGORY
 from ..sub.xml import xmltodict
 from .Layer import DataModel, Layer
+from .layer_hierarchy import LayerGroup
 from .Service import GrdService
 
 
@@ -106,56 +109,124 @@ class LoadOGCAsync(QgsTask):
         self.layers = list()
         self.exception = None
 
+    @staticmethod
+    def _as_list(value):
+        """Normalize xmltodict nodes to a list for safe iteration."""
+        if value is None:
+            return []
+        if isinstance(value, list):
+            return value
+        return [value]
+
+    def _infer_wfs_geometry_from_layer(self, layer: Dict[str, str]) -> Optional[str]:
+        """
+        Best-effort geometry inference for WFS layers when explicit geometryType
+        is missing in capabilities responses.
+        """
+        url = str(layer.get("url") or "")
+        if not url:
+            return None
+
+        parsed = urlparse(url)
+        query = parse_qs(parsed.query)
+        raw_typename = query.get("typename", query.get("typeName", [""]))[0]
+        typename = unquote(str(raw_typename or "")).lower()
+        if not typename:
+            return None
+
+        point_tokens = ["_poi", "poi_", ":poi", "_point", "point_"]
+        line_tokens = ["_lin", "lin_", ":lin", "_line", "line_"]
+        polygon_tokens = ["_pol", "pol_", ":pol", "_poly", "poly_"]
+
+        if any(token in typename for token in point_tokens):
+            return "Point"
+        if any(token in typename for token in line_tokens):
+            return "LineString"
+        if any(token in typename for token in polygon_tokens):
+            return "Polygon"
+
+        return None
+
+    def _request_capabilities(self, url, payload, service_label):
+        """Request OGC capabilities with a one-time SSL-verification fallback."""
+        base_kwargs = {
+            "params": payload,
+            "headers": {"user-agent": "grdata-qgis-plugin/1.0.0"},
+            "timeout": 10,
+            "allow_redirects": True,
+            "cookies": None,
+        }
+
+        try:
+            response = requests.get(url, **base_kwargs)
+            response.raise_for_status()
+            return response
+        except requests.exceptions.SSLError as err:
+            QgsMessageLog.logMessage(
+                f"[OGCService/Loader] {service_label} SSL verification failed for {url}; retrying without certificate verification: {err}",
+                LOGGER_CATEGORY,
+                Qgis.Warning,
+            )
+            response = requests.get(url, verify=False, **base_kwargs)
+            response.raise_for_status()
+            return response
+
     def _get_wfs(self, url):
         url = url.rstrip("/")
 
-        # Query the REST endpoint
-        payload = {"request": "GetCapabilities", "service": "WFS"}
-        response = requests.get(
-            url,
-            params=payload,
-            headers={"user-agent": "grdata-qgis-plugin/1.0.0"},
-            timeout=10,
-            allow_redirects=True,
-            cookies=None,
-        )
+        try:
+            payload = {"request": "GetCapabilities", "service": "WFS"}
+            response = self._request_capabilities(url, payload, "WFS")
 
-        service_dict = xmltodict.parse(response.content)
-        services = service_dict["wfs:WFS_Capabilities"]["FeatureTypeList"][
-            "FeatureType"
-        ]
-
-        if "error" in response:
-            self.exception = Exception(response)
+            service_dict = xmltodict.parse(response.content)
+            capabilities = service_dict.get("wfs:WFS_Capabilities", {})
+            feature_type_list = capabilities.get("FeatureTypeList", {})
+            services = feature_type_list.get("FeatureType")
+            return self._as_list(services)
+        except requests.exceptions.RequestException as e:
+            self.exception = e
+            QgsMessageLog.logMessage(
+                f"[OGCService/Loader] WFS capabilities request failed for {url}: {e}",
+                LOGGER_CATEGORY,
+                Qgis.Warning,
+            )
             return None
-
-        return services
+        except Exception as e:
+            self.exception = e
+            QgsMessageLog.logMessage(
+                f"[OGCService/Loader] WFS capabilities parse failed for {url}: {e}",
+                LOGGER_CATEGORY,
+                Qgis.Warning,
+            )
+            return None
 
     def _get_wms(self, url):
         url = url.rstrip("/")
-        # Query the REST endpoint
-        payload = {"request": "GetCapabilities", "service": "WMS"}
-        response = requests.get(
-            url,
-            params=payload,
-            headers={"user-agent": "grdata-qgis-plugin/1.0.0"},
-            timeout=10,
-            allow_redirects=True,
-            cookies=None,
-        )
+        try:
+            payload = {"request": "GetCapabilities", "service": "WMS"}
+            response = self._request_capabilities(url, payload, "WMS")
 
-        service_dict = xmltodict.parse(response.content)
-        # print(
-        #     f"Number of layers: {len(service_dict['WMS_Capabilities']['Capability']['Layer'])}"
-        # )
-
-        services = service_dict["WMS_Capabilities"]["Capability"]["Layer"]
-
-        if "error" in response:
-            self.exception = Exception(response)
+            service_dict = xmltodict.parse(response.content)
+            capabilities = service_dict.get("WMS_Capabilities", {})
+            capability = capabilities.get("Capability", {})
+            services = capability.get("Layer")
+            return self._as_list(services)
+        except requests.exceptions.RequestException as e:
+            self.exception = e
+            QgsMessageLog.logMessage(
+                f"[OGCService/Loader] WMS capabilities request failed for {url}: {e}",
+                LOGGER_CATEGORY,
+                Qgis.Warning,
+            )
             return None
-
-        return services
+        except Exception as e:
+            self.exception = e
+            QgsMessageLog.logMessage(
+                f"[OGCService/Loader] WMS capabilities parse failed for {url}: {e}",
+                LOGGER_CATEGORY,
+                Qgis.Warning,
+            )
+            return None
 
     def query_OGC_server(self, url) -> Dict[str, Dict[str, str]]:
 
@@ -166,12 +237,19 @@ class LoadOGCAsync(QgsTask):
             return None
 
         # Add any services at this level of the directory to the dictionary
-        for idx, layer in enumerate(wfs_resp):
+        for idx, layer in enumerate(wfs_resp or []):
+            if not isinstance(layer, dict):
+                continue
+
+            type_name = layer.get("Name")
+            if not type_name:
+                continue
+
             self.layers.append(
                 {
                     "id": idx,
-                    "name": layer.get("Title", layer.get("Name", None)),
-                    "url": f"{url}?typename={layer['Name']}",
+                    "name": layer.get("Title", type_name),
+                    "url": f"{url}?typename={type_name}",
                     "type": "wfs",
                     "attributes": {
                         "crs": layer.get("DefaultCRS", None),
@@ -181,16 +259,29 @@ class LoadOGCAsync(QgsTask):
                             layer.get("ows:WGS84BoundingBox", None)
                         ),
                     },
-                    "geometryType": None,
+                    "geometryType": self._infer_wfs_geometry_from_layer(
+                        {
+                            "type": "wfs",
+                            "url": f"{url}?typename={type_name}",
+                        }
+                    ),
                 }
             )
 
-        for idx, layer in enumerate(wms_resp):
+        for idx, layer in enumerate(wms_resp or []):
+            if not isinstance(layer, dict):
+                continue
+
+            # Some WMS capabilities include group layers without Name; skip those.
+            layer_name = layer.get("Name")
+            if not layer_name:
+                continue
+
             self.layers.append(
                 {
                     "id": idx,
-                    "name": layer.get("Title", layer.get("Name", None)),
-                    "url": f"{url}?typename={layer['Name']}",
+                    "name": layer.get("Title", layer_name),
+                    "url": f"{url}?typename={layer_name}",
                     "type": "wms",
                     "attributes": {
                         "crs": layer.get("DefaultCRS", None),
@@ -210,6 +301,8 @@ class LoadOGCAsync(QgsTask):
         self.capabilities = self.query_OGC_server(self.url)
         if self.isCanceled():
             return False
+        if self.capabilities is None or len(self.layers) == 0:
+            return False
         return True
 
     def finished(self, result):
@@ -225,7 +318,8 @@ class LoadOGCAsync(QgsTask):
 
         # Cancelled
         if self.exception is None:
-            self.loaded.emit(self.layers)
+            # Emit empty payload so downstream service transitions out of LOADING.
+            self.loaded.emit([])
             QgsMessageLog.logMessage(
                 f'[OGCService/Loader] Request "{self.description()}" not successful but without '
                 "exception (probably the task was manually "
@@ -236,6 +330,8 @@ class LoadOGCAsync(QgsTask):
             return
 
         # Error
+        # Emit empty payload so downstream service transitions out of LOADING.
+        self.loaded.emit([])
         QgsMessageLog.logMessage(
             f"[OGCService/Loader] Error while loading {self.url} (OGC server): {self.exception}.",
             LOGGER_CATEGORY,
@@ -265,6 +361,9 @@ class OGCService(GrdService):
             **kwargs,
         )
 
+        # OGC hierarchy is not yet supported; ignore any legacy cached hierarchy.
+        self.layer_structure = None
+
         self.tm = QgsApplication.taskManager()
 
     def _layerDataModel(self, layer: Dict[str, str]) -> str:
@@ -276,10 +375,57 @@ class OGCService(GrdService):
 
         return None
 
+    def _infer_wfs_geometry_from_layer(self, layer: Dict[str, str]) -> Optional[str]:
+        """
+        Best-effort geometry inference for WFS layers when explicit geometryType
+        is missing in capabilities/cache. Many Greek municipal services encode
+        geometry in typename tokens (e.g. _poi_, _lin_, _pol_).
+        """
+        url = str(layer.get("url") or "")
+        if not url:
+            return None
+
+        parsed = urlparse(url)
+        query = parse_qs(parsed.query)
+        raw_typename = query.get("typename", query.get("typeName", [""]))[0]
+        typename = unquote(str(raw_typename or "")).lower()
+        if not typename:
+            return None
+
+        point_tokens = ["_poi", "poi_", ":poi", "_point", "point_"]
+        line_tokens = ["_lin", "lin_", ":lin", "_line", "line_"]
+        polygon_tokens = ["_pol", "pol_", ":pol", "_poly", "poly_"]
+
+        if any(token in typename for token in point_tokens):
+            return "Point"
+        if any(token in typename for token in line_tokens):
+            return "LineString"
+        if any(token in typename for token in polygon_tokens):
+            return "Polygon"
+
+        return None
+
     def _layerGeometryType(self, layer: Dict[str, str]) -> str:
-        return layer["attributes"].get("geometryType", None)
+        attributes = layer.get("attributes") or {}
+        geometry = attributes.get(
+            "geometryType",
+            layer.get("geometryType", layer.get("geometry_type", None)),
+        )
+        if geometry:
+            return geometry
+
+        if layer.get("type") == "wfs":
+            return self._infer_wfs_geometry_from_layer(layer)
+
+        return None
 
     def _getRemoteCapabilities(self) -> Dict:
-        capabilities_request = LoadOGCAsync(self.url)
-        capabilities_request.loaded.connect(self._setupLayers)
-        self.tm.addTask(capabilities_request)
+        self._current_ogc_task = LoadOGCAsync(self.url)
+        self._current_ogc_task.loaded.connect(self._on_ogc_layers_loaded)
+        self.tm.addTask(self._current_ogc_task)
+
+    def _on_ogc_layers_loaded(self, layers: List) -> None:
+        """Handler for OGC layers loaded signal. Calls _setupLayers (no hierarchy extraction yet)."""
+        # OGC servers don't have clear hierarchy structure like ESRI, so we don't extract hierarchy
+        # Fall back to flat rendering
+        self._setupLayers(layers, export_conf=True, layer_structure=None)
