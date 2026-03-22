@@ -36,9 +36,9 @@ class Layer:
         self.url = url
         self.name = name
         self.type = data_model
-        self.attributes = attributes
+        self.attributes = attributes or {}
         self.geometryType = self.__setupGeometry(geometry_type)
-        self.extent = attributes.get("extent", None)
+        self.extent = self.attributes.get("extent", None)
 
     def __str__(self) -> str:
         return self.name
@@ -166,36 +166,30 @@ class Layer:
         Returns:
             str: geometry type
         """
-        # ESRI
-        if self.type == DataModel.esri_vector:
-            if geom_type == "esriGeometryPoint":
-                return "point"
-            if geom_type == "esriGeometryPolyline":
-                return "line"
-            if geom_type == "esriGeometryPolygon":
-                return "polygon"
-            if geom_type == "esriGeometryEnvelope":
-                return "polygon"
-            if geom_type == "esriGeometryMultipoint":
-                return "point"
+        # Normalize geometry token once to support different providers/encodings.
+        geom = str(geom_type or "").strip()
+        geom_lower = geom.lower()
+
+        if "point" in geom_lower and "line" not in geom_lower:
+            return "point"
+
+        if "line" in geom_lower:
+            return "line"
+
+        if "polygon" in geom_lower or "envelope" in geom_lower:
+            return "polygon"
 
         if self.type == DataModel.esri_raster:
             return "raster"
 
         # OGC
-        if self.type == DataModel.wfs:
-            if geom_type == "Point":
+        if self.type == DataModel.wfs and geom:
+            # Common GML/QName values: gml:PointPropertyType, MultiLineString, etc.
+            if "point" in geom_lower:
                 return "point"
-            if geom_type == "LineString":
+            if "line" in geom_lower:
                 return "line"
-
-            if geom_type == "MultiLineString":
-                return "line"
-
-            if geom_type == "Polygon":
-                return "polygon"
-
-            if geom_type == "MultiPolygon":
+            if "polygon" in geom_lower:
                 return "polygon"
 
         if self.type == DataModel.wms:

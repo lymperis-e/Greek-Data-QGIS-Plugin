@@ -146,9 +146,9 @@ class GrdService(QObject):
             for i, layer in enumerate(lrs)
         ]
 
-        # Store the hierarchical structure if provided
-        if layer_structure is not None:
-            self.layer_structure = layer_structure
+        # Always refresh hierarchy state, so stale cached/grouped structures
+        # cannot leak across service type changes or fetch cycles.
+        self.layer_structure = layer_structure
 
         if len(self.layers) > 0:
             self.loaded = True

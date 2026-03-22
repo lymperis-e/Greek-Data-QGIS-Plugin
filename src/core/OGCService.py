@@ -1,5 +1,6 @@
 import time
 from typing import Dict, List, Optional, Union
+from urllib.parse import parse_qs, unquote, urlparse
 
 import requests
 from qgis.core import Qgis, QgsApplication, QgsMessageLog, QgsTask
@@ -108,6 +109,44 @@ class LoadOGCAsync(QgsTask):
         self.layers = list()
         self.exception = None
 
+    @staticmethod
+    def _as_list(value):
+        """Normalize xmltodict nodes to a list for safe iteration."""
+        if value is None:
+            return []
+        if isinstance(value, list):
+            return value
+        return [value]
+
+    def _infer_wfs_geometry_from_layer(self, layer: Dict[str, str]) -> Optional[str]:
+        """
+        Best-effort geometry inference for WFS layers when explicit geometryType
+        is missing in capabilities responses.
+        """
+        url = str(layer.get("url") or "")
+        if not url:
+            return None
+
+        parsed = urlparse(url)
+        query = parse_qs(parsed.query)
+        raw_typename = query.get("typename", query.get("typeName", [""]))[0]
+        typename = unquote(str(raw_typename or "")).lower()
+        if not typename:
+            return None
+
+        point_tokens = ["_poi", "poi_", ":poi", "_point", "point_"]
+        line_tokens = ["_lin", "lin_", ":lin", "_line", "line_"]
+        polygon_tokens = ["_pol", "pol_", ":pol", "_poly", "poly_"]
+
+        if any(token in typename for token in point_tokens):
+            return "Point"
+        if any(token in typename for token in line_tokens):
+            return "LineString"
+        if any(token in typename for token in polygon_tokens):
+            return "Polygon"
+
+        return None
+
     def _get_wfs(self, url):
         url = url.rstrip("/")
 
@@ -123,15 +162,13 @@ class LoadOGCAsync(QgsTask):
         )
 
         service_dict = xmltodict.parse(response.content)
-        services = service_dict["wfs:WFS_Capabilities"]["FeatureTypeList"][
-            "FeatureType"
-        ]
+        services = service_dict["wfs:WFS_Capabilities"]["FeatureTypeList"].get("FeatureType")
 
         if "error" in response:
             self.exception = Exception(response)
             return None
 
-        return services
+        return self._as_list(services)
 
     def _get_wms(self, url):
         url = url.rstrip("/")
@@ -151,13 +188,13 @@ class LoadOGCAsync(QgsTask):
         #     f"Number of layers: {len(service_dict['WMS_Capabilities']['Capability']['Layer'])}"
         # )
 
-        services = service_dict["WMS_Capabilities"]["Capability"]["Layer"]
+        services = service_dict["WMS_Capabilities"]["Capability"].get("Layer")
 
         if "error" in response:
             self.exception = Exception(response)
             return None
 
-        return services
+        return self._as_list(services)
 
     def query_OGC_server(self, url) -> Dict[str, Dict[str, str]]:
 
@@ -168,12 +205,19 @@ class LoadOGCAsync(QgsTask):
             return None
 
         # Add any services at this level of the directory to the dictionary
-        for idx, layer in enumerate(wfs_resp):
+        for idx, layer in enumerate(wfs_resp or []):
+            if not isinstance(layer, dict):
+                continue
+
+            type_name = layer.get("Name")
+            if not type_name:
+                continue
+
             self.layers.append(
                 {
                     "id": idx,
-                    "name": layer.get("Title", layer.get("Name", None)),
-                    "url": f"{url}?typename={layer['Name']}",
+                    "name": layer.get("Title", type_name),
+                    "url": f"{url}?typename={type_name}",
                     "type": "wfs",
                     "attributes": {
                         "crs": layer.get("DefaultCRS", None),
@@ -183,16 +227,29 @@ class LoadOGCAsync(QgsTask):
                             layer.get("ows:WGS84BoundingBox", None)
                         ),
                     },
-                    "geometryType": None,
+                    "geometryType": self._infer_wfs_geometry_from_layer(
+                        {
+                            "type": "wfs",
+                            "url": f"{url}?typename={type_name}",
+                        }
+                    ),
                 }
             )
 
-        for idx, layer in enumerate(wms_resp):
+        for idx, layer in enumerate(wms_resp or []):
+            if not isinstance(layer, dict):
+                continue
+
+            # Some WMS capabilities include group layers without Name; skip those.
+            layer_name = layer.get("Name")
+            if not layer_name:
+                continue
+
             self.layers.append(
                 {
                     "id": idx,
-                    "name": layer.get("Title", layer.get("Name", None)),
-                    "url": f"{url}?typename={layer['Name']}",
+                    "name": layer.get("Title", layer_name),
+                    "url": f"{url}?typename={layer_name}",
                     "type": "wms",
                     "attributes": {
                         "crs": layer.get("DefaultCRS", None),
@@ -267,6 +324,9 @@ class OGCService(GrdService):
             **kwargs,
         )
 
+        # OGC hierarchy is not yet supported; ignore any legacy cached hierarchy.
+        self.layer_structure = None
+
         self.tm = QgsApplication.taskManager()
 
     def _layerDataModel(self, layer: Dict[str, str]) -> str:
@@ -278,8 +338,49 @@ class OGCService(GrdService):
 
         return None
 
+    def _infer_wfs_geometry_from_layer(self, layer: Dict[str, str]) -> Optional[str]:
+        """
+        Best-effort geometry inference for WFS layers when explicit geometryType
+        is missing in capabilities/cache. Many Greek municipal services encode
+        geometry in typename tokens (e.g. _poi_, _lin_, _pol_).
+        """
+        url = str(layer.get("url") or "")
+        if not url:
+            return None
+
+        parsed = urlparse(url)
+        query = parse_qs(parsed.query)
+        raw_typename = query.get("typename", query.get("typeName", [""]))[0]
+        typename = unquote(str(raw_typename or "")).lower()
+        if not typename:
+            return None
+
+        point_tokens = ["_poi", "poi_", ":poi", "_point", "point_"]
+        line_tokens = ["_lin", "lin_", ":lin", "_line", "line_"]
+        polygon_tokens = ["_pol", "pol_", ":pol", "_poly", "poly_"]
+
+        if any(token in typename for token in point_tokens):
+            return "Point"
+        if any(token in typename for token in line_tokens):
+            return "LineString"
+        if any(token in typename for token in polygon_tokens):
+            return "Polygon"
+
+        return None
+
     def _layerGeometryType(self, layer: Dict[str, str]) -> str:
-        return layer["attributes"].get("geometryType", None)
+        attributes = layer.get("attributes") or {}
+        geometry = attributes.get(
+            "geometryType",
+            layer.get("geometryType", layer.get("geometry_type", None)),
+        )
+        if geometry:
+            return geometry
+
+        if layer.get("type") == "wfs":
+            return self._infer_wfs_geometry_from_layer(layer)
+
+        return None
 
     def _getRemoteCapabilities(self) -> Dict:
         self._current_ogc_task = LoadOGCAsync(self.url)

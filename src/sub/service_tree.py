@@ -257,36 +257,52 @@ class ServiceTreeController:
 
     def _mark_layer_items(self, service_item, service):
         service_name = service.name
+        # Build name -> [indexes] map using the service's canonical layer list.
+        # This keeps tree metadata stable even when UI sorting changes item order.
+        layers = service.getLayers() or []
+        layer_name_to_indexes = {}
+        for layer_idx, layer in enumerate(layers):
+            key = str(getattr(layer, "name", "") or "")
+            layer_name_to_indexes.setdefault(key, []).append(layer_idx)
+
         for idx in range(service_item.childCount()):
             child = service_item.child(idx)
             kind = child.data(0, ROLE_ITEM_KIND) if child else None
             if kind == ITEM_KIND_LAYER_GROUP:
                 # Recursively mark items in layer groups
-                self._mark_layer_items_in_group(child, service_name)
-            elif kind == ITEM_KIND_LAYER:
+                self._mark_layer_items_in_group(child, service_name, layer_name_to_indexes)
+            elif kind == ITEM_KIND_LAYER or kind is None:
+                # Flat rendering path creates children without ROLE_ITEM_KIND.
+                # Treat unknown children as layer items.
                 layer_item = child
                 layer_item.setData(0, ROLE_ITEM_KIND, ITEM_KIND_LAYER)
                 layer_item.setData(0, ROLE_SERVICE_NAME, service_name)
-                layer_item.setData(0, ROLE_LAYER_INDEX, idx)
+                match_key = layer_item.text(0)
+                candidate_indexes = layer_name_to_indexes.get(match_key, [])
+                layer_item.setData(0, ROLE_LAYER_INDEX, candidate_indexes.pop(0) if candidate_indexes else idx)
 
-    def _mark_layer_items_in_group(self, group_item, service_name):
+    def _mark_layer_items_in_group(self, group_item, service_name, layer_name_to_indexes):
         """Recursively mark layer items within a layer group."""
         for idx in range(group_item.childCount()):
             child = group_item.child(idx)
             kind = child.data(0, ROLE_ITEM_KIND) if child else None
             if kind == ITEM_KIND_LAYER_GROUP:
                 # Recurse into nested groups
-                self._mark_layer_items_in_group(child, service_name)
+                self._mark_layer_items_in_group(child, service_name, layer_name_to_indexes)
             elif kind == ITEM_KIND_LAYER:
                 child.setData(0, ROLE_ITEM_KIND, ITEM_KIND_LAYER)
                 child.setData(0, ROLE_SERVICE_NAME, service_name)
+                match_key = child.text(0)
+                candidate_indexes = layer_name_to_indexes.get(match_key, [])
+                child.setData(0, ROLE_LAYER_INDEX, candidate_indexes.pop(0) if candidate_indexes else idx)
 
     def _populate_loaded_layers(self, service_item, service, expanded=True):
         service_item.takeChildren()
         
-        # First, try to populate using hierarchical structure if available
+        # Use hierarchy rendering only for service types that explicitly support it.
+        # OGC currently renders a flat canonical list for reliable selection/details.
         hierarchy = service.get_layer_hierarchy()
-        if hierarchy is not None:
+        if hierarchy is not None and getattr(service, "type", None) == "esri":
             self._populate_layer_hierarchy(service_item, hierarchy, expanded=expanded)
             self._mark_layer_items(service_item, service)
             return
