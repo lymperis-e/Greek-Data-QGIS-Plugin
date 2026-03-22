@@ -4,6 +4,9 @@ from qgis.core import Qgis, QgsSettings
 from qgis.PyQt.QtCore import Qt
 from qgis.PyQt.QtWidgets import QMenu
 
+from .tree_item_roles import (ITEM_KIND_SERVICE, ROLE_ITEM_KIND,
+                              ROLE_SERVICE_NAME)
+
 
 class NativeDatasourceConnections:
     def __init__(self, iface, service_manager, tr):
@@ -148,11 +151,11 @@ class NativeDatasourceConnections:
         if item is None:
             return
 
-        # Only show the action on top-level service rows, not on layer children
-        if item.parent() is not None:
+        # Only show the action on service rows, not group or layer rows.
+        if item.data(0, ROLE_ITEM_KIND) != ITEM_KIND_SERVICE:
             return
 
-        service_name = item.text(0)
+        service_name = item.data(0, ROLE_SERVICE_NAME) or item.text(0)
 
         menu = QMenu(tree_widget)
         add_action = menu.addAction(self.tr("Add As Native QGIS Browser Datasource"))

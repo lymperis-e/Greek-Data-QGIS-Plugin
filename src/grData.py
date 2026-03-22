@@ -37,8 +37,7 @@ from .grData_dockwidget import grDataDockWidget
 from .resources import *
 # Local Imports
 from .sub.cache import ensure_cache_directories
-from .sub.helper_functions import (fill_tree_widget, filter_tree_widget_leafs,
-                                   filter_tree_widget_roots)
+from .sub.helper_functions import fill_tree_widget, filter_tree_widget_leafs
 from .sub.native_datasource_connections import NativeDatasourceConnections
 from .sub.service_tree import ServiceTreeController
 from .sub.Updater import GrdSourcesUpdater
@@ -314,26 +313,24 @@ class grData:
     def filter_connections_list(self, filter_text):
         filterTarget = self.dockwidget.filter_services_combobox.currentText()
         if filterTarget == "Services":
-            filter_tree_widget_roots(self.dockwidget.conn_list_widget, filter_text)
+            self.service_tree.filter_services(filter_text)
         elif filterTarget == "Layers":
             filter_tree_widget_leafs(self.dockwidget.conn_list_widget, filter_text)
         else:
             return
 
     def handle_connections_list_double_click(self, item, column):
-        parent = item.parent()
-
-        # Top level item (service)
-        if not parent:
+        if not self.service_tree.is_layer_item(item):
             return
 
-        self.add_layer_to_map(item, parent)
+        self.add_layer_to_map(item)
 
     def add_layer_to_map(self, item=None, parent=None):
 
-        if item and parent:
-            service = self.serviceManager.getService(parent.text(0))
-            layer = service.getLayer(parent.indexOfChild(item))
+        if item is not None:
+            service, layer = self.service_tree.get_layer_selection(item)
+            if service is None or layer is None:
+                return
 
             # Set selected service & layer
             self.serviceManager.setSelectedService(service.name)
@@ -350,16 +347,25 @@ class grData:
             self.set_layer_details_visible(False)
             return
 
-        parent = selectedItem.parent()
-        if not parent:
+        if self.service_tree.is_group_item(selectedItem):
+            self.set_layer_details_visible(False)
+            return
+
+        if self.service_tree.is_service_item(selectedItem):
             self.set_layer_details_visible(False)
             self.service_tree.expand_service(selectedItem, fetch_if_needed=False)
             return
 
+        if not self.service_tree.is_layer_item(selectedItem):
+            self.set_layer_details_visible(False)
+            return
+
         self.set_layer_details_visible(True)
 
-        service = self.serviceManager.getService(parent.text(0))
-        layer = service.getLayer(parent.indexOfChild(selectedItem))
+        service, layer = self.service_tree.get_layer_selection(selectedItem)
+        if service is None or layer is None:
+            self.set_layer_details_visible(False)
+            return
 
         # Set selected service & layer
         self.serviceManager.setSelectedService(service.name)
