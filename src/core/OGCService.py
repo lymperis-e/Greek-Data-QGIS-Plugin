@@ -1,4 +1,5 @@
-from typing import Dict, List, Union
+import time
+from typing import Dict, List, Optional, Union
 
 import requests
 from qgis.core import Qgis, QgsApplication, QgsMessageLog, QgsTask
@@ -7,6 +8,7 @@ from qgis.PyQt.QtCore import pyqtSignal
 from ..sub.logger import LOGGER_CATEGORY
 from ..sub.xml import xmltodict
 from .Layer import DataModel, Layer
+from .layer_hierarchy import LayerGroup
 from .Service import GrdService
 
 
@@ -280,6 +282,12 @@ class OGCService(GrdService):
         return layer["attributes"].get("geometryType", None)
 
     def _getRemoteCapabilities(self) -> Dict:
-        capabilities_request = LoadOGCAsync(self.url)
-        capabilities_request.loaded.connect(self._setupLayers)
-        self.tm.addTask(capabilities_request)
+        self._current_ogc_task = LoadOGCAsync(self.url)
+        self._current_ogc_task.loaded.connect(self._on_ogc_layers_loaded)
+        self.tm.addTask(self._current_ogc_task)
+
+    def _on_ogc_layers_loaded(self, layers: List) -> None:
+        """Handler for OGC layers loaded signal. Calls _setupLayers (no hierarchy extraction yet)."""
+        # OGC servers don't have clear hierarchy structure like ESRI, so we don't extract hierarchy
+        # Fall back to flat rendering
+        self._setupLayers(layers, export_conf=True, layer_structure=None)

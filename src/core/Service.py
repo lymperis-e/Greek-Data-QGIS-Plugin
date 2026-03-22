@@ -1,11 +1,12 @@
 import time
-from typing import Dict, List
+from typing import Dict, List, Optional, Union
 
 from qgis.PyQt.QtCore import QObject, pyqtSignal
 
 from ..sub.capabilities_cache import (load_capabilities_cache,
                                       save_capabilities_cache)
 from .Layer import Layer
+from .layer_hierarchy import LayerGroup
 
 
 class ServiceNotExists(Exception):
@@ -64,6 +65,7 @@ class GrdService(QObject):
         self.config = config
         self.updated_at = None
         self.layers = None
+        self.layer_structure = None  # Hierarchical layer representation
         self.capabilities = None
         self.available_layers = None
         self.icon = None
@@ -89,9 +91,19 @@ class GrdService(QObject):
             self.capabilities = cached.get("capabilities")
             self.available_layers = cached.get("available_layers")
 
+            # Load flat layer list
             cached_layers = cached.get("layers")
             if cached_layers:
                 self._setupLayers(cached_layers, export_conf=False)
+
+            # Load hierarchical layer structure if available
+            cached_layer_structure = cached.get("layer_structure")
+            if cached_layer_structure:
+                try:
+                    self.layer_structure = LayerGroup.from_dict(cached_layer_structure)
+                except Exception:
+                    # If deserialization fails, layer_structure stays None
+                    pass
             return
 
     def __str__(self):
@@ -112,9 +124,14 @@ class GrdService(QObject):
     def _getRemoteCapabilities(self) -> Dict:
         raise NotImplementedError
 
-    def _setupLayers(self, available_layers, export_conf=True) -> None:
+    def _setupLayers(self, available_layers, export_conf=True, layer_structure=None) -> None:
         """
-        Setup the layers of the service, based on the available layers
+        Setup the layers of the service, based on the available layers.
+
+        Args:
+            available_layers: List of layer dicts to convert to Layer objects
+            export_conf: Whether to save to cache after setup
+            layer_structure: Optional LayerGroup representing the hierarchical structure
         """
 
         lrs = available_layers if available_layers else []
@@ -128,6 +145,10 @@ class GrdService(QObject):
             )
             for i, layer in enumerate(lrs)
         ]
+
+        # Store the hierarchical structure if provided
+        if layer_structure is not None:
+            self.layer_structure = layer_structure
 
         if len(self.layers) > 0:
             self.loaded = True
@@ -156,6 +177,16 @@ class GrdService(QObject):
         if idx is None:
             self.selectedLayer = None
         self.selectedLayer = self.layers[idx]
+
+    def get_layer_hierarchy(self) -> Optional[LayerGroup]:
+        """
+        Return the hierarchical layer structure if available.
+        This is used by the UI to render nested layer groups.
+
+        Returns:
+            LayerGroup representing the hierarchy, or None if keine hierarchy exists
+        """
+        return self.layer_structure
 
     def __layersExpired(self) -> bool:
         """
@@ -186,7 +217,7 @@ class GrdService(QObject):
         return self.layers[idx]
 
     def toJson(self) -> dict:
-        return {
+        result = {
             "id": self.id,
             "name": self.name,
             "url": self.url,
@@ -197,19 +228,24 @@ class GrdService(QObject):
             "icon": self.icon,
             "layers": [layer.toJson() for layer in self.layers] if self.layers else [],
         }
+        # Include hierarchical structure if available
+        if self.layer_structure is not None:
+            result["layer_structure"] = self.layer_structure.to_dict()
+        return result
 
     def exportConfig(self) -> None:
-        save_capabilities_cache(
-            service_id=self.id,
-            payload={
-                "id": self.id,
-                "name": self.name,
-                "url": self.url,
-                "type": self.type,
-                "updated_at": self.updated_at,
-                "capabilities": self.capabilities,
-                "available_layers": self.available_layers,
-                "icon": self.icon,
-                "layers": [layer.toJson() for layer in self.layers] if self.layers else [],
-            },
-        )
+        payload = {
+            "id": self.id,
+            "name": self.name,
+            "url": self.url,
+            "type": self.type,
+            "updated_at": self.updated_at,
+            "capabilities": self.capabilities,
+            "available_layers": self.available_layers,
+            "icon": self.icon,
+            "layers": [layer.toJson() for layer in self.layers] if self.layers else [],
+        }
+        # Include hierarchical structure if available
+        if self.layer_structure is not None:
+            payload["layer_structure"] = self.layer_structure.to_dict()
+        save_capabilities_cache(service_id=self.id, payload=payload)

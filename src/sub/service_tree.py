@@ -4,12 +4,14 @@ from qgis.PyQt.QtGui import QBrush, QColor, QIcon
 from qgis.PyQt.QtWidgets import QHeaderView, QPushButton, QTreeWidgetItem
 
 from ..core.Service import GrdServiceState
+from ..core.layer_hierarchy import LayerGroup
 from .capabilities_cache import has_capabilities_cache
 from .helper_functions import (cache_service_icon, fillServiceLayers,
                                service_qicon, toggle_tree_widget_all)
 from .tree_item_roles import (ITEM_KIND_GROUP, ITEM_KIND_LAYER,
-                              ITEM_KIND_SERVICE, ROLE_ITEM_KIND,
-                              ROLE_LAYER_INDEX, ROLE_SERVICE_NAME)
+                              ITEM_KIND_LAYER_GROUP, ITEM_KIND_SERVICE,
+                              ROLE_ITEM_KIND, ROLE_LAYER_INDEX,
+                              ROLE_SERVICE_NAME)
 
 _base = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 _loader_icon = os.path.join(_base, "assets/icons/spinner.gif")
@@ -184,6 +186,9 @@ class ServiceTreeController:
 
         matched_groups = []
         matched_services = []
+        matched_layers = []
+        matched_layer_groups = []
+        
         for item in self._iter_tree_items():
             name = item.text(0).lower()
             kind = self._item_kind(item)
@@ -193,7 +198,12 @@ class ServiceTreeController:
                 matched_groups.append(item)
             elif kind == ITEM_KIND_SERVICE:
                 matched_services.append(item)
+            elif kind == ITEM_KIND_LAYER:
+                matched_layers.append(item)
+            elif kind == ITEM_KIND_LAYER_GROUP:
+                matched_layer_groups.append(item)
 
+        # Show all matched service groups
         for group_item in matched_groups:
             group_item.setHidden(False)
 
@@ -205,9 +215,42 @@ class ServiceTreeController:
 
             show_subtree(group_item)
 
+        # Show all matched services and their children
         for service_item in matched_services:
             service_item.setHidden(False)
+            
+            def show_subtree(node):
+                for idx in range(node.childCount()):
+                    child = node.child(idx)
+                    child.setHidden(False)
+                    show_subtree(child)
+
+            show_subtree(service_item)
             parent = service_item.parent()
+            while parent is not None:
+                parent.setHidden(False)
+                parent = parent.parent()
+
+        # Show matched layer groups and containing parents
+        for layer_group_item in matched_layer_groups:
+            layer_group_item.setHidden(False)
+            
+            def show_subtree(node):
+                for idx in range(node.childCount()):
+                    child = node.child(idx)
+                    child.setHidden(False)
+                    show_subtree(child)
+
+            show_subtree(layer_group_item)
+            parent = layer_group_item.parent()
+            while parent is not None:
+                parent.setHidden(False)
+                parent = parent.parent()
+
+        # Show matched layers and containing parents
+        for layer_item in matched_layers:
+            layer_item.setHidden(False)
+            parent = layer_item.parent()
             while parent is not None:
                 parent.setHidden(False)
                 parent = parent.parent()
@@ -215,15 +258,77 @@ class ServiceTreeController:
     def _mark_layer_items(self, service_item, service):
         service_name = service.name
         for idx in range(service_item.childCount()):
-            layer_item = service_item.child(idx)
-            layer_item.setData(0, ROLE_ITEM_KIND, ITEM_KIND_LAYER)
-            layer_item.setData(0, ROLE_SERVICE_NAME, service_name)
-            layer_item.setData(0, ROLE_LAYER_INDEX, idx)
+            child = service_item.child(idx)
+            kind = child.data(0, ROLE_ITEM_KIND) if child else None
+            if kind == ITEM_KIND_LAYER_GROUP:
+                # Recursively mark items in layer groups
+                self._mark_layer_items_in_group(child, service_name)
+            elif kind == ITEM_KIND_LAYER:
+                layer_item = child
+                layer_item.setData(0, ROLE_ITEM_KIND, ITEM_KIND_LAYER)
+                layer_item.setData(0, ROLE_SERVICE_NAME, service_name)
+                layer_item.setData(0, ROLE_LAYER_INDEX, idx)
+
+    def _mark_layer_items_in_group(self, group_item, service_name):
+        """Recursively mark layer items within a layer group."""
+        for idx in range(group_item.childCount()):
+            child = group_item.child(idx)
+            kind = child.data(0, ROLE_ITEM_KIND) if child else None
+            if kind == ITEM_KIND_LAYER_GROUP:
+                # Recurse into nested groups
+                self._mark_layer_items_in_group(child, service_name)
+            elif kind == ITEM_KIND_LAYER:
+                child.setData(0, ROLE_ITEM_KIND, ITEM_KIND_LAYER)
+                child.setData(0, ROLE_SERVICE_NAME, service_name)
 
     def _populate_loaded_layers(self, service_item, service, expanded=True):
         service_item.takeChildren()
+        
+        # First, try to populate using hierarchical structure if available
+        hierarchy = service.get_layer_hierarchy()
+        if hierarchy is not None:
+            self._populate_layer_hierarchy(service_item, hierarchy, expanded=expanded)
+            self._mark_layer_items(service_item, service)
+            return
+        
+        # Fall back to flat layer rendering if no hierarchy exists
         fillServiceLayers(service_item, service, expanded=expanded)
         self._mark_layer_items(service_item, service)
+
+    def _populate_layer_hierarchy(self, parent_item, layer_group, expanded=True):
+        """
+        Recursively populate tree items from a LayerGroup hierarchy.
+
+        Args:
+            parent_item: QTreeWidgetItem to add children to
+            layer_group: LayerGroup or Layer object to render
+            expanded: Whether to expand the parent item
+        """
+        if not isinstance(layer_group, LayerGroup):
+            return
+
+        for child in layer_group.children:
+            if isinstance(child, LayerGroup):
+                # Create a folder/group item for nested LayerGroup
+                group_item = QTreeWidgetItem()
+                group_item.setText(0, child.name)
+                group_item.setIcon(0, QIcon.fromTheme("folder"))
+                group_item.setData(0, ROLE_ITEM_KIND, ITEM_KIND_LAYER_GROUP)
+                parent_item.addChild(group_item)
+
+                # Recursively add children of this group
+                self._populate_layer_hierarchy(group_item, child, expanded=expanded)
+                group_item.setExpanded(expanded)
+            else:
+                # It's a Layer object - add it directly
+                layer_item = QTreeWidgetItem()
+                layer_item.setText(0, child.name)
+                layer_item.setIcon(0, QIcon(child.getIcon()))
+                layer_item.setToolTip(0, f"{child.name} ({child.type})")
+                layer_item.setData(0, ROLE_ITEM_KIND, ITEM_KIND_LAYER)
+                parent_item.addChild(layer_item)
+
+        parent_item.setExpanded(expanded)
 
     def _set_status_text(self, item, text=None):
         base_name = self._service_name(item)
