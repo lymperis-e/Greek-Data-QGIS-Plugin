@@ -53,10 +53,13 @@ class ServiceTreeController:
             self.service_manager.reloadServices()
 
         services = self.service_manager.listServices()
+        # Sort services alphabetically by name
+        services = sorted(services, key=lambda s: (s.name or "").lower())
         self.tree.clear()
 
         group_nodes = {}
         root = self.tree.invisibleRootItem()
+        service_items = []  # Collect service items for button setup after sorting
 
         for service in services:
             parent = root
@@ -84,12 +87,24 @@ class ServiceTreeController:
             service_item.setData(0, ROLE_ITEM_KIND, ITEM_KIND_SERVICE)
             service_item.setData(0, ROLE_SERVICE_NAME, service.name)
             parent.addChild(service_item)
-
-            self._set_fetch_button(service_item, service)
-            self._set_native_button(service_item, service)
+            service_items.append((service_item, service))
 
             if service.loaded:
                 self._populate_loaded_layers(service_item, service, expanded=False)
+
+        # Sort all groups and services alphabetically
+        self._sort_tree_items_recursive(self.tree.invisibleRootItem())
+
+        # Set up buttons AFTER sorting to ensure they render properly
+        for service_item, service in service_items:
+            self._set_fetch_button(service_item, service)
+            self._set_native_button(service_item, service)
+
+        # Keep the first grouping level open for discoverability.
+        for idx in range(self.tree.topLevelItemCount()):
+            item = self.tree.topLevelItem(idx)
+            if self.is_group_item(item):
+                item.setExpanded(True)
 
     def _service_group_path(self, service):
         config = service.config or {}
@@ -97,6 +112,28 @@ class ServiceTreeController:
         if group_path is None:
             return ""
         return str(group_path).strip()
+
+    def _sort_tree_items_recursive(self, parent_item):
+        """Recursively sort all children of a tree item alphabetically by name."""
+        # Collect all children with their names
+        children_with_names = []
+        for idx in range(parent_item.childCount()):
+            child = parent_item.child(idx)
+            children_with_names.append((child.text(0).lower(), child))
+
+        # Sort by name
+        children_with_names.sort(key=lambda x: x[0])
+
+        # Rebuild the children in sorted order
+        for sort_idx, (_, child) in enumerate(children_with_names):
+            # Qt doesn't have a move method, so we remove and re-add in order
+            if parent_item.indexOfChild(child) != sort_idx:
+                parent_item.removeChild(child)
+                parent_item.insertChild(sort_idx, child)
+
+        # Recursively sort children of each child
+        for _, child in children_with_names:
+            self._sort_tree_items_recursive(child)
 
     # ------------------------------------------------------------------
     # Per-item action buttons

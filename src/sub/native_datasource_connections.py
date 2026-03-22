@@ -4,8 +4,8 @@ from qgis.core import Qgis, QgsSettings
 from qgis.PyQt.QtCore import Qt
 from qgis.PyQt.QtWidgets import QMenu
 
-from .tree_item_roles import (ITEM_KIND_SERVICE, ROLE_ITEM_KIND,
-                              ROLE_SERVICE_NAME)
+from .tree_item_roles import (ITEM_KIND_GROUP, ITEM_KIND_SERVICE,
+                              ROLE_ITEM_KIND, ROLE_SERVICE_NAME)
 
 
 class NativeDatasourceConnections:
@@ -146,18 +146,36 @@ class NativeDatasourceConnections:
 
         settings.sync()
 
+    def _set_expanded_recursive(self, item, expanded: bool):
+        item.setExpanded(expanded)
+        for idx in range(item.childCount()):
+            self._set_expanded_recursive(item.child(idx), expanded)
+
     def show_connections_context_menu(self, tree_widget, position):
         item = tree_widget.itemAt(position)
         if item is None:
             return
 
-        # Only show the action on service rows, not group or layer rows.
-        if item.data(0, ROLE_ITEM_KIND) != ITEM_KIND_SERVICE:
+        kind = item.data(0, ROLE_ITEM_KIND)
+        menu = QMenu(tree_widget)
+
+        if kind == ITEM_KIND_GROUP:
+            expand_all_action = menu.addAction(self.tr("Expand all"))
+            collapse_all_action = menu.addAction(self.tr("Collapse all"))
+            expand_all_action.triggered.connect(
+                lambda _, target=item: self._set_expanded_recursive(target, True)
+            )
+            collapse_all_action.triggered.connect(
+                lambda _, target=item: self._set_expanded_recursive(target, False)
+            )
+            menu.exec_(tree_widget.viewport().mapToGlobal(position))
+            return
+
+        if kind != ITEM_KIND_SERVICE:
             return
 
         service_name = item.data(0, ROLE_SERVICE_NAME) or item.text(0)
 
-        menu = QMenu(tree_widget)
         add_action = menu.addAction(self.tr("Add As Native QGIS Browser Datasource"))
         add_action.triggered.connect(
             lambda _, name=service_name: self.add_service_native_datasource(name)
