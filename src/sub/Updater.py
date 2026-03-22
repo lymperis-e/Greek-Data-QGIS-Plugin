@@ -5,6 +5,8 @@ import requests
 from qgis.core import Qgis, QgsApplication, QgsMessageLog, QgsTask
 from qgis.PyQt.QtCore import pyqtSignal
 
+from .logger import LOGGER_CATEGORY
+
 CONFIG_FILE = join(dirname(dirname(__file__)), "assets", "settings", "services.json")
 
 
@@ -98,8 +100,8 @@ class FetchFromGithub(QgsTask):
             self.fetched.emit(self.new_services)
         else:
             QgsMessageLog.logMessage(
-                f"Failed to fetch services from {self.github_url}",
-                "GRData",
+                f"[Updater/FetchFromGithub] Failed to fetch services from {self.github_url}",
+                LOGGER_CATEGORY,
                 Qgis.Critical,
             )
 
@@ -112,7 +114,9 @@ class GrdSourcesUpdater:
         print("New services fetched: ", len(new_services))
         if new_services:
             QgsMessageLog.logMessage(
-                f"New services fetched: {len(new_services)}", "GRData", Qgis.Info
+                f"[Updater/GrdSourcesUpdater] New services fetched: {len(new_services)}",
+                LOGGER_CATEGORY,
+                Qgis.Info,
             )
 
     def update(self, callback=None):

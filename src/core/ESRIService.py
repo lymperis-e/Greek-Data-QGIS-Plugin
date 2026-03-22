@@ -4,10 +4,9 @@ import requests
 from qgis.core import Qgis, QgsApplication, QgsMessageLog, QgsTask
 from qgis.PyQt.QtCore import pyqtSignal
 
+from ..sub.logger import LOGGER_CATEGORY
 from .Layer import Layer
 from .Service import GrdService
-
-MESSAGE_CATEGORY = "GreekData-GetCapabilities (ArcGIS server)"
 
 
 def clean_esri_attributes(layer_attributes: Dict[str, str]) -> None:
@@ -152,8 +151,8 @@ class LoadEsriAsync(QgsTask):
             except Exception as e:
                 self.exception = e
                 QgsMessageLog.logMessage(
-                    f"Tried to clean fields for layer {layer_name} but failed: {e}",
-                    MESSAGE_CATEGORY,
+                    f"[ESRIService/Loader] Tried to clean fields for layer {layer_name} but failed: {e}",
+                    LOGGER_CATEGORY,
                     Qgis.Warning,
                 )
 
@@ -192,8 +191,8 @@ class LoadEsriAsync(QgsTask):
         if result:
             self.loaded.emit(self.layers)
             QgsMessageLog.logMessage(
-                f"Succesfully loaded {self.url} (ESRI server)",
-                MESSAGE_CATEGORY,
+                f"[ESRIService/Loader] Succesfully loaded {self.url} (ESRI server)",
+                LOGGER_CATEGORY,
                 Qgis.Success,
             )
             return
@@ -202,18 +201,18 @@ class LoadEsriAsync(QgsTask):
         if self.exception is None:
             self.loaded.emit(self.layers)
             QgsMessageLog.logMessage(
-                f'Request "{self.description()}" not successful but without '
+                f'[ESRIService/Loader] Request "{self.description()}" not successful but without '
                 "exception (probably the task was manually "
                 "canceled by the user)",
-                MESSAGE_CATEGORY,
+                LOGGER_CATEGORY,
                 Qgis.Warning,
             )
             return
 
         # Error
         QgsMessageLog.logMessage(
-            f"Error while loading {self.url} (ESRI server): {self.exception}.",
-            MESSAGE_CATEGORY,
+            f"[ESRIService/Loader] Error while loading {self.url} (ESRI server): {self.exception}.",
+            LOGGER_CATEGORY,
             Qgis.Critical,
         )
 

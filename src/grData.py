@@ -384,5 +384,5 @@ class grData:
         try:
             self.rubberband_from_current_bbox()
         except Exception as e:
-            # QgsMessageLog.logMessage(str(e), "grData", Qgis.Critical)
+            # QgsMessageLog.logMessage(str(e), "GreekDataPlugin", Qgis.Critical)
             None

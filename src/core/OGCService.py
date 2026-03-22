@@ -4,11 +4,10 @@ import requests
 from qgis.core import Qgis, QgsApplication, QgsMessageLog, QgsTask
 from qgis.PyQt.QtCore import pyqtSignal
 
+from ..sub.logger import LOGGER_CATEGORY
 from ..sub.xml import xmltodict
 from .Layer import DataModel, Layer
 from .Service import GrdService
-
-MESSAGE_CATEGORY = "GreekData-GetCapabilities (ArcGIS server)"
 
 
 def clean_OGC_attributes(layer_attributes: Dict[str, str]) -> None:
@@ -218,8 +217,8 @@ class LoadOGCAsync(QgsTask):
         if result:
             self.loaded.emit(self.layers)
             QgsMessageLog.logMessage(
-                f"Succesfully loaded {self.url} (OGC server)",
-                MESSAGE_CATEGORY,
+                f"[OGCService/Loader] Succesfully loaded {self.url} (OGC server)",
+                LOGGER_CATEGORY,
                 Qgis.Success,
             )
             return
@@ -228,18 +227,18 @@ class LoadOGCAsync(QgsTask):
         if self.exception is None:
             self.loaded.emit(self.layers)
             QgsMessageLog.logMessage(
-                f'Request "{self.description()}" not successful but without '
+                f'[OGCService/Loader] Request "{self.description()}" not successful but without '
                 "exception (probably the task was manually "
                 "canceled by the user)",
-                MESSAGE_CATEGORY,
+                LOGGER_CATEGORY,
                 Qgis.Warning,
             )
             return
 
         # Error
         QgsMessageLog.logMessage(
-            f"Error while loading {self.url} (OGC server): {self.exception}.",
-            MESSAGE_CATEGORY,
+            f"[OGCService/Loader] Error while loading {self.url} (OGC server): {self.exception}.",
+            LOGGER_CATEGORY,
             Qgis.Critical,
         )
 

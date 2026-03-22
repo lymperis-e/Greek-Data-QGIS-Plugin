@@ -224,7 +224,7 @@ class NativeDatasourceConnections:
 
         self.iface.messageBar().pushMessage(
             "grData",
-            f"Added native datasource connection(s): {', '.join(created_connections)}",
+            f"Added native datasource connection(s) for service '{service.name}': {', '.join(created_connections)}",
             level=Qgis.Success,
             duration=5,
         )
