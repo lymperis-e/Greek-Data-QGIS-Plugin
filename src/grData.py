@@ -254,6 +254,8 @@ class grData:
             self.iface.addDockWidget(Qt.LeftDockWidgetArea, self.dockwidget)
             self.dockwidget.show()
 
+            self.set_layer_details_visible(False)
+
             self.fill_connections_list()
 
             self.dockwidget.current_layer_details_tree.setHeaderLabels(
@@ -289,6 +291,18 @@ class grData:
             self.native_datasource_connections.configure_tree_widget(
                 self.dockwidget.conn_list_widget
             )
+
+    def set_layer_details_visible(self, visible: bool):
+        self.dockwidget.widget_14.setVisible(visible)
+
+        if not visible:
+            self.dockwidget.current_layer_name_label.setText("...")
+            self.dockwidget.current_layer_url_label.setText("")
+            self.dockwidget.current_layer_description_label.setText("")
+            self.dockwidget.current_layer_copyright_label.setText("")
+            self.dockwidget.current_layer_details_tree.clear()
+            self.dockwidget.current_layer_add_to_map_btn.setEnabled(False)
+            self.rubber_band.hide()
 
     def fill_connections_list(self, reload=False):
         if reload:
@@ -388,10 +402,17 @@ class grData:
 
     def connListChanged(self, layer):
         selectedItem = self.dockwidget.conn_list_widget.currentItem()
+        if selectedItem is None:
+            self.set_layer_details_visible(False)
+            return
+
         parent = selectedItem.parent()
         if not parent:
+            self.set_layer_details_visible(False)
             self.expand_service(selectedItem)
             return
+
+        self.set_layer_details_visible(True)
 
         service = self.serviceManager.getService(parent.text(0))
         layer = service.getLayer(parent.indexOfChild(selectedItem))
