@@ -37,8 +37,8 @@ from .grData_dockwidget import grDataDockWidget
 # Initialize Qt resources from file resources.py
 from .resources import *
 # Local Imports
-from .sub.helper_functions import (cache_service_icon,
-                                   ensure_cache_directories, fill_tree_widget,
+from .sub.cache import ensure_cache_directories
+from .sub.helper_functions import (cache_service_icon, fill_tree_widget,
                                    fillServiceLayers, fillServices,
                                    filter_tree_widget_leafs,
                                    filter_tree_widget_roots)

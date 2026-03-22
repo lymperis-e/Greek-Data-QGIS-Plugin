@@ -7,19 +7,15 @@ import requests
 from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import QTreeWidgetItem
 
+from .cache import ICONS_CACHE_DIR, ensure_cache_directories
+
 plugin_logo = join(dirname(dirname(__file__)), "assets", "img", "icon.png")
-cache_root = join(dirname(dirname(__file__)), ".cache")
-icons_cache_dir = join(cache_root, "icons")
 
 
 def get_base_url(url):
     parsed_url = urlparse(url)
     base_url = f"{parsed_url.scheme}://{parsed_url.netloc}"
     return base_url
-
-
-def ensure_cache_directories():
-    os.makedirs(icons_cache_dir, exist_ok=True)
 
 
 def _service_icon_cache_path(service):
@@ -32,7 +28,7 @@ def _service_icon_cache_path(service):
         ext = ".img"
 
     hashed = hashlib.sha256(service.icon.encode("utf-8")).hexdigest()
-    return join(icons_cache_dir, f"{hashed}{ext}")
+    return join(ICONS_CACHE_DIR, f"{hashed}{ext}")
 
 
 def cache_service_icon(service):
