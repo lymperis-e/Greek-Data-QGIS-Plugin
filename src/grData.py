@@ -23,13 +23,8 @@
 """
 import os
 
-from qgis.core import (
-    Qgis,
-    QgsApplication,
-    QgsCoordinateReferenceSystem,
-    QgsGeometry,
-    QgsRectangle,
-)
+from qgis.core import (Qgis, QgsApplication, QgsCoordinateReferenceSystem,
+                       QgsGeometry, QgsRectangle)
 from qgis.gui import QgsRubberBand
 from qgis.PyQt.QtCore import QCoreApplication, QSettings, Qt, QTranslator
 from qgis.PyQt.QtGui import QColor, QIcon
@@ -38,21 +33,15 @@ from qgis.PyQt.QtWidgets import QAction, QListWidgetItem
 from .core.Service import GrdServiceState
 from .core.ServiceManager import ServiceManager
 from .core.utils.QUrlIcon import QUrlIcon
-
 # Import the code for the DockWidget
 from .grData_dockwidget import grDataDockWidget
-
 # Initialize Qt resources from file resources.py
 from .resources import *
-
 # Local Imports
-from .sub.helper_functions import (
-    fill_tree_widget,
-    fillServiceLayers,
-    fillServices,
-    filter_tree_widget_leafs,
-    filter_tree_widget_roots,
-)
+from .sub.helper_functions import (fill_tree_widget, fillServiceLayers,
+                                   fillServices, filter_tree_widget_leafs,
+                                   filter_tree_widget_roots)
+from .sub.native_datasource_connections import NativeDatasourceConnections
 from .sub.Updater import GrdSourcesUpdater
 
 basePath = os.path.dirname(os.path.abspath(__file__))
@@ -101,6 +90,9 @@ class grData:
 
         self.rubber_band: QgsRubberBand = QgsRubberBand(self.iface.mapCanvas())
         self.serviceManager = ServiceManager()
+        self.native_datasource_connections = NativeDatasourceConnections(
+            self.iface, self.serviceManager, self.tr
+        )
 
         # Load remote services
         self.updater = GrdSourcesUpdater()
@@ -294,6 +286,11 @@ class grData:
             # Connections list: Double-click
             self.dockwidget.conn_list_widget.itemDoubleClicked.connect(
                 self.handle_connections_list_double_click
+            )
+
+            # Connections list: context menu for native QGIS browser connections
+            self.native_datasource_connections.configure_tree_widget(
+                self.dockwidget.conn_list_widget
             )
 
     def fill_connections_list(self, reload=False):
