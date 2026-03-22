@@ -32,14 +32,15 @@ from qgis.PyQt.QtWidgets import QAction, QListWidgetItem
 
 from .core.Service import GrdServiceState
 from .core.ServiceManager import ServiceManager
-from .core.utils.QUrlIcon import QUrlIcon
 # Import the code for the DockWidget
 from .grData_dockwidget import grDataDockWidget
 # Initialize Qt resources from file resources.py
 from .resources import *
 # Local Imports
-from .sub.helper_functions import (fill_tree_widget, fillServiceLayers,
-                                   fillServices, filter_tree_widget_leafs,
+from .sub.helper_functions import (cache_service_icon,
+                                   ensure_cache_directories, fill_tree_widget,
+                                   fillServiceLayers, fillServices,
+                                   filter_tree_widget_leafs,
                                    filter_tree_widget_roots)
 from .sub.native_datasource_connections import NativeDatasourceConnections
 from .sub.Updater import GrdSourcesUpdater
@@ -93,6 +94,7 @@ class grData:
         self.native_datasource_connections = NativeDatasourceConnections(
             self.iface, self.serviceManager, self.tr
         )
+        ensure_cache_directories()
 
         # Load remote services
         self.updater = GrdSourcesUpdater()
@@ -325,6 +327,11 @@ class grData:
         name = item.text(0)
         icon = item.icon(0)
         service = self.serviceManager.getService(name)
+
+        cached_icon_path = cache_service_icon(service)
+        if cached_icon_path:
+            icon = QIcon(cached_icon_path)
+            item.setIcon(0, icon)
 
         # Service's layers are lazily loaded from the server the first time they are requested
         if not service.loaded:
