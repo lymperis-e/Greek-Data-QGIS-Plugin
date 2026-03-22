@@ -28,10 +28,8 @@ from qgis.core import (Qgis, QgsApplication, QgsCoordinateReferenceSystem,
 from qgis.gui import QgsRubberBand
 from qgis.PyQt.QtCore import QCoreApplication, QSettings, Qt, QTranslator
 from qgis.PyQt.QtGui import QColor, QIcon
-from qgis.PyQt.QtWidgets import (QAction, QHeaderView, QListWidgetItem,
-                                 QPushButton)
+from qgis.PyQt.QtWidgets import QAction
 
-from .core.Service import GrdServiceState
 from .core.ServiceManager import ServiceManager
 # Import the code for the DockWidget
 from .grData_dockwidget import grDataDockWidget
@@ -39,18 +37,14 @@ from .grData_dockwidget import grDataDockWidget
 from .resources import *
 # Local Imports
 from .sub.cache import ensure_cache_directories
-from .sub.helper_functions import (cache_service_icon, fill_tree_widget,
-                                   fillServiceLayers, fillServices,
-                                   filter_tree_widget_leafs,
+from .sub.helper_functions import (fill_tree_widget, filter_tree_widget_leafs,
                                    filter_tree_widget_roots)
 from .sub.native_datasource_connections import NativeDatasourceConnections
+from .sub.service_tree import ServiceTreeController
 from .sub.Updater import GrdSourcesUpdater
 
 basePath = os.path.dirname(os.path.abspath(__file__))
 settings_path = os.path.join(basePath, "assets/settings")
-loader_icon = os.path.join(basePath, "assets/icons/spinner.gif")
-add_to_qgis_icon_path = os.path.join(basePath, "assets/icons/add_to_qgs.png")
-fetch_icon_path = os.path.join(basePath, "assets/icons/fetch_capabilities.svg")
 
 
 class grData:
@@ -259,17 +253,14 @@ class grData:
 
             self.set_layer_details_visible(False)
 
+            self.service_tree = ServiceTreeController(
+                self.dockwidget.conn_list_widget,
+                self.serviceManager,
+                self.native_datasource_connections,
+                self.tr,
+            )
             self.fill_connections_list()
 
-            # Column 0: name  |  Column 1: Fetch button  |  Column 2: Add to QGIS button
-            self.dockwidget.conn_list_widget.setColumnCount(3)
-            header = self.dockwidget.conn_list_widget.header()
-            header.setStretchLastSection(False)
-            header.setSectionResizeMode(0, QHeaderView.Stretch)
-            header.setSectionResizeMode(1, QHeaderView.Fixed)
-            header.setSectionResizeMode(2, QHeaderView.Fixed)
-            self.dockwidget.conn_list_widget.setColumnWidth(1, 26)
-            self.dockwidget.conn_list_widget.setColumnWidth(2, 26)
 
             self.dockwidget.current_layer_details_tree.setHeaderLabels(
                 ["Attribute", "Value"]
@@ -318,55 +309,7 @@ class grData:
             self.rubber_band.hide()
 
     def fill_connections_list(self, reload=False):
-        if reload:
-            self.serviceManager.reloadServices()
-
-        services = self.serviceManager.listServices()
-
-        self.dockwidget.conn_list_widget.clear()
-        fillServices(self.dockwidget.conn_list_widget, services)
-
-        for idx in range(self.dockwidget.conn_list_widget.topLevelItemCount()):
-            item = self.dockwidget.conn_list_widget.topLevelItem(idx)
-            service = self.serviceManager.getService(item.text(0))
-            self._set_fetch_button(item, service)
-            self._set_native_button(item, service)
-
-    def _set_native_button(self, item, service):
-        tree = self.dockwidget.conn_list_widget
-        if tree.itemWidget(item, 2) is not None:
-            return
-        button = QPushButton()
-        button.setIcon(QIcon(add_to_qgis_icon_path))
-        button.setFixedWidth(24)
-        button.setToolTip(self.tr("Add as native QGIS Browser datasource"))
-        button.clicked.connect(
-            lambda _, name=service.name: self.native_datasource_connections.add_service_native_datasource(name)
-        )
-        tree.setItemWidget(item, 2, button)
-
-    def _set_fetch_button(self, item, service):
-        tree = self.dockwidget.conn_list_widget
-
-        if service.loaded:
-            tree.removeItemWidget(item, 1)
-            return
-
-        button = tree.itemWidget(item, 1)
-        if not isinstance(button, QPushButton):
-            button = QPushButton()
-            button.setIcon(QIcon(fetch_icon_path))
-            button.setFixedWidth(24)
-            button.setToolTip(self.tr("Fetch capabilities"))
-            button.clicked.connect(
-                lambda _, target=item: self.fetch_service_capabilities(target)
-            )
-            tree.setItemWidget(item, 1, button)
-
-        button.setEnabled(service.state != GrdServiceState.LOADING)
-
-    def fetch_service_capabilities(self, item):
-        self.expand_service(item, fetch_if_needed=True)
+        self.service_tree.fill(reload)
 
     def filter_connections_list(self, filter_text):
         filterTarget = self.dockwidget.filter_services_combobox.currentText()
@@ -385,68 +328,6 @@ class grData:
             return
 
         self.add_layer_to_map(item, parent)
-
-    def expand_service(self, item: QListWidgetItem, fetch_if_needed=True):
-        """
-        Lazy-load a service, wait for it to load and then update the list and expand it
-        """
-        if item.childCount() > 0:
-            item.setExpanded(True)
-            return
-
-        name = item.text(0)
-        icon = item.icon(0)
-        service = self.serviceManager.getService(name)
-
-        if not fetch_if_needed and not service.loaded:
-            self._set_fetch_button(item, service)
-            return
-
-        cached_icon_path = cache_service_icon(service)
-        if cached_icon_path:
-            icon = QIcon(cached_icon_path)
-            item.setIcon(0, icon)
-
-        # Service's layers are lazily loaded from the server the first time they are requested
-        if not service.loaded:
-            if not getattr(service, "_grdata_ui_bound", False):
-                service.changed.connect(
-                    lambda state, tree_item=item, srv=service, ready_icon=icon: self._on_service_state_changed(
-                        tree_item, srv, ready_icon, state
-                    )
-                )
-                service._grdata_ui_bound = True
-
-        if service.getLayers() is None:
-            # msg_bar = self.iface.messageBar()
-            # msg_bar.pushMessage(
-            #     "Loading ",
-            #     f"Service {name} is being loaded",
-            #     level=Qgis.Info,
-            # )
-            self._set_fetch_button(item, service)
-            return
-
-        fillServiceLayers(item, service)
-        self._set_fetch_button(item, service)
-
-    def _on_service_state_changed(self, item, service, icon, state):
-        if state == GrdServiceState.LOADING:
-            item.setIcon(0, QIcon(loader_icon))
-            self._set_fetch_button(item, service)
-            return
-
-        if state == GrdServiceState.LOADED:
-            item.setIcon(0, icon)
-            if item.childCount() == 0:
-                fillServiceLayers(item, service, expanded=True)
-            self._set_fetch_button(item, service)
-            return
-
-        if state == GrdServiceState.ERROR:
-            item.setIcon(0, icon)
-            self._set_fetch_button(item, service)
-            return
 
     def add_layer_to_map(self, item=None, parent=None):
 
@@ -472,7 +353,7 @@ class grData:
         parent = selectedItem.parent()
         if not parent:
             self.set_layer_details_visible(False)
-            self.expand_service(selectedItem, fetch_if_needed=False)
+            self.service_tree.expand_service(selectedItem, fetch_if_needed=False)
             return
 
         self.set_layer_details_visible(True)
