@@ -208,15 +208,9 @@ class grData:
     def initGui(self):
         """Create the menu entries and toolbar icons inside the QGIS GUI."""
         icon_path = os.path.join(os.path.dirname(__file__), "assets", "img", "icon.png")
-        icon = QIcon(icon_path)
-        self.grdata = QAction(icon, "Greek Open Data Access", self.iface.mainWindow())
-        self.grdata.triggered.connect(self.run)
-        self.grdata.setCheckable(False)
-        self.iface.addToolBarIcon(self.grdata)
-
-        self.add_action(
+        self.grdata = self.add_action(
             icon_path,
-            text=self.tr("Greek Data Access"),
+            text=self.tr("Greek Open Data Access"),
             callback=self.run,
             parent=self.iface.mainWindow(),
         )
@@ -237,7 +231,8 @@ class grData:
         for action in self.actions:
             self.iface.removePluginWebMenu(self.tr("&Greek Data"), action)
             self.iface.removeToolBarIcon(action)
-            self.iface.removeToolBarIcon(self.grdata)
+
+        self.actions = []
         # remove the toolbar
         del self.toolbar
 
