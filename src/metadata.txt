@@ -2,7 +2,7 @@
 [general]
 name=Greek Data
 qgisMinimumVersion=3.0
-homepage=https://github.com/lymperis-e/Greek-Data-QGIS-Plugin
+homepage=https://github.com/lymperis-e/qgis_grdata_plugin
 category=Web
 icon=assets/img/icon.png
 server=False
@@ -12,8 +12,8 @@ tags=python, greek, gov.gr, epoleodomia, poleodomia, ypen, geodata, gov, data
 version=2.2.0
 author=Lymperis Efstathios
 email=geo.elymperis@gmail.com
-tracker=https://github.com/lymperis-e/Greek-Data-QGIS-Plugin/issues
-repository=https://github.com/lymperis-e/Greek-Data-QGIS-Plugin
+tracker=https://github.com/lymperis-e/qgis_grdata_plugin/issues
+repository=https://github.com/lymperis-e/qgis_grdata_plugin
 # changelog=
 # plugin_dependencies=
 description=Simple & centralised access to open geospatial datasets for Greece, provided by official government agencies and institutions. This plugin provides catalog search and direct layer loading functions for a variety of official greek data sources.
