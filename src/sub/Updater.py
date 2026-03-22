@@ -18,7 +18,8 @@ class FetchFromGithub(QgsTask):
     """
 
     fetched = pyqtSignal(list)
-    github_url = "https://raw.githubusercontent.com/lymperis-e/Greek-Data-QGIS-Plugin/dev/services.json"
+    github_url = "https://raw.githubusercontent.com/lymperis-e/Greek-Data-QGIS-Plugin/main/src/assets/settings/services.json"
+
 
     def __init__(self):
         super().__init__(
