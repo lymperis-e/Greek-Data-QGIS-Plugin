@@ -258,6 +258,16 @@
             "icon": null,
             "id": "svc_57cbfb9f43f088ce",
             "group": "Δήμοι"
+        },
+        {
+            "name": "Δήμος Χαλανδρίου",
+            "url": "https://services.chalandri.gr/geoserver/ows",
+            "type": "ogc",
+            "capabilities": null,
+            "available_layers": null,
+            "icon": null,
+            "id": "svc_1234567890abcdef",
+            "group": "Δήμοι"
         }
     ]
 }

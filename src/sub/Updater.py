@@ -61,19 +61,32 @@ class FetchFromGithub(QgsTask):
             local_services = json.load(file).get("services", [])
 
         # Index the local services by url
-        local_services_index = {service["url"]: service for service in local_services}
+        local_services_index = {
+            service.get("url"): service
+            for service in local_services
+            if isinstance(service, dict) and service.get("url")
+        }
 
         new_services = []
         for service in fetched_services:
-            if not service["url"] in local_services_index.keys():
+            if not isinstance(service, dict):
+                continue
+            service_url = service.get("url")
+            if not service_url:
+                continue
+            if service_url not in local_services_index:
                 new_services.append(service)
 
         return new_services
 
     def run(self):
-        fetched_services = self.__fetch().get("services", None)
+        fetched_payload = self.__fetch()
+        if not isinstance(fetched_payload, dict):
+            return False
 
-        if fetched_services is None:
+        fetched_services = fetched_payload.get("services")
+
+        if not isinstance(fetched_services, list):
             return False
 
         self.new_services = self.__compare(fetched_services)
