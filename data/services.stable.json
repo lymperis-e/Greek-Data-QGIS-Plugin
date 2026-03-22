@@ -7,8 +7,8 @@
             "capabilities": null,
             "available_layers": null,
             "icon": "https://ypen.gov.gr/wp-content/uploads/2020/04/logo-ypen.jpg",
-            "layers": [],
-            "id": "svc_b2bcb76be14ea268"
+            "id": "svc_b2bcb76be14ea268",
+            "group": "ΥΠΕΝ"
         },
         {
             "name": "Geoportal RAAEY",
@@ -17,8 +17,8 @@
             "capabilities": null,
             "available_layers": null,
             "icon": "https://www.rae.gr/wp-content/uploads/2024/04/PAAEY_Logo_GR.png",
-            "layers": [],
-            "id": "svc_86a463eb4dbd1d12"
+            "id": "svc_86a463eb4dbd1d12",
+            "group": "ΥΠΕΝ"
         },
         {
             "name": "Μητροπολιτικός Σχεδιασμός Αθηνών",
@@ -27,8 +27,8 @@
             "capabilities": null,
             "available_layers": null,
             "icon": "",
-            "layers": [],
-            "id": "svc_41d0f2a22b5b76df"
+            "id": "svc_41d0f2a22b5b76df",
+            "group": "ΥΠΕΝ"
         },
         {
             "name": "Επικαιροποίηση Masterplan Αντιπλημμυρικών έργων Αττικής",
@@ -37,8 +37,8 @@
             "capabilities": null,
             "available_layers": null,
             "icon": "https://mpattiki.etme.gr/images/logo/logo_antiplymirika_small.png",
-            "layers": [],
-            "id": "svc_d2a97ff30b17fb63"
+            "id": "svc_d2a97ff30b17fb63",
+            "group": "Άλλοι Φορείς"
         },
         {
             "name": "MapsPortal YPEN",
@@ -47,8 +47,8 @@
             "capabilities": null,
             "available_layers": null,
             "icon": "https://ypen.gov.gr/wp-content/uploads/2020/04/logo-ypen.jpg",
-            "layers": [],
-            "id": "svc_94dedb9c7d4c4a30"
+            "id": "svc_94dedb9c7d4c4a30",
+            "group": "ΥΠΕΝ"
         },
         {
             "name": "Κτηματολόγιο (gis.ktimanet.gr)",
@@ -57,8 +57,8 @@
             "capabilities": null,
             "available_layers": null,
             "icon": "https://www.ktimatologio.gr/favicon.ico",
-            "layers": [],
-            "id": "svc_4bbdda86e16cd729"
+            "id": "svc_4bbdda86e16cd729",
+            "group": "Κτηματολόγιο"
         },
         {
             "name": "Ψηφιακός Χάρτης Κτηματολογίου",
@@ -67,8 +67,8 @@
             "capabilities": null,
             "available_layers": null,
             "icon": "https://www.ktimatologio.gr/favicon.ico",
-            "layers": [],
-            "id": "svc_cfc70cbf85be6eb6"
+            "id": "svc_cfc70cbf85be6eb6",
+            "group": "Κτηματολόγιο"
         },
         {
             "name": "Γενική Γραμματεία Βιομηχανίας",
@@ -77,8 +77,8 @@
             "capabilities": null,
             "available_layers": null,
             "icon": null,
-            "layers": [],
-            "id": "svc_bd093c7ede659ab7"
+            "id": "svc_bd093c7ede659ab7",
+            "group": "Άλλοι Φορείς"
         },
         {
             "name": "Ε.Α.Γ.Μ.Ε.",
@@ -87,8 +87,8 @@
             "capabilities": null,
             "available_layers": null,
             "icon": "https://gaia.igme.gr/favicon.ico",
-            "layers": [],
-            "id": "svc_addd06adc9cfc877"
+            "id": "svc_addd06adc9cfc877",
+            "group": "ΥΠΕΝ"
         },
         {
             "name": "Θέαση σημείων υδροληψίας (Γενική Γραμματεία Υδάτων)",
@@ -97,8 +97,8 @@
             "capabilities": null,
             "available_layers": null,
             "icon": "http://lmt.ypeka.gr/favicon.ico",
-            "layers": [],
-            "id": "svc_43f89d9cd217eddc"
+            "id": "svc_43f89d9cd217eddc",
+            "group": "ΥΠΕΝ"
         },
         {
             "name": "Σχέδια Διαχείρισης Λεκανών Απορροής Ποταμών",
@@ -107,8 +107,8 @@
             "capabilities": null,
             "available_layers": null,
             "icon": "https://wfdver.ypeka.gr/wp-content/uploads/2023/03/logo_.png",
-            "layers": [],
-            "id": "svc_d85b62936bf92362"
+            "id": "svc_d85b62936bf92362",
+            "group": "ΥΠΕΝ"
         },
         {
             "name": "Ε.Λ.Σ.Τ.Α.Τ.",
@@ -117,7 +117,6 @@
             "capabilities": null,
             "available_layers": null,
             "icon": "https://www.statistics.gr/o/elstat-theme/images/elstat_logo.png",
-            "layers": [],
             "id": "svc_fa86daaa558368d6"
         },
         {
@@ -127,8 +126,8 @@
             "capabilities": null,
             "available_layers": null,
             "icon": "https://www.crete.gov.gr/wp-content/uploads/2020/11/cropped-logowhite.png",
-            "layers": [],
-            "id": "svc_c213d216671e9777"
+            "id": "svc_c213d216671e9777",
+            "group": "Περιφέρειες"
         },
         {
             "name": "ePoleodomia",
@@ -137,8 +136,8 @@
             "capabilities": null,
             "available_layers": null,
             "icon": null,
-            "layers": [],
-            "id": "svc_d7dc7b70732995fc"
+            "id": "svc_d7dc7b70732995fc",
+            "group": "ΥΠΕΝ"
         },
         {
             "name": "Δήμος Σερρών",
@@ -147,8 +146,8 @@
             "capabilities": null,
             "available_layers": null,
             "icon": null,
-            "layers": [],
-            "id": "svc_0720e1504ccedaad"
+            "id": "svc_0720e1504ccedaad",
+            "group": "Δήμοι"
         },
         {
             "name": "Δήμος Βόλου",
@@ -157,8 +156,8 @@
             "capabilities": null,
             "available_layers": null,
             "icon": "https://dimosvolos.gr/sites/all/themes/volosportal/img/logo.png",
-            "layers": [],
-            "id": "svc_9e721885be35ef92"
+            "id": "svc_9e721885be35ef92",
+            "group": "Δήμοι"
         },
         {
             "name": "Δήμος Τρικκαίων",
@@ -167,8 +166,8 @@
             "capabilities": null,
             "available_layers": null,
             "icon": "https://trikalacity.gr/wp-content/themes/trikalaTpl/images/logo-dhmou.png",
-            "layers": [],
-            "id": "svc_f5ed0fdf1c703e4f"
+            "id": "svc_f5ed0fdf1c703e4f",
+            "group": "Δήμοι"
         },
         {
             "name": "Δήμος Καλαμαριάς",
@@ -177,8 +176,8 @@
             "capabilities": null,
             "available_layers": null,
             "icon": "https://kalamaria.gr/wp-content/uploads/2016/04/favicon.png",
-            "layers": [],
-            "id": "svc_b7e924ef9319e2ea"
+            "id": "svc_b7e924ef9319e2ea",
+            "group": "Δήμοι"
         },
         {
             "name": "Δήμος Κοζάνης",
@@ -187,8 +186,8 @@
             "capabilities": null,
             "available_layers": null,
             "icon": null,
-            "layers": [],
-            "id": "svc_9e8794cc30234931"
+            "id": "svc_9e8794cc30234931",
+            "group": "Δήμοι"
         },
         {
             "name": "Δήμος Σταυρούπολης",
@@ -197,8 +196,8 @@
             "capabilities": null,
             "available_layers": null,
             "icon": null,
-            "layers": [],
-            "id": "svc_67525596e6ed1de6"
+            "id": "svc_67525596e6ed1de6",
+            "group": "Δήμοι"
         },
         {
             "name": "Δήμος Αθηναίων",
@@ -207,8 +206,8 @@
             "capabilities": null,
             "available_layers": null,
             "icon": "https://www.cityofathens.gr/favicon-32x32.png",
-            "layers": [],
-            "id": "svc_b7140479779fe5e5"
+            "id": "svc_b7140479779fe5e5",
+            "group": "Δήμοι"
         },
         {
             "name": "Δήμος Θεσσαλονίκης",
@@ -217,8 +216,8 @@
             "capabilities": null,
             "available_layers": null,
             "icon": "https://thessaloniki.gr/wp-content/uploads/2017/03/cropped-icon-32x32.png",
-            "layers": [],
-            "id": "svc_bf854e55a9dbb6d2"
+            "id": "svc_bf854e55a9dbb6d2",
+            "group": "Δήμοι"
         },
         {
             "name": "Δήμος Πειραιά",
@@ -227,8 +226,8 @@
             "capabilities": null,
             "available_layers": null,
             "icon": null,
-            "layers": [],
-            "id": "svc_26953bd1c3ee6e7b"
+            "id": "svc_26953bd1c3ee6e7b",
+            "group": "Δήμοι"
         },
         {
             "name": "Δήμος Περιστερίου",
@@ -237,8 +236,8 @@
             "capabilities": null,
             "available_layers": null,
             "icon": null,
-            "layers": [],
-            "id": "svc_bfdad6f3c79eb197"
+            "id": "svc_bfdad6f3c79eb197",
+            "group": "Δήμοι"
         },
         {
             "name": "Δήμος Αγίας Παρασκευής",
@@ -247,8 +246,8 @@
             "capabilities": null,
             "available_layers": null,
             "icon": null,
-            "layers": [],
-            "id": "svc_347a52af56fc3d17"
+            "id": "svc_347a52af56fc3d17",
+            "group": "Δήμοι"
         },
         {
             "name": "Δήμος Αμαρουσίου",
@@ -257,8 +256,18 @@
             "capabilities": null,
             "available_layers": null,
             "icon": null,
-            "layers": [],
-            "id": "svc_57cbfb9f43f088ce"
+            "id": "svc_57cbfb9f43f088ce",
+            "group": "Δήμοι"
+        },
+        {
+            "name": "Δήμος Χαλανδρίου",
+            "url": "https://services.chalandri.gr/geoserver/ows",
+            "type": "ogc",
+            "capabilities": null,
+            "available_layers": null,
+            "icon": null,
+            "id": "svc_1234567890abcdef",
+            "group": "Δήμοι"
         }
     ]
 }
